@@ -1,8 +1,10 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
+    private static List<Product> products = new ArrayList<>();
     private String productId;
     private ProductStatus productStatus;
     private String name;

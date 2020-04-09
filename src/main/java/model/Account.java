@@ -27,9 +27,27 @@ public class Account {
         buyingRecords = new ArrayList<>();
     }
 
+    public static boolean isThereAcountWithName(String username) {
+        for (Account account : accounts) {
+            if (account.username.equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static Account getAccountByUsername(String username) {
         for (Account account : accounts) {
             if (account.username.equals(username)) {
+                return account;
+            }
+        }
+        return null;
+    }
+
+    public static Account login(String username, String password) {
+        for (Account account : accounts) {
+            if (account.username.equals(username) && account.password.equals(password)) {
                 return account;
             }
         }
