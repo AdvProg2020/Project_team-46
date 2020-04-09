@@ -16,4 +16,8 @@ public class Product {
     private double averageScore;
     private List<Comment> comments;
 
+    public static void removeProductById(String id) {
+
+    }
+
 }
