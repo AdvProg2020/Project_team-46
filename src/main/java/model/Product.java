@@ -15,6 +15,7 @@ public class Product {
     private String description;
     private double averageScore;
     private List<Comment> comments;
+    private List<Score> scores;
 
     public static Product getProductById(String productId) {
         for (Product product : products) {
@@ -35,11 +36,16 @@ public class Product {
         this.category = category;
         this.description = description;
         comments = new ArrayList<>();
+        scores = new ArrayList<>();
         this.averageScore = 0;
     }
 
     public static void removeProductById(String id) {
 
+    }
+
+    public List<Score> getScores() {
+        return scores;
     }
 
     public String getProductId() {

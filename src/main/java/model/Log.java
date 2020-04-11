@@ -1,19 +1,73 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Log {
-    private String logId;
-    private Date date;
-    private long paidAmount;
-    private long recievedAmount;
-    private long discountAmount;
-    private List<Product> soldProducts;
-    private List<Product> boughtProducts;
-    private String costumerName;
-    private String sellerName;
-    private DeliveryStatus deliveryStatus;
+    public static List<Log> logs = new ArrayList<>();
+    protected String logId;
+    protected Date date;
+    protected long discountAmount;
+    protected String costumerName;
+    protected String sellerName;
+    protected DeliveryStatus deliveryStatus;
 
+    public Log(String logId, Date date, String costumerName, String sellerName, DeliveryStatus deliveryStatus, long discountAmount) {
+        logs.add(this);
+        this.logId = logId;
+        this.date = date;
+        this.costumerName = costumerName;
+        this.sellerName = sellerName;
+        this.deliveryStatus = deliveryStatus;
+        this.discountAmount = discountAmount;
+    }
 
+    public String getLogId() {
+        return logId;
+    }
+
+    public void setLogId(String logId) {
+        this.logId = logId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public long getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(long discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public String getCostumerName() {
+        return costumerName;
+    }
+
+    public void setCostumerName(String costumerName) {
+        this.costumerName = costumerName;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public DeliveryStatus getDeliveryStatus() {
+        return deliveryStatus;
+    }
+
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
 }

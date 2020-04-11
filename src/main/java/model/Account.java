@@ -1,25 +1,40 @@
 package model;
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Account {
-    protected static List<Account> accounts = new ArrayList<>();
-    protected String username;
-    protected String name;
-    protected String lastName;
-    protected String email;
-    protected String address;
-    protected String phoneNumber;
-    protected String password;
+    private static List<Account> accounts = new ArrayList<>();
+    private String username;
+    private String name;
+    private String lastName;
+    private String email;
+    private String address;
+    private String phoneNumber;
+    private String password;
+    private Role role;
+    private String companyName;
+    private List<Discount> discountCodes;
+    private List<Log> sellingRecords;
+    private List<Log> buyingRecords;
+    private Map<Product, Integer> cart;
+    private long balance;
+
 
     public Account(String username, Role role) {
         this.username = username;
         this.role = role;
         accounts.add(this);
+        discountCodes = new ArrayList<>();
+        sellingRecords = new ArrayList<>();
+        buyingRecords = new ArrayList<>();
+        cart = new HashMap<>();
     }
 
-    public static boolean isThereAccountWithName(String username) {
+    public static boolean isThereAcountWithName(String username) {
         for (Account account : accounts) {
             if (account.username.equals(username)) {
                 return true;
@@ -35,6 +50,14 @@ public class Account {
             }
         }
         return null;
+    }
+
+    public long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
     }
 
     public static Account login(String username, String password) {
@@ -102,4 +125,51 @@ public class Account {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public List<Discount> getDiscountCodes() {
+        return discountCodes;
+    }
+
+    public void setDiscountCodes(List<Discount> discountCodes) {
+        this.discountCodes = discountCodes;
+    }
+
+    public List<Log> getSellingRecords() {
+        return sellingRecords;
+    }
+
+    public void setSellingRecords(List<Log> sellingRecords) {
+        this.sellingRecords = sellingRecords;
+    }
+
+    public List<Log> getBuyingRecords() {
+        return buyingRecords;
+    }
+
+    public void setBuyingRecords(List<Log> buyingRecords) {
+        this.buyingRecords = buyingRecords;
+    }
+
+    public Map<Product, Integer> getCart() {
+        return cart;
+    }
+
+    public void setCart(Map<Product, Integer> cart) {
+        this.cart = cart;
+    }
 }
