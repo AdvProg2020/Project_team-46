@@ -30,14 +30,6 @@ public class Discount {
 
     }
 
-    public static boolean isThereDiscountWithCode(String code) {
-        for (Discount discount : discounts) {
-            if (discount.code.equals(code)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public String getCode() {
         return code;
