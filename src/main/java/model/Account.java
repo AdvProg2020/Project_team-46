@@ -13,8 +13,9 @@ public class Account {
     protected String phoneNumber;
     protected String password;
 
-    public Account(String username) {
+    public Account(String username, Role role) {
         this.username = username;
+        this.role = role;
         accounts.add(this);
     }
 

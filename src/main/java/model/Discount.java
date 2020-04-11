@@ -39,6 +39,34 @@ public class Discount {
         return false;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public Date getStartingDate() {
+        return startingDate;
+    }
+
+    public Date getEndingDate() {
+        return endingDate;
+    }
+
+    public int getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public long getMaximumDiscount() {
+        return maximumDiscount;
+    }
+
+    public Map<Account, Integer> getDiscountsPerPerson() {
+        return discountsPerPerson;
+    }
+
+    public List<Account> getIncludedPeople() {
+        return includedPeople;
+    }
+
     public static Discount getDiscountByCode(String code) {
         for (Discount discount : discounts) {
             if (discount.code.equals(code)) {
