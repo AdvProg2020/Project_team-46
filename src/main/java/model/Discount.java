@@ -96,4 +96,17 @@ public class Discount {
     public void setMaximumDiscount(long maximumDiscount) {
         this.maximumDiscount = maximumDiscount;
     }
+
+    @Override
+    public String toString() {
+        return "Discount{" +
+                "code='" + code + '\'' +
+                ", startingDate=" + startingDate +
+                ", endingDate=" + endingDate +
+                ", discountPercentage=" + discountPercentage +
+                ", maximumDiscount=" + maximumDiscount +
+                ", discountsPerPerson=" + discountsPerPerson +
+                ", includedPeople=" + includedPeople +
+                '}';
+    }
 }

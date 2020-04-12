@@ -127,4 +127,20 @@ public class Product {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId='" + productId + '\'' +
+                ", productStatus=" + productStatus +
+                ", name='" + name + '\'' +
+                ", brandOrCompany='" + brandOrCompany + '\'' +
+                ", seller=" + seller +
+                ", isAvailable=" + isAvailable +
+                ", category=" + category +
+                ", description='" + description + '\'' +
+                ", averageScore=" + averageScore +
+                ", comments=" + comments +
+                '}';
+    }
 }

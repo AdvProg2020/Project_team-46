@@ -28,4 +28,18 @@ public class SellingLog extends Log {
     public void setSoldProducts(List<Product> soldProducts) {
         this.soldProducts = soldProducts;
     }
+
+    @Override
+    public String toString() {
+        return "SellingLog{" +
+                "receivedAmount=" + receivedAmount +
+                ", soldProducts=" + soldProducts +
+                ", logId='" + logId + '\'' +
+                ", date=" + date +
+                ", discountAmount=" + discountAmount +
+                ", costumerName='" + costumerName + '\'' +
+                ", sellerName='" + sellerName + '\'' +
+                ", deliveryStatus=" + deliveryStatus +
+                '}';
+    }
 }

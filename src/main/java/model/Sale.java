@@ -9,15 +9,15 @@ public class Sale {
     private String offId;
     private List<Product> products;
     private Date startingDate;
-    private Date endingdate;
+    private Date endingDate;
     private long discountAmount;
 
-    public Sale(String offId, List<Product> products, Date startingDate, Date endingdate, long discountAmount) {
+    public Sale(String offId, List<Product> products, Date startingDate, Date endingDate, long discountAmount) {
         sales.add(this);
         this.offId = offId;
         this.products = products;
         this.startingDate = startingDate;
-        this.endingdate = endingdate;
+        this.endingDate = endingDate;
         this.discountAmount = discountAmount;
     }
 
@@ -55,11 +55,11 @@ public class Sale {
     }
 
     public Date getEndingdate() {
-        return endingdate;
+        return endingDate;
     }
 
     public void setEndingdate(Date endingdate) {
-        this.endingdate = endingdate;
+        this.endingDate = endingdate;
     }
 
     public long getDiscountAmount() {
@@ -68,5 +68,16 @@ public class Sale {
 
     public void setDiscountAmount(long discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    @Override
+    public String toString() {
+        return "Sale{" +
+                "offId='" + offId + '\'' +
+                ", products=" + products +
+                ", startingDate=" + startingDate +
+                ", endingDate=" + endingDate +
+                ", discountAmount=" + discountAmount +
+                '}';
     }
 }

@@ -60,14 +60,6 @@ public class Account {
         this.balance = balance;
     }
 
-    public static Account login(String username, String password) {
-        for (Account account : accounts) {
-            if (account.username.equals(username) && account.password.equals(password)) {
-                return account;
-            }
-        }
-        return null;
-    }
 
     public void deleteUser(String username) {
 
@@ -171,5 +163,25 @@ public class Account {
 
     public void setCart(Map<Product, Integer> cart) {
         this.cart = cart;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", companyName='" + companyName + '\'' +
+                ", discountCodes=" + discountCodes +
+                ", sellingRecords=" + sellingRecords +
+                ", buyingRecords=" + buyingRecords +
+                ", cart=" + cart +
+                ", balance=" + balance +
+                '}';
     }
 }
