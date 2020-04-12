@@ -5,4 +5,13 @@ public class Comment {
     private Product product;
     private String body;
     private boolean hasUserBought;
+    private CommentStatus commentStatus;
+
+    public Comment(Account user, Product product, String body, boolean hasUserBought, CommentStatus commentStatus) {
+        this.user = user;
+        this.product = product;
+        this.body = body;
+        this.hasUserBought = hasUserBought;
+        this.commentStatus = commentStatus;
+    }
 }
