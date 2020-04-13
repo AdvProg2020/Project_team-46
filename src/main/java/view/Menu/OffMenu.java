@@ -35,5 +35,12 @@ public class OffMenu extends Menu {
             loginMenu.show();
             loginMenu.execute();
         }
+        else if(chosenMenu.matches("(?i)back")) {
+            if(this.parentMenu != null) {
+                Menu nextMenu = this.parentMenu;
+                nextMenu.show();
+                nextMenu.execute();
+            }
+        }
     }
 }
