@@ -23,7 +23,6 @@ public class Account {
     private Map<Product, Integer> cart;
     private long balance;
 
-
     public Account(String username, Role role) {
         this.username = username;
         this.role = role;
@@ -34,7 +33,7 @@ public class Account {
         cart = new HashMap<>();
     }
 
-    public static boolean isThereAcountWithName(String username) {
+    public static boolean isThereAccountWithName(String username) {
         for (Account account : accounts) {
             if (account.username.equals(username)) {
                 return true;

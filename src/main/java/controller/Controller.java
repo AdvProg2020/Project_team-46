@@ -218,23 +218,23 @@ public class Controller {
 
     }
 
-    public void showProduct(String productId) {
+    public static void showProduct(String productId) {
 
     }
 
-    public void digest() {
+    public static void digest() {
 
     }
 
-    public void addToCart() {
+    public static void addToCart() {
 
     }
 
-    public void selectSeller() {
+    public static void selectSeller() {
 
     }
 
-    public void attributes() {
+    public static void attributes() {
 
     }
 
@@ -250,7 +250,7 @@ public class Controller {
 
     }
 
-    public void offs() {
+    public static void offs() {
 
     }
 
