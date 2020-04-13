@@ -19,7 +19,7 @@ public class GoodMenu extends Menu {
 
     @Override
     public void execute() {
-        Menu nextMenu = null;
+        Menu nextMenu = this;
         String chosenMenu = scanner.nextLine().trim();
         if(chosenMenu.matches("(?i)digest")) {
             Controller.digest();
@@ -45,6 +45,13 @@ public class GoodMenu extends Menu {
             String content = scanner.nextLine();
             Controller.addComment(title,content);
         }
+        else if(chosenMenu.matches("(?i)back")) {
+            if(this.parentMenu != null) {
+                nextMenu = this.parentMenu;
+            }
+        }
+        nextMenu.show();
+        nextMenu.execute();
     }
 
     public void setGoodId(String goodId) {
