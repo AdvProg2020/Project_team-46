@@ -6,11 +6,13 @@ import java.util.HashMap;
 
 public class OffMenu extends Menu {
     private GoodMenu sub = new GoodMenu(this,null);
+    private LoginMenu loginMenu = new LoginMenu(this);
 
     public OffMenu(Menu parentMenu) {
         super("OffMenu", parentMenu);
         HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1,sub);
+        submenus.put(2,loginMenu);
         this.setSubmenus(submenus);
     }
 
@@ -27,6 +29,11 @@ public class OffMenu extends Menu {
             sub.setGoodId(splitString[2]);
             sub.show();
             sub.execute();
+        }
+        else if(chosenMenu.matches("(?i)create\\s+account\\s+\\S+\\s+\\S+")) {
+            String[] splitString = chosenMenu.split("\\s");
+            loginMenu.show();
+            loginMenu.execute();
         }
     }
 }

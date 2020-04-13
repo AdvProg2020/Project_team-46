@@ -1,8 +1,8 @@
 package view.Menu;
 
 public class LoginMenu extends Menu{
-    public LoginMenu(String name, Menu parentMenu) {
-        super(name, parentMenu);
+    public LoginMenu(Menu parentMenu) {
+        super("LoginMenu", parentMenu);
     }
 
     @Override
