@@ -28,17 +28,5 @@ public class OffMenu extends Menu {
             sub.show();
             sub.execute();
         }
-        /*
-        if (chosenMenu.equalsIgnoreCase("back") || chosenMenu.equalsIgnoreCase("exit")) {
-            if (this.parentMenu == null)
-                System.exit(1);
-            else
-                nextMenu = this.parentMenu;
-        } else
-            nextMenu = ;
-        nextMenu.show();
-        nextMenu.execute();
-
-         */
     }
 }
