@@ -238,15 +238,15 @@ public class Controller {
 
     }
 
-    public void compare(String productId) {
+    public static void compare(String productId) {
 
     }
 
-    public void comments() {
+    public static void comments() {
 
     }
 
-    public void addComment(String title, String content) {
+    public static void addComment(String title, String content) {
 
     }
 

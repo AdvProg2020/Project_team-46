@@ -33,6 +33,18 @@ public class GoodMenu extends Menu {
         else if(chosenMenu.matches("(?i)attribute")) {
             Controller.attributes();
         }
+        else if(chosenMenu.matches("(?i)compare\\s+\\S+")) {
+            String[] splitString = chosenMenu.split("\\s+");
+            Controller.compare(splitString[1]);
+        }
+        else if(chosenMenu.matches("(?i)Comments")) {
+            Controller.comments();
+        }
+        else if(chosenMenu.matches("(?i)Add comment")) {
+            String title = scanner.nextLine();
+            String content = scanner.nextLine();
+            Controller.addComment(title,content);
+        }
     }
 
     public void setGoodId(String goodId) {
