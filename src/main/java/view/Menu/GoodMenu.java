@@ -53,8 +53,7 @@ public class GoodMenu extends Menu {
             }
         }
         else if(chosenMenu.matches("(?i)create\\s+account\\s+\\S+\\s+\\S+")) {
-            loginMenu.show();
-            loginMenu.execute();
+            nextMenu = loginMenu;
         }
         nextMenu.show();
         nextMenu.execute();
