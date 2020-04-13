@@ -5,10 +5,12 @@ import java.util.HashMap;
 
 public class GoodMenu extends Menu {
     private String goodId;
+    private LoginMenu loginMenu = new LoginMenu(this);
 
     public GoodMenu(Menu parentMenu , String goodId) {
         super("GoodMenu", parentMenu);
         HashMap<Integer, Menu> submenus = new HashMap<>();
+        submenus.put(1,loginMenu);
         this.goodId = goodId;
     }
 
@@ -49,6 +51,10 @@ public class GoodMenu extends Menu {
             if(this.parentMenu != null) {
                 nextMenu = this.parentMenu;
             }
+        }
+        else if(chosenMenu.matches("(?i)create\\s+account\\s+\\S+\\s+\\S+")) {
+            loginMenu.show();
+            loginMenu.execute();
         }
         nextMenu.show();
         nextMenu.execute();
