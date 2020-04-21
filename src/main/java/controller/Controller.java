@@ -1,16 +1,72 @@
 package controller;
 import model.*;
 
-public class Controller {
-    private Account currentAccount;
+import java.util.ArrayList;
+import java.util.List;
 
+public class Controller {
+    private List<Account> accounts;
+    private Account currentAccount ;
+
+    public Controller() {
+        accounts = new ArrayList<>();
+    }
+
+    public Account getAccountByUsername(String username) {
+        for (Account account : accounts) {
+            if (account.getUsername().equals(username)) {
+                return account;
+            }
+        }
+        return null;
+    }
+
+    public Account getCurrentAccount() {
+        return currentAccount;
+    }
 
     public void createAccount(String username, String type) {
-
+        Role role = null;
+        switch (type) {
+            case  "customer":
+                role = Role.CUSTOMER;
+                break;
+            case "seller":
+                role = Role.SELLER;
+                break;
+            case "manager":
+                role = Role.MANAGER;
+        }
+        currentAccount = new Account(username, role);
+        accounts.add(currentAccount);
     }
 
     public void setPassword(String password) {
+        currentAccount.setPassword(password);
+    }
 
+    public void setName(String name) {
+        currentAccount.setName(name);
+    }
+
+    public void setLastName(String lastName) {
+        currentAccount.setLastName(lastName);
+    }
+
+    public void setAddress(String address) {
+        currentAccount.setAddress(address);
+    }
+
+    public void setEmail(String email) {
+        currentAccount.setEmail(email);
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        currentAccount.setPhoneNumber(phoneNumber);
+    }
+
+    public void setCompanyName(String companyName) {
+        currentAccount.setCompanyName(companyName);
     }
 
     public void login(String username, String password) {

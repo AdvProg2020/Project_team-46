@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Account {
-    private static List<Account> accounts = new ArrayList<>();
     private String username;
     private String name;
     private String lastName;
@@ -26,30 +25,13 @@ public class Account {
     public Account(String username, Role role) {
         this.username = username;
         this.role = role;
-        accounts.add(this);
         discountCodes = new ArrayList<>();
         sellingRecords = new ArrayList<>();
         buyingRecords = new ArrayList<>();
         cart = new HashMap<>();
     }
 
-    public static boolean isThereAccountWithName(String username) {
-        for (Account account : accounts) {
-            if (account.username.equals(username)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    public static Account getAccountByUsername(String username) {
-        for (Account account : accounts) {
-            if (account.username.equals(username)) {
-                return account;
-            }
-        }
-        return null;
-    }
 
     public long getBalance() {
         return balance;

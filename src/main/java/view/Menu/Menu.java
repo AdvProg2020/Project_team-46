@@ -1,11 +1,16 @@
 package view.Menu;
 
+import controller.Controller;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class Menu {
-    private String name;
+    protected static Controller controller;
+    protected String name;
     protected HashMap<Integer, Menu> submenus;
     protected Menu parentMenu;
     public static Scanner scanner;
@@ -33,6 +38,10 @@ public abstract class Menu {
         allMenus.add(this);
     }
 
+    public static void setController(Controller controller) {
+        Menu.controller = controller;
+    }
+
     public void setParentMenu(Menu parentMenu) {
         this.parentMenu = parentMenu;
     }
@@ -50,8 +59,33 @@ public abstract class Menu {
         return name;
     }
 
-    public abstract void show();
+    public void show() {
+        System.out.println(this.name + ":");
+        for (Integer menuNum : submenus.keySet()) {
+            System.out.println(menuNum + ". " + submenus.get(menuNum).getName());
+        }
+        if (this.parentMenu != null)
+            System.out.println((submenus.size() + 1) + ". Back");
+        else
+            System.out.println((submenus.size() + 1) + ". Exit");
+    }
 
-    public abstract void execute();
+    public void execute() {
+        Menu nextMenu = null;
+        int chosenMenu = Integer.parseInt(scanner.nextLine());
+        if (chosenMenu == submenus.size() + 1) {
+            if (this.parentMenu == null)
+                System.exit(1);
+            else
+                nextMenu = this.parentMenu;
+        } else
+            nextMenu = submenus.get(chosenMenu);
+        nextMenu.show();
+        nextMenu.execute();
+    }
+
+    public Matcher getMatcher(String regex, String input) {
+        return Pattern.compile(regex).matcher(input);
+    }
 
 }
