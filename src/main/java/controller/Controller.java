@@ -25,6 +25,19 @@ public class Controller {
         return currentAccount;
     }
 
+    public boolean logIn(String username, String password) {
+        if (getAccountByUsername(username).getPassword().equals(password)) {
+            currentAccount = getAccountByUsername(username);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void logOut() {
+        currentAccount = null;
+    }
+
     public void createAccount(String username, String type) {
         Role role = null;
         switch (type) {

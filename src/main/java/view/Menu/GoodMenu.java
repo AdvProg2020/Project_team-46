@@ -9,7 +9,6 @@ public class GoodMenu extends Menu {
 
     public GoodMenu(Menu parentMenu , String goodId) {
         super("GoodMenu", parentMenu);
-        HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1,loginMenu);
         this.goodId = goodId;
     }

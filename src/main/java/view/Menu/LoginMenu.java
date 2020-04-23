@@ -2,7 +2,7 @@ package view.Menu;
 
 import java.util.regex.Matcher;
 
-public class LoginMenu extends Menu{
+public class LoginMenu extends Menu {
     public LoginMenu(Menu parentMenu) {
         super("LoginMenu", parentMenu);
     }
@@ -37,7 +37,7 @@ public class LoginMenu extends Menu{
         Matcher matcher;
         while (true) {
             command = scanner.nextLine();
-            if (command.matches(regex = "create account (customer|seller|manager) (\\S+)")) {
+            if (command.matches(regex = "create account (customer|seller|manager) (.+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 if (controller.getAccountByUsername(matcher.group(2)) != null) {
                     System.out.println("User is already taken");
@@ -63,7 +63,7 @@ public class LoginMenu extends Menu{
                 System.out.println("create account [type] [username] \n" +
                         "help \n" +
                         "back");
-            } else if (command.equals("back")){
+            } else if (command.equals("back")) {
                 break;
             } else {
                 System.out.println("invalid command");
@@ -72,10 +72,43 @@ public class LoginMenu extends Menu{
     }
 
     public void logIn() {
+        String username;
+        String password;
+        String command;
+        String regex;
+        Matcher matcher;
+        while (true) {
+            command = scanner.nextLine();
+            if (command.matches(regex = "login (.+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                if (controller.getAccountByUsername(matcher.group(1)) == null) {
+                    System.out.println("User not found");
+                } else {
+                    username = matcher.group(1);
+                    System.out.println("Enter password:");
+                    password = scanner.nextLine();
+                    if (controller.logIn(username, password)) {
+                        System.out.println("Successfully logged in");
+                        break;
+                    } else {
+                        System.out.println("Password is wrong");
+                    }
+                }
+            } else if (command.equals("help")) {
+                System.out.println("login [username] \n" +
+                        "help \n" +
+                        "back");
+            } else if (command.equals("back")) {
+                break;
+            } else {
+                System.out.println("invalid command");
+            }
+        }
 
     }
 
     public void logOut() {
-
+        controller.logOut();
+        System.out.println("Successfully logged out");
     }
 }

@@ -8,7 +8,6 @@ public class ProductsMenu extends Menu{
 
     public ProductsMenu(Menu parentMenu) {
         super("productsMenu", parentMenu);
-        HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1,goodMenu);
         submenus.put(2,loginMenu);
         this.setSubmenus(submenus);

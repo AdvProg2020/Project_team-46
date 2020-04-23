@@ -6,7 +6,6 @@ public class MainMenu extends Menu{
 
     public MainMenu() {
         super("MainMenu", null);
-        HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1, new UserMenu(this));
         submenus.put(2, new ProductsMenu(this));
         submenus.put(3, new OffMenu(this));

@@ -33,6 +33,7 @@ public abstract class Menu {
     }
 
     public Menu(String name, Menu parentMenu) {
+        submenus = new HashMap<>();
         this.name = name;
         this.parentMenu = parentMenu;
         allMenus.add(this);

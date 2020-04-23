@@ -10,7 +10,6 @@ public class OffMenu extends Menu {
 
     public OffMenu(Menu parentMenu) {
         super("OffMenu", parentMenu);
-        HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1,sub);
         submenus.put(2,loginMenu);
         this.setSubmenus(submenus);
