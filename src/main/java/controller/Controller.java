@@ -139,16 +139,25 @@ public class Controller {
 
     }
 
-    public void editCategory(String category) {
-
+    public void editCategory(String category,String name,String description) {
+        Category category1 = Category.getCategoryByName(category);
+        category1.setName(name);
+        category1.setDescription(description);
     }
 
-    public void addCategory(String category) {
-
+    public void addCategory(String name,String description) {
+        ArrayList<Product> list = new ArrayList<>();
+        Category.categories.add(new Category(name,description,list));
     }
 
     public void removeCategory(String category) {
-
+        Category category1 = Category.getCategoryByName(category);
+        for (Product product : category1.getProducts()) {
+            if(Product.products.contains(product)) {
+                Product.products.remove(product);
+            }
+        }
+        Category.categories.remove(category1);
     }
 
     public void viewCompanyInformation() {
