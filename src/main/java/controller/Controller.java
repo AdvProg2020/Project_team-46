@@ -160,20 +160,26 @@ public class Controller {
         Category.categories.remove(category1);
     }
 
-    public void viewCompanyInformation() {
-
+    public String viewCompanyInformation() {
+        return currentAccount.getCompanyName();
     }
 
-    public void viewSalesHistory() {
-
+    public List<SellingLog> viewSalesHistory() {
+       return currentAccount.getSellingRecords();
     }
 
     public void manageProducts() {
 
     }
 
-    public void viewProduct(String productId) {
+    public String viewProduct(String productId) {
+        Product product = Product.getProductById(productId);
+        return product.toString();
+    }
 
+    public List<Account> viewBuyers(String productId) {
+        Product product = Product.getProductById(productId);
+        return product.getBuyers();
     }
 
     public void editProduct(String productId) {
