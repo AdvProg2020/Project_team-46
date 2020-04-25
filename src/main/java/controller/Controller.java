@@ -144,32 +144,47 @@ public class Controller {
 
     }
 
-    public void editCategory(String category) {
-
+    public void editCategory(String category,String name,String description) {
+        Category category1 = Category.getCategoryByName(category);
+        category1.setName(name);
+        category1.setDescription(description);
     }
 
-    public void addCategory(String category) {
-
+    public void addCategory(String name,String description) {
+        ArrayList<Product> list = new ArrayList<>();
+        Category.categories.add(new Category(name,description,list));
     }
 
     public void removeCategory(String category) {
-
+        Category category1 = Category.getCategoryByName(category);
+        for (Product product : category1.getProducts()) {
+            if(Product.products.contains(product)) {
+                Product.products.remove(product);
+            }
+        }
+        Category.categories.remove(category1);
     }
 
-    public void viewCompanyInformation() {
-
+    public String viewCompanyInformation() {
+        return currentAccount.getCompanyName();
     }
 
-    public void viewSalesHistory() {
-
+    public List<SellingLog> viewSalesHistory() {
+       return currentAccount.getSellingRecords();
     }
 
     public void manageProducts() {
 
     }
 
-    public void viewProduct(String productId) {
+    public String viewProduct(String productId) {
+        Product product = Product.getProductById(productId);
+        return product.toString();
+    }
 
+    public List<Account> viewBuyers(String productId) {
+        Product product = Product.getProductById(productId);
+        return product.getBuyers();
     }
 
     public void editProduct(String productId) {
@@ -184,16 +199,17 @@ public class Controller {
 
     }
 
-    public void showCategories() {
-
+    public List<Category> showCategories() {
+        return Category.categories;
     }
 
-    public void viewOffs() {
-
+    public List<Sale> viewOffs() {
+        return currentAccount.getOffList();
     }
 
-    public void viewOff(String offId) {
-
+    public String viewOff(String offId) {
+        Sale sale = Sale.getSaleById(offId);
+        return sale.toString();
     }
 
     public void editOff(String offId) {
@@ -204,8 +220,8 @@ public class Controller {
 
     }
 
-    public void viewBalance() {
-
+    public long viewBalance() {
+        return currentAccount.getBalance();
     }
 
     public void viewCart() {

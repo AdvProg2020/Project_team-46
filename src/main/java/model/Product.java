@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Product {
     public static List<Product> products = new ArrayList<>();
+    private List<Account> buyers;
     private String productId;
     private ProductStatus productStatus;
     private String name;
@@ -26,7 +27,8 @@ public class Product {
         return null;
     }
 
-    public Product(String productId, ProductStatus productStatus, String name, String brandOrCompany, Account seller, boolean isAvailable, Category category, String description) {
+    public Product(String productId, ProductStatus productStatus, String name, String brandOrCompany, Account seller,
+                   boolean isAvailable, Category category, String description) {
         this.productId = productId;
         this.productStatus = productStatus;
         this.name = name;
@@ -35,6 +37,7 @@ public class Product {
         this.isAvailable = isAvailable;
         this.category = category;
         this.description = description;
+        buyers = new ArrayList<>();
         comments = new ArrayList<>();
         scores = new ArrayList<>();
         this.averageScore = 0;
@@ -126,6 +129,18 @@ public class Product {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Account> getBuyers() {
+        return buyers;
+    }
+
+    public void setBuyers(List<Account> buyers) {
+        this.buyers = buyers;
+    }
+
+    public void setScores(List<Score> scores) {
+        this.scores = scores;
     }
 
     @Override

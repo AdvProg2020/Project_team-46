@@ -17,8 +17,9 @@ public class Account {
     private Role role;
     private String companyName;
     private List<Discount> discountCodes;
-    private List<Log> sellingRecords;
-    private List<Log> buyingRecords;
+    private List<SellingLog> sellingRecords;
+    private List<BuyingLog> buyingRecords;
+    private List<Sale> offList;
     private Map<Product, Integer> cart;
     private long balance;
 
@@ -28,10 +29,9 @@ public class Account {
         discountCodes = new ArrayList<>();
         sellingRecords = new ArrayList<>();
         buyingRecords = new ArrayList<>();
+        offList = new ArrayList<>();
         cart = new HashMap<>();
     }
-
-
 
     public long getBalance() {
         return balance;
@@ -40,7 +40,6 @@ public class Account {
     public void setBalance(long balance) {
         this.balance = balance;
     }
-
 
     public void deleteUser(String username) {
 
@@ -122,19 +121,19 @@ public class Account {
         this.discountCodes = discountCodes;
     }
 
-    public List<Log> getSellingRecords() {
+    public List<SellingLog> getSellingRecords() {
         return sellingRecords;
     }
 
-    public void setSellingRecords(List<Log> sellingRecords) {
+    public void setSellingRecords(List<SellingLog> sellingRecords) {
         this.sellingRecords = sellingRecords;
     }
 
-    public List<Log> getBuyingRecords() {
+    public List<BuyingLog> getBuyingRecords() {
         return buyingRecords;
     }
 
-    public void setBuyingRecords(List<Log> buyingRecords) {
+    public void setBuyingRecords(List<BuyingLog> buyingRecords) {
         this.buyingRecords = buyingRecords;
     }
 
@@ -144,6 +143,14 @@ public class Account {
 
     public void setCart(Map<Product, Integer> cart) {
         this.cart = cart;
+    }
+
+    public List<Sale> getOffList() {
+        return offList;
+    }
+
+    public void setOffList(List<Sale> offList) {
+        this.offList = offList;
     }
 
     @Override

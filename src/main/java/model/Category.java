@@ -25,11 +25,6 @@ public class Category {
         this.products = products;
     }
 
-    public static void deleteCategoryByName(String name) {
-
-    }
-
-
     public String getName() {
         return name;
     }
