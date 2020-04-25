@@ -20,15 +20,26 @@ public class LoginMenu extends Menu {
         switch (Integer.parseInt(scanner.nextLine())) {
             case 1:
                 register();
+                parentMenu.show();
+                parentMenu.execute();
                 break;
             case 2:
                 logIn();
+                parentMenu.show();
+                parentMenu.execute();
                 break;
             case 3:
                 logOut();
+                mainMenu.show();
+                mainMenu.execute();
+                break;
+            case 4:
+                parentMenu.show();
+                parentMenu.execute();
+                break;
+            default:
+                this.execute();
         }
-        this.parentMenu.show();
-        this.parentMenu.execute();
     }
 
     public void register() {
@@ -47,6 +58,8 @@ public class LoginMenu extends Menu {
                     controller.setPassword(scanner.nextLine());
                     System.out.println("Enter your name:");
                     controller.setName(scanner.nextLine());
+                    System.out.println("Enter your last name:");
+                    controller.setLastName(scanner.nextLine());
                     System.out.println("Enter your email:");
                     controller.setEmail(scanner.nextLine());
                     System.out.println("Enter your address:");
@@ -108,7 +121,10 @@ public class LoginMenu extends Menu {
     }
 
     public void logOut() {
-        controller.logOut();
-        System.out.println("Successfully logged out");
+        if (controller.logOut()) {
+            System.out.println("Successfully logged out");
+        } else {
+            System.out.println("You're already logged out");
+        }
     }
 }

@@ -13,6 +13,7 @@ public abstract class Menu {
     protected String name;
     protected HashMap<Integer, Menu> submenus;
     protected Menu parentMenu;
+    protected static Menu mainMenu;
     public static Scanner scanner;
     protected static ArrayList<Menu> allMenus;
 
@@ -89,4 +90,7 @@ public abstract class Menu {
         return Pattern.compile(regex).matcher(input);
     }
 
+    public static void setMainMenu(Menu mainMenu) {
+        Menu.mainMenu = mainMenu;
+    }
 }

@@ -9,9 +9,9 @@ public class UserMenu extends Menu {
 
     public UserMenu(Menu parentMenu) {
         super("UserMenu", parentMenu);
-        userBuyer = new UserBuyer("UserBuyer", this);
-        userSeller = new UserSeller("UserSeller", this);
-        userManager = new UserManager("UserManager", this);
+        userBuyer = new UserBuyer("UserBuyer", parentMenu);
+        userSeller = new UserSeller("UserSeller", parentMenu);
+        userManager = new UserManager("UserManager", parentMenu);
         submenus.put(1, new LoginMenu(this));
         setSubmenus(submenus);
     }

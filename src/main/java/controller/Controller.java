@@ -34,8 +34,13 @@ public class Controller {
         }
     }
 
-    public void logOut() {
-        currentAccount = null;
+    public boolean logOut() {
+        if (currentAccount == null) {
+            return false;
+        } else {
+            currentAccount = null;
+            return true;
+        }
     }
 
     public void createAccount(String username, String type) {

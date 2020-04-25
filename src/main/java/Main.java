@@ -9,6 +9,7 @@ public class Main {
         MainMenu.setScanner(new Scanner(System.in));
         MainMenu.setController(new Controller());
         Menu mainMenu = new MainMenu();
+        Menu.setMainMenu(mainMenu);
         mainMenu.show();
         mainMenu.execute();
     }
