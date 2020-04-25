@@ -194,16 +194,17 @@ public class Controller {
 
     }
 
-    public void showCategories() {
-
+    public List<Category> showCategories() {
+        return Category.categories;
     }
 
-    public void viewOffs() {
-
+    public List<Sale> viewOffs() {
+        return currentAccount.getOffList();
     }
 
-    public void viewOff(String offId) {
-
+    public String viewOff(String offId) {
+        Sale sale = Sale.getSaleById(offId);
+        return sale.toString();
     }
 
     public void editOff(String offId) {
@@ -214,8 +215,8 @@ public class Controller {
 
     }
 
-    public void viewBalance() {
-
+    public long viewBalance() {
+        return currentAccount.getBalance();
     }
 
     public void viewCart() {

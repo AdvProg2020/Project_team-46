@@ -19,6 +19,7 @@ public class Account {
     private List<Discount> discountCodes;
     private List<SellingLog> sellingRecords;
     private List<BuyingLog> buyingRecords;
+    private List<Sale> offList;
     private Map<Product, Integer> cart;
     private long balance;
 
@@ -28,6 +29,7 @@ public class Account {
         discountCodes = new ArrayList<>();
         sellingRecords = new ArrayList<>();
         buyingRecords = new ArrayList<>();
+        offList = new ArrayList<>();
         cart = new HashMap<>();
     }
 
@@ -141,6 +143,14 @@ public class Account {
 
     public void setCart(Map<Product, Integer> cart) {
         this.cart = cart;
+    }
+
+    public List<Sale> getOffList() {
+        return offList;
+    }
+
+    public void setOffList(List<Sale> offList) {
+        this.offList = offList;
     }
 
     @Override
