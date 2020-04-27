@@ -256,16 +256,23 @@ public class Controller {
 
     }
 
-    public void viewOrders() {
-
+    public List<BuyingLog> viewOrders() {
+        return currentAccount.getBuyingRecords();
     }
 
-    public void showOrder(String orderId) {
-
+    public String showOrder(String orderId) {
+        for (BuyingLog buyingRecord : currentAccount.getBuyingRecords()) {
+            if(buyingRecord.getLogId().equals(orderId)) {
+                return buyingRecord.toString();
+            }
+        }
+        return null;
     }
 
-    public void rateProduct(String productId, int score) {
-
+    public void rateProduct(String productId, double score) {
+        Product product = Product.getProductById(productId);
+        Score score1 = new Score(currentAccount,score,product);
+        product.setScores(score1);
     }
 
     public void goToProductsPage() {
@@ -288,11 +295,11 @@ public class Controller {
 
     }
 
-    public void goTosortingPage() {
+    public void goToSortingPage() {
 
     }
 
-    public void sort(String sortingMetod) {
+    public void sort(String sortingMethod) {
 
     }
 
@@ -300,7 +307,7 @@ public class Controller {
 
     }
 
-    public void disableSort(String sortingMerhod) {
+    public void disableSort(String sortingMethod) {
 
     }
 

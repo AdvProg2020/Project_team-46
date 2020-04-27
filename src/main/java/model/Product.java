@@ -139,8 +139,8 @@ public class Product {
         this.buyers = buyers;
     }
 
-    public void setScores(List<Score> scores) {
-        this.scores = scores;
+    public void setScores(Score score) {
+        scores.add(score);
     }
 
     @Override
