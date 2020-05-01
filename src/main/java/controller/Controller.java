@@ -107,8 +107,8 @@ public class Controller {
 
     }
 
-    public void createManager(String userName,Role role) {
-
+    public Account createManager(String userName,Role role) {
+        return new Account(userName,Role.MANAGER);
     }
 
 

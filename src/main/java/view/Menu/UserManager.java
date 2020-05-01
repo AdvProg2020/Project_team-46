@@ -106,7 +106,19 @@ public class UserManager extends Menu {
             else if (command.equalsIgnoreCase("create manager profile")) {
                 String userName = scanner.nextLine();
                 Role manager = Role.MANAGER;
-                controller.createManager(userName,manager);
+                Account account = controller.createManager(userName,manager);
+                System.out.println("Enter manager name :");
+                account.setName(scanner.nextLine());
+                System.out.println("Enter manager last name :");
+                account.setLastName(scanner.nextLine());
+                System.out.println("Enter manager password :");
+                account.setPassword(scanner.nextLine());
+                System.out.println("Enter manager address :");
+                account.setAddress(scanner.nextLine());
+                System.out.println("Enter manager Email :");
+                account.setEmail(scanner.nextLine());
+                System.out.println("Enter manager phone number :");
+                account.setPhoneNumber(scanner.nextLine());
             }
         }
     }
