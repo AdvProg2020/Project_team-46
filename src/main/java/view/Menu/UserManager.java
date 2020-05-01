@@ -2,7 +2,7 @@ package view.Menu;
 
 import model.Account;
 import model.Role;
-
+import model.Product;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -13,9 +13,12 @@ public class UserManager extends Menu {
         submenus.put(1, new LoginMenu(this));
         submenus.put(2, getViewPersonalInfo());
         submenus.put(3, getManageUsers());
+        submenus.put(4, getManageProducts());
+        submenus.put(5, getCreateDiscountCode());
         this.setSubmenus(submenus);
     }
 
+    @Override
     public void execute() {
         String command;
         String regex;
@@ -36,6 +39,14 @@ public class UserManager extends Menu {
                 getManageUsers().execute();
             }
             else if (command.equals("4")) {
+                getManageProducts().show();
+                getManageProducts().execute();
+            }
+            else if (command.equals("5")) {
+                getCreateDiscountCode().show();
+                getCreateDiscountCode().execute();
+            }
+            else if (command.equals("6")) {
                 parentMenu.show();
                 parentMenu.execute();
                 break;
@@ -124,6 +135,23 @@ public class UserManager extends Menu {
                 System.out.println("Enter manager phone number :");
                 account.setPhoneNumber(scanner.nextLine());
             }
+            else
+                System.out.println("invalid command");
+        }
+    }
+
+    public void manageProducts() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+            if (command.matches(regex = "remove (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.removeProduct(field);
+            }
+            else
+                System.out.println("invalid command");
         }
     }
 
@@ -186,6 +214,58 @@ public class UserManager extends Menu {
             }
         };
     }
+
+    private Menu getManageProducts() {
+        return new Menu("manage products",this) {
+            @Override
+            public void show() {
+                System.out.println(Product.products);
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        manageProducts();
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+                }
+            }
+        };
+    }
+
+    private Menu getCreateDiscountCode() {
+        return new Menu("create discount code",this) {
+            @Override
+            public void show() {
+                System.out.println("create Discount Code:");
+                System.out.println("1.Create discount code \n" +
+                        "2.back");
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        controller.createDiscountCode();
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+                }
+            }
+        };
+    }
+
+
 }
 
 
