@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Discount {
-    private static List<Discount> discounts = new ArrayList<>();
+    public static List<Discount> discounts = new ArrayList<>();
     private String code;
     private Date startingDate;
     private Date endingDate;

@@ -3,6 +3,7 @@ package view.Menu;
 import model.Account;
 import model.Role;
 import model.Product;
+import model.Discount;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -15,6 +16,7 @@ public class UserManager extends Menu {
         submenus.put(3, getManageUsers());
         submenus.put(4, getManageProducts());
         submenus.put(5, getCreateDiscountCode());
+        submenus.put(6, getViewDiscountCode());
         this.setSubmenus(submenus);
     }
 
@@ -47,6 +49,10 @@ public class UserManager extends Menu {
                 getCreateDiscountCode().execute();
             }
             else if (command.equals("6")) {
+                getViewDiscountCode().show();
+                getViewDiscountCode().execute();
+            }
+            else if (command.equals("7")) {
                 parentMenu.show();
                 parentMenu.execute();
                 break;
@@ -54,7 +60,7 @@ public class UserManager extends Menu {
         }
     }
 
-    public void viewPersonalInfo() {
+    private void viewPersonalInfo() {
         String command;
         String regex;
         Matcher matcher;
@@ -103,7 +109,7 @@ public class UserManager extends Menu {
         }
     }
 
-    public void manageUsers() {
+    private void manageUsers() {
         String command;
         String regex;
         Matcher matcher;
@@ -140,7 +146,7 @@ public class UserManager extends Menu {
         }
     }
 
-    public void manageProducts() {
+    private void manageProducts() {
         String command;
         String regex;
         Matcher matcher;
@@ -149,6 +155,31 @@ public class UserManager extends Menu {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
                 controller.removeProduct(field);
+            }
+            else
+                System.out.println("invalid command");
+        }
+    }
+
+    private void viewDiscountCodes() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+            if (command.matches(regex = "view discount code (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.viewDiscountCode(field);
+            }
+            else if (command.matches(regex = "edit discount code (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.editDiscountCode(field);
+            }
+            else if (command.matches(regex = "remove discount code (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.removeDiscountCode(field);
             }
             else
                 System.out.println("invalid command");
@@ -265,7 +296,34 @@ public class UserManager extends Menu {
         };
     }
 
+    private Menu getViewDiscountCode() {
+        return new Menu("View Discount Code",this) {
+            @Override
+            public void show() {
+                System.out.println("View Discount Code:");
+                System.out.println("1.view discount code [code]\n" +
+                        "1.edit discount code [code]\n " +
+                        "1.remove discount code [code]\n"+
+                        "2.back");
+                System.out.println(Discount.discounts);
+            }
 
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        viewDiscountCodes();
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+                }
+            }
+        };
+    }
 }
 
 
