@@ -11,7 +11,8 @@ public class UserManager extends Menu {
         super(name, parentMenu);
         HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1, new LoginMenu(this));
-        submenus.put(2,getViewPersonalInfo());
+        submenus.put(2, getViewPersonalInfo());
+        submenus.put(3, getManageUsers());
         this.setSubmenus(submenus);
     }
 
@@ -25,16 +26,20 @@ public class UserManager extends Menu {
                 submenus.get(1).show();
                 submenus.get(1).execute();
                 break;
-            } else if (command.equals("2")) {
+            }
+            else if (command.equals("2")) {
                 getViewPersonalInfo().show();
                 getViewPersonalInfo().execute();
-            } else if (command.equals("3")) {
+            }
+            else if (command.equals("3")) {
+                getManageUsers().show();
+                getManageUsers().execute();
+            }
+            else if (command.equals("4")) {
                 parentMenu.show();
                 parentMenu.execute();
                 break;
             }
-
-
         }
     }
 
