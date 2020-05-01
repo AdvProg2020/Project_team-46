@@ -107,7 +107,7 @@ public class Controller {
 
     }
 
-    public void createManager() {
+    public void createManager(String userName,Role role) {
 
     }
 
@@ -351,4 +351,7 @@ public class Controller {
 
     }
 
+    public List<Account> getAccounts() {
+        return accounts;
+    }
 }

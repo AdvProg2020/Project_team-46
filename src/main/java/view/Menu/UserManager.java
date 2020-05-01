@@ -1,13 +1,18 @@
 package view.Menu;
 
 import model.Account;
+import model.Role;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 
 public class UserManager extends Menu {
     public UserManager(String name, Menu parentMenu) {
         super(name, parentMenu);
+        HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1, new LoginMenu(this));
+        submenus.put(2,getViewPersonalInfo());
+        this.setSubmenus(submenus);
     }
 
     public void execute() {
@@ -21,12 +26,15 @@ public class UserManager extends Menu {
                 submenus.get(1).execute();
                 break;
             } else if (command.equals("2")) {
+                getViewPersonalInfo().show();
+                getViewPersonalInfo().execute();
+            } else if (command.equals("3")) {
                 parentMenu.show();
                 parentMenu.execute();
                 break;
-            } else if (command.equals("view personal info")) {
-                viewPersonalInfo();
             }
+
+
         }
     }
 
@@ -35,18 +43,7 @@ public class UserManager extends Menu {
         String regex;
         Matcher matcher;
         Account currentAccount = controller.getCurrentAccount();
-        System.out.println(
-                "username: " + currentAccount.getUsername() + "\n"
-                        + "password: " + currentAccount.getPassword() + "\n"
-                        + "name: " + currentAccount.getName() + "\n"
-                        + "lastName: " + currentAccount.getLastName() + "\n"
-                        + "email: " + currentAccount.getEmail() + "\n"
-                        + "address: " + currentAccount.getAddress() + "\n"
-                        + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
-                        + "role: " + currentAccount.getRole()
-        );
-        while (true) {
-            command = scanner.nextLine();
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
             if (command.matches(regex = "edit (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
@@ -84,16 +81,85 @@ public class UserManager extends Menu {
                     default:
                         System.out.println("Invalid field");
                 }
-            } else if (command.equals("help")) {
-                System.out.println("login [username] \n" +
-                        "help \n" +
-                        "back");
-            } else if (command.equals("back")) {
-                break;
             } else {
                 System.out.println("invalid command");
             }
         }
+    }
+
+    public void manageUsers() {
+        String command;
+        String regex;
+        Matcher matcher;
+        Account currentAccount = controller.getCurrentAccount();
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+            if (command.matches(regex = "view (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.view(field);
+            }
+            else if (command.matches(regex = "delete user (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.deleteUser(field);
+            }
+            else if (command.equalsIgnoreCase("create manager profile")) {
+                String userName = scanner.nextLine();
+                Role manager = Role.MANAGER;
+                controller.createManager(userName,manager);
+            }
+        }
+    }
+
+    private Menu getViewPersonalInfo() {
+        return new Menu("view personal info",this) {
+
+            @Override
+            public void show() {
+                Account currentAccount = controller.getCurrentAccount();
+                System.out.println(
+                        "username: " + currentAccount.getUsername() + "\n"
+                                + "password: " + currentAccount.getPassword() + "\n"
+                                + "name: " + currentAccount.getName() + "\n"
+                                + "lastName: " + currentAccount.getLastName() + "\n"
+                                + "email: " + currentAccount.getEmail() + "\n"
+                                + "address: " + currentAccount.getAddress() + "\n"
+                                + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
+                                + "role: " + currentAccount.getRole()
+                );
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        viewPersonalInfo();
+                        this.show();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+
+                }
+            }
+        };
+    }
+
+    private Menu getManageUsers() {
+        return new Menu("manage users",this) {
+            @Override
+            public void show() {
+                System.out.println(controller.getAccounts());
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                }
+            }
+        };
     }
 }
 
