@@ -91,7 +91,6 @@ public class UserManager extends Menu {
         String command;
         String regex;
         Matcher matcher;
-        Account currentAccount = controller.getCurrentAccount();
         while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
             if (command.matches(regex = "view (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
@@ -147,6 +146,7 @@ public class UserManager extends Menu {
                     case 1:
                         viewPersonalInfo();
                         this.show();
+                        this.execute();
                         break;
                     case 2:
                         this.parentMenu.show();
@@ -169,6 +169,14 @@ public class UserManager extends Menu {
             public void execute() {
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
+                        manageUsers();
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
                 }
             }
         };
