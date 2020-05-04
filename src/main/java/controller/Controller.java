@@ -132,16 +132,16 @@ public class Controller {
 
     }
 
-    public void manageRequest() {
-
+    public List<Request> manageRequest() {
+        return Request.requests;
     }
 
     public void showDetails(String requestId) {
 
     }
 
-    public void manageCategories() {
-
+    public List<Category> manageCategories() {
+        return Category.categories;
     }
 
     public void editCategory(String category,String name,String description) {

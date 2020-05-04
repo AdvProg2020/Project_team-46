@@ -8,6 +8,7 @@ public abstract class Request {
     private Account account;
     private String requestId;
     private String details;
+    private boolean isAccepted = false;
 
     public Request(Account account, String requestId, String details) {
         requests.add(this);
