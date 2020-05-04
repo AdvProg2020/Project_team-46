@@ -4,19 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
-    public static List<Category> categories = new ArrayList<>();
     private String name;
     private String description;
     private List<Product> products;
 
-    public static Category getCategoryByName(String name) {
-        for (Category category : categories) {
-            if (category.name.equals(name)) {
-                return category;
-            }
-        }
-        return null;
-    }
 
     public Category(String name, String description, List<Product> products) {
         this.products = new ArrayList<>();

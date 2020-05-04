@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
-    public static List<Product> products = new ArrayList<>();
     private List<Account> buyers;
     private String productId;
     private ProductStatus productStatus;
@@ -18,14 +17,6 @@ public class Product {
     private List<Comment> comments;
     private List<Score> scores;
 
-    public static Product getProductById(String productId) {
-        for (Product product : products) {
-            if (product.productId.equals(productId)) {
-                return product;
-            }
-        }
-        return null;
-    }
 
     public Product(String productId, ProductStatus productStatus, String name, String brandOrCompany, Account seller,
                    boolean isAvailable, Category category, String description) {

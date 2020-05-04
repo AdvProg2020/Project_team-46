@@ -1,6 +1,7 @@
 package view.Menu;
 
 import model.Account;
+import model.Product;
 
 import java.util.regex.Matcher;
 
@@ -10,7 +11,7 @@ public class UserSeller extends Menu{
         super(name, parentMenu);
         submenus.put(1, new LoginMenu(this));
         submenus.put(2, getViewPersonalInfo());
-
+        submenus.put(3, getCompanyInfo());
     }
 
     @Override
@@ -20,7 +21,124 @@ public class UserSeller extends Menu{
 
     @Override
     public void execute() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (true) {
+            command = scanner.nextLine();
+            if (command.equals("1")) {
+                submenus.get(1).show();
+                submenus.get(1).execute();
+                break;
+            } else if (command.equals("2")) {
+                submenus.get(2).show();
+                submenus.get(2).execute();
+            } else if (command.equals("3")) {
+                submenus.get(3).show();
+                submenus.get(3).execute();
+            }
 
+        }
+    }
+
+    private Menu getManageProducts() {
+        return new Menu("manage products", this) {
+            @Override
+            public void show() {
+                System.out.println("1. view product" + "\n" +
+                        "2. view buyers \n" +
+                        "3. edit product \n" +
+                        "4. back");
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        viewProduct();
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        viewBuyers();
+                        this.show();
+                        this.execute();
+                        break;
+                    case 4:
+                        parentMenu.show();
+                        parentMenu.execute();
+                }
+            }
+        };
+    }
+
+    private void viewBuyers() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "view buyers (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String id = matcher.group(1);
+                if (controller.getProductById(id) != null) {
+                    for (Account buyer : controller.getProductById(id).getBuyers()) {
+                        System.out.println(buyer.getUsername());
+                    }
+                } else {
+                    System.out.println("invalid id");
+                }
+            } else if (command.equals("help")){
+                System.out.println("view [productId]" + "\n"
+                        + "help" + "\n"
+                        + "back");
+
+            } else {
+                System.out.println("invalid command");
+            }
+        }
+    }
+
+    private void viewProduct() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "view (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String id = matcher.group(1);
+                if (controller.getProductById(id) != null) {
+                    for (Product product : controller.getProducts()) {
+                        System.out.println(product.getName() + " " + product.getProductId());
+                    }
+                } else {
+                    System.out.println("invalid id");
+                }
+            } else if (command.equals("help")){
+                System.out.println("view [productId]" + "\n"
+                        + "help" + "\n"
+                        + "back");
+
+            } else {
+                System.out.println("invalid command");
+            }
+        }
+    }
+
+    private Menu getSalesHistory() {
+        return new Menu("view sales history", this) {
+            @Override
+            public void show() {
+                System.out.println(controller.getCurrentAccount().getSellingRecords().toString());
+                System.out.println("1. back");            }
+
+            @Override
+            public void execute() {
+                if (Integer.parseInt(scanner.nextLine()) == 1) {
+                    parentMenu.show();
+                    parentMenu.show();
+                }
+            }
+        };
     }
 
     private void editPersonalInfo() {
@@ -82,6 +200,24 @@ public class UserSeller extends Menu{
         }
     }
 
+    private Menu getCompanyInfo() {
+        return new Menu("view company information", this) {
+            @Override
+            public void show() {
+                System.out.println(controller.getCurrentAccount().getCompanyName() + "\n" +
+                        "1. back");
+            }
+
+            @Override
+            public void execute() {
+                if (Integer.parseInt(scanner.nextLine()) == 1) {
+                    parentMenu.show();
+                    parentMenu.show();
+                }
+            }
+        };
+    }
+
     private Menu getViewPersonalInfo() {
         return new Menu("view personal info", this) {
             @Override
@@ -96,7 +232,6 @@ public class UserSeller extends Menu{
                                 + "address: " + currentAccount.getAddress() + "\n"
                                 + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
                                 + "role: " + currentAccount.getRole() + "\n"
-                                + "company: " + currentAccount.getCompanyName()
                                 + "1. edit field" + "\n"
                                 + "2. back"
                 );

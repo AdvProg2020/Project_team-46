@@ -5,11 +5,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
+    private List<Category> categories;
+    private List<Product> products;
     private List<Account> accounts;
     private Account currentAccount ;
 
     public Controller() {
         accounts = new ArrayList<>();
+        products = new ArrayList<>();
+        categories = new ArrayList<>();
+    }
+
+    public  Category getCategoryByName(String name) {
+        for (Category category : categories) {
+            if (category.getName().equals(name)) {
+                return category;
+            }
+        }
+        return null;
+    }
+
+    public Product getProductById(String productId) {
+        for (Product product : products) {
+            if (product.getProductId().equals(productId)) {
+                return product;
+            }
+        }
+        return null;
     }
 
     public Account getAccountByUsername(String username) {
@@ -57,6 +79,10 @@ public class Controller {
         }
         currentAccount = new Account(username, role);
         accounts.add(currentAccount);
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 
     public void setPassword(String password) {
@@ -141,28 +167,21 @@ public class Controller {
     }
 
     public List<Category> manageCategories() {
-        return Category.categories;
+        return categories;
     }
 
     public void editCategory(String category,String name,String description) {
-        Category category1 = Category.getCategoryByName(category);
+        Category category1 = getCategoryByName(category);
         category1.setName(name);
         category1.setDescription(description);
     }
 
     public void addCategory(String name,String description) {
-        ArrayList<Product> list = new ArrayList<>();
-        Category.categories.add(new Category(name,description,list));
+        categories.add(new Category(name, description, new ArrayList<>()));
     }
 
     public void removeCategory(String category) {
-        Category category1 = Category.getCategoryByName(category);
-        for (Product product : category1.getProducts()) {
-            if(Product.products.contains(product)) {
-                Product.products.remove(product);
-            }
-        }
-        Category.categories.remove(category1);
+        categories.remove(getCategoryByName(category));
     }
 
     public String viewCompanyInformation() {
@@ -178,13 +197,11 @@ public class Controller {
     }
 
     public String viewProduct(String productId) {
-        Product product = Product.getProductById(productId);
-        return product.toString();
+        return getProductById(productId).toString();
     }
 
     public List<Account> viewBuyers(String productId) {
-        Product product = Product.getProductById(productId);
-        return product.getBuyers();
+        return getProductById(productId).getBuyers();
     }
 
     public void editProduct(String productId) {
@@ -200,7 +217,7 @@ public class Controller {
     }
 
     public List<Category> showCategories() {
-        return Category.categories;
+        return categories;
     }
 
     public List<Sale> viewOffs() {
@@ -270,7 +287,7 @@ public class Controller {
     }
 
     public void rateProduct(String productId, double score) {
-        Product product = Product.getProductById(productId);
+        Product product = getProductById(productId);
         Score score1 = new Score(currentAccount,score,product);
         product.setScores(score1);
     }
