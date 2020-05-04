@@ -69,7 +69,7 @@ public class UserSeller extends Menu{
         }
     }
 
-    private void viewPersonalInfo() {
+    private void editPersonalInfo() {
         String command;
         String regex;
         Matcher matcher;
@@ -140,7 +140,7 @@ public class UserSeller extends Menu{
             public void execute() {
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
-                        viewPersonalInfo();
+                        editPersonalInfo();
                         this.show();
                         this.execute();
                         break;
