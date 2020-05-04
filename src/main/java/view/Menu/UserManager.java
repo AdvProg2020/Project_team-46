@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 public class UserManager extends Menu {
     public UserManager(String name, Menu parentMenu) {
         super(name, parentMenu);
-        HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1, new LoginMenu(this));
         submenus.put(2, getViewPersonalInfo());
         submenus.put(3, getManageUsers());
@@ -60,12 +59,12 @@ public class UserManager extends Menu {
         }
     }
 
-    private void viewPersonalInfo() {
+    private void editPersonalInfo() {
         String command;
         String regex;
         Matcher matcher;
         Account currentAccount = controller.getCurrentAccount();
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches(regex = "edit (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
@@ -103,6 +102,11 @@ public class UserManager extends Menu {
                     default:
                         System.out.println("Invalid field");
                 }
+            } else if (command.equals("help")){
+                System.out.println("edit [field]" + "\n"
+                        + "help" + "\n"
+                        + "back");
+
             } else {
                 System.out.println("invalid command");
             }
@@ -113,7 +117,7 @@ public class UserManager extends Menu {
         String command;
         String regex;
         Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches(regex = "view (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
@@ -150,7 +154,7 @@ public class UserManager extends Menu {
         String command;
         String regex;
         Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches(regex = "remove (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
@@ -165,7 +169,7 @@ public class UserManager extends Menu {
         String command;
         String regex;
         Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches(regex = "view discount code (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
@@ -200,7 +204,9 @@ public class UserManager extends Menu {
                                 + "email: " + currentAccount.getEmail() + "\n"
                                 + "address: " + currentAccount.getAddress() + "\n"
                                 + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
-                                + "role: " + currentAccount.getRole()
+                                + "role: " + currentAccount.getRole() + "\n"
+                        + "1. edit field" + "\n"
+                        + "2. back"
                 );
             }
 
@@ -208,7 +214,7 @@ public class UserManager extends Menu {
             public void execute() {
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
-                        viewPersonalInfo();
+                        editPersonalInfo();
                         this.show();
                         this.execute();
                         break;
@@ -227,6 +233,9 @@ public class UserManager extends Menu {
             @Override
             public void show() {
                 System.out.println(controller.getAccounts());
+                System.out.println(
+                        "1. manage users" + "\n"
+                        + "2. back");
             }
 
             @Override
@@ -251,7 +260,11 @@ public class UserManager extends Menu {
             @Override
             public void show() {
                 System.out.println(Product.products);
+                System.out.println(
+                        "1. manage products" + "\n"
+                                + "2. back");
             }
+
 
             @Override
             public void execute() {
