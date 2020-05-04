@@ -16,6 +16,8 @@ public class UserManager extends Menu {
         submenus.put(4, getManageProducts());
         submenus.put(5, getCreateDiscountCode());
         submenus.put(6, getViewDiscountCode());
+        submenus.put(7, getManageRequest()); //needs to complete
+        submenus.put(8, getManageCategory());
         this.setSubmenus(submenus);
     }
 
@@ -52,6 +54,14 @@ public class UserManager extends Menu {
                 getViewDiscountCode().execute();
             }
             else if (command.equals("7")) {
+                getManageRequest().show();
+                getManageRequest().execute();
+            }
+            else if (command.equals("8")) {
+                getManageCategory().show();
+                getManageCategory().execute();
+            }
+            else if (command.equals("9")) {
                 parentMenu.show();
                 parentMenu.execute();
                 break;
@@ -184,6 +194,52 @@ public class UserManager extends Menu {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
                 controller.removeDiscountCode(field);
+            }
+            else
+                System.out.println("invalid command");
+        }
+    }
+
+    private void manageRequests() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+            if (command.matches(regex = "details (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.showDetails(field);
+            }
+            else if (command.matches(regex = "accept (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+
+            }
+        }
+    } //needs to complete
+
+    private void manageCategory() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+            if (command.matches(regex = "edit (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String newName = scanner.nextLine();
+                String newDescription = scanner.nextLine();
+                String field = matcher.group(1);
+                controller.editCategory(field,newName,newDescription);
+            }
+            else if (command.matches(regex = "add (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                String description = scanner.nextLine();
+                controller.addCategory(field,description);
+            }
+            else if (command.matches(regex = "remove (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.removeCategory(field);
             }
             else
                 System.out.println("invalid command");
@@ -326,6 +382,56 @@ public class UserManager extends Menu {
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
                         viewDiscountCodes();
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+                }
+            }
+        };
+    }
+
+    private Menu getManageRequest() {
+        return new Menu("Manage Request",this) {
+            @Override
+            public void show() {
+                System.out.println("Manage Request:");
+                System.out.println("1.details [requestId]\n" +
+                        "1.accept [requestId]\n" +
+                        "1.decline [requestId]\n" +
+                        "2.back");
+                System.out.println(controller.manageRequest());
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+
+                }
+            }
+        };
+    } //needs to complete request class
+
+    private Menu getManageCategory() {
+        return new Menu("Manage Category",this) {
+
+            @Override
+            public void show() {
+                System.out.println("Manage Categories:");
+                System.out.println("1.edit/add/remove\n" +
+                        "2.back");
+                System.out.println(controller.manageCategories());
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        manageCategory();
                         this.show();
                         this.execute();
                         break;
