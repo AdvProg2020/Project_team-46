@@ -11,6 +11,7 @@ public class UserBuyer extends Menu{
         HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1, new LoginMenu(this));
         submenus.put(2, getViewPersonalInfo());
+        submenus.put(3, getViewOrders());
         this.setSubmenus(submenus);
     }
 
@@ -87,6 +88,25 @@ public class UserBuyer extends Menu{
         }
     }
 
+    private void manageOrders() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "show order (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.showOrder(field);
+            }
+            else if (command.matches(regex = "rate (\\S+) (\\d)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field1 = matcher.group(1);
+                String field2 = matcher.group(2);
+                controller.rateProduct(field1,Integer.parseInt(field2));
+            }
+        }
+    }
+
     private Menu getViewPersonalInfo() {
         return new Menu("view personal info",this) {
 
@@ -120,6 +140,32 @@ public class UserBuyer extends Menu{
                         this.parentMenu.execute();
                         break;
 
+                }
+            }
+        };
+    }
+
+    private Menu getViewOrders() {
+        return new Menu("view orders",this) {
+            @Override
+            public void show() {
+                System.out.println("View Orders Menu:");
+                System.out.println("1.show order [orderId]/rate [productId] [1-5]");
+                System.out.println(controller.viewOrders());
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        manageOrders();
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
                 }
             }
         };
