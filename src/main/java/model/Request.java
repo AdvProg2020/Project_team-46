@@ -1,13 +1,16 @@
 package model;
 
+import controller.Controller;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Request {
     public static List<Request> requests = new ArrayList<>();
-    private Account account;
-    private String requestId;
-    private String details;
+    protected Account account;
+    protected String requestId;
+    protected String details;
+    protected static Controller controller;
     private boolean isAccepted = false;
 
     public Request(Account account, String requestId, String details) {
@@ -26,8 +29,14 @@ public abstract class Request {
         return null;
     }
 
+    public static void setController(Controller controller) {
+        Request.controller = controller;
+    }
+
     abstract public void acceptRequest();
 
-    abstract public void declineRequest();
+    public void declineRequest() {
+        Request.requests.remove(this);
+    }
 
 }

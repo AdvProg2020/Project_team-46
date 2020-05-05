@@ -315,7 +315,7 @@ public class UserManager extends Menu {
         return new Menu("manage products",this) {
             @Override
             public void show() {
-                System.out.println(Product.products);
+                System.out.println(controller.getProducts());
                 System.out.println(
                         "1. manage products" + "\n"
                                 + "2. back");

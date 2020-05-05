@@ -2,6 +2,7 @@ package view.Menu;
 
 import model.Account;
 import model.Product;
+import model.SellerRequest;
 
 import java.util.regex.Matcher;
 
@@ -12,18 +13,14 @@ public class UserSeller extends Menu{
         submenus.put(1, new LoginMenu(this));
         submenus.put(2, getViewPersonalInfo());
         submenus.put(3, getCompanyInfo());
+        submenus.put(4, getSalesHistory());
+        submenus.put(5, getManageProducts());
     }
 
-    @Override
-    public void show() {
-
-    }
 
     @Override
     public void execute() {
         String command;
-        String regex;
-        Matcher matcher;
         while (true) {
             command = scanner.nextLine();
             if (command.equals("1")) {
@@ -45,6 +42,9 @@ public class UserSeller extends Menu{
         return new Menu("manage products", this) {
             @Override
             public void show() {
+                for (Product product : controller.getProducts()) {
+                    System.out.println(product.getName() + " " + product.getProductId());
+                }
                 System.out.println("1. view product" + "\n" +
                         "2. view buyers \n" +
                         "3. edit product \n" +
@@ -64,12 +64,60 @@ public class UserSeller extends Menu{
                         this.show();
                         this.execute();
                         break;
+                    case 3:
+                        editProduct();
+                        this.show();
+                        this.execute();
                     case 4:
                         parentMenu.show();
                         parentMenu.execute();
                 }
             }
         };
+    }
+
+    private void editProduct() {
+        String command;
+        String regex;
+        Matcher matcher;
+        Product product;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "edit (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                product =  controller.getProductById(matcher.group(1));
+                if (product != null) {
+                    System.out.println("Enter a field: \n" +
+                            "1. name \n" +
+                            "2. brand or company \n" +
+                            "3. description \n"
+                    );
+                    switch (Integer.parseInt(scanner.nextLine())) {
+                        case 1:
+                            System.out.println("Enter new name:");
+                            new SellerRequest(controller.getCurrentAccount(), "1-1-" + product.getProductId(), scanner.nextLine());
+                            break;
+                        case 2:
+                            System.out.println("Enter new brand or company:");
+                            new SellerRequest(controller.getCurrentAccount(), "1-2-" + product.getProductId(), scanner.nextLine());
+                            break;
+
+                        case 3:
+                            System.out.println("Enter new description:");
+                            new SellerRequest(controller.getCurrentAccount(), "1-3-"+ product.getProductId(), scanner.nextLine());
+                            break;
+                    }
+                } else {
+                    System.out.println("invalid id");
+                }
+            } else if (command.equals("help")){
+                System.out.println("edit [productId]" + "\n"
+                        + "help" + "\n"
+                        + "back");
+
+            } else {
+                System.out.println("invalid command");
+            }
+        }
     }
 
     private void viewBuyers() {
@@ -88,7 +136,7 @@ public class UserSeller extends Menu{
                     System.out.println("invalid id");
                 }
             } else if (command.equals("help")){
-                System.out.println("view [productId]" + "\n"
+                System.out.println("view buyers [productId]" + "\n"
                         + "help" + "\n"
                         + "back");
 
@@ -107,9 +155,7 @@ public class UserSeller extends Menu{
                 (matcher = getMatcher(regex, command)).find();
                 String id = matcher.group(1);
                 if (controller.getProductById(id) != null) {
-                    for (Product product : controller.getProducts()) {
-                        System.out.println(product.getName() + " " + product.getProductId());
-                    }
+                    System.out.println(controller.getProductById(id).toString());
                 } else {
                     System.out.println("invalid id");
                 }
