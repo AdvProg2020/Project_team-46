@@ -19,14 +19,13 @@ public class Product {
 
 
     public Product(String productId, ProductStatus productStatus, String name, String brandOrCompany, Account seller,
-                   boolean isAvailable, Category category, String description) {
+                   boolean isAvailable, String description) {
         this.productId = productId;
         this.productStatus = productStatus;
         this.name = name;
         this.brandOrCompany = brandOrCompany;
         this.seller = seller;
         this.isAvailable = isAvailable;
-        this.category = category;
         this.description = description;
         buyers = new ArrayList<>();
         comments = new ArrayList<>();

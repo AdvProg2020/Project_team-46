@@ -10,13 +10,15 @@ public abstract class Request {
     protected Account account;
     protected String requestId;
     protected String details;
+    protected String[] inputs;
     protected static Controller controller;
     private boolean isAccepted = false;
 
-    public Request(Account account, String requestId, String details) {
+    public Request(Account account, String requestId, String[] inputs, String details) {
         requests.add(this);
         this.account = account;
         this.requestId = requestId;
+        this.inputs = inputs;
         this.details = details;
     }
 

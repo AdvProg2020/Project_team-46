@@ -4,6 +4,7 @@ import controller.Controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,7 +51,7 @@ public abstract class Menu {
 
     public Menu getMenuByName(String name) {
         for (Integer integer : submenus.keySet()) {
-            if(submenus.get(integer).getName().equalsIgnoreCase(name)) {
+            if (submenus.get(integer).getName().equalsIgnoreCase(name)) {
                 return submenus.get(integer);
             }
         }
@@ -92,5 +93,16 @@ public abstract class Menu {
 
     public static void setMainMenu(Menu mainMenu) {
         Menu.mainMenu = mainMenu;
+    }
+
+    public static String generateId() {
+        String chars = "1234567890";
+        StringBuilder string = new StringBuilder();
+        Random rnd = new Random();
+        while (string.length() < 10) {
+            int index = (int) (rnd.nextFloat() * chars.length());
+            string.append(chars.charAt(index));
+        }
+        return string.toString();
     }
 }

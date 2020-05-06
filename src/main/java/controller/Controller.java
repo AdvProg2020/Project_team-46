@@ -208,8 +208,11 @@ public class Controller {
 
     }
 
-    public void addProduct(String productId) {
-
+    public void addProduct(String[] inputs, Account seller) {
+        boolean isAvailable;
+        isAvailable = inputs[3].equals("1");
+        Product product = new Product(inputs[4], ProductStatus.UNDER_CONSTRUCTION, inputs[0], inputs[1], seller, isAvailable,  inputs[2]);
+        products.add(product);
     }
 
     public void removeProduct(String productId) {

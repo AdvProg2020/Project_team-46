@@ -1,26 +1,37 @@
 package model;
 
 public class SellerRequest extends Request {
-    public SellerRequest(Account account, String requestId, String details) {
-        super(account, requestId, details);
+    public SellerRequest(Account account, String requestId, String[] inputs, String details) {
+        super(account, requestId, inputs, details);
     }
 
     @Override
     public void acceptRequest() {
-        String[] request = requestId.split("-");
-        if (request[0].equals("1")) {
-            Product product = controller.getProductById(request[2]);
-            switch (request[1]) {
-                case "1":
-                    product.setName(details);
-                    break;
-                case "2":
-                    product.setBrandOrCompany(details);
-                    break;
-                case "3":
-                    product.setDescription(details);
-                    break;
-            }
+        Product product = controller.getProductById(inputs[0]);
+        switch (details) {
+            case "edit name of product":
+                product.setName(inputs[1]);
+                product.setProductStatus(ProductStatus.CONFIRMED);
+                break;
+            case "edit company of product":
+                product.setBrandOrCompany(inputs[1]);
+                product.setProductStatus(ProductStatus.CONFIRMED);
+                break;
+            case "edit description of product":
+                product.setDescription(inputs[1]);
+                product.setProductStatus(ProductStatus.CONFIRMED);
+                break;
+            case "edit availability of product":
+                if (inputs[1].equals("1")) {
+                    product.setAvailable(true);
+                    product.setProductStatus(ProductStatus.CONFIRMED);
+                } else if (inputs[1].equals("2")) {
+                    product.setProductStatus(ProductStatus.CONFIRMED);
+                    product.setAvailable(false);
+                }
+                break;
+            case "add product":
+                controller.addProduct(inputs, account);
         }
     }
 
