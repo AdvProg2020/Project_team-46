@@ -12,26 +12,37 @@ public class UserBuyer extends Menu{
         submenus.put(1, new LoginMenu(this));
         submenus.put(2, getViewPersonalInfo());
         submenus.put(3, getViewOrders());
+        submenus.put(4, getViewBalance());
+        submenus.put(5, getViewDiscountCodes());
         this.setSubmenus(submenus);
     }
 
     @Override
     public void execute() {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (true) {
-            command = scanner.nextLine();
-            if (command.equals("1")) {
+        String command = scanner.nextLine();
+        switch (command) {
+            case "1":
                 submenus.get(1).show();
                 submenus.get(1).execute();
                 break;
-            }
-            else if (command.equals("2")) {
+            case "2":
                 getViewPersonalInfo().show();
                 getViewPersonalInfo().execute();
-            }
+                break;
+            case "3":
+                getViewOrders().show();
+                getViewOrders().execute();
+                break;
+            case "4":
+                getViewBalance().show();
+                getViewBalance().execute();
+                break;
+            case "5":
+                getViewDiscountCodes().show();
+                getViewDiscountCodes().execute();
+                break;
         }
+
     }
 
     private void editPersonalInfo() {
@@ -166,6 +177,44 @@ public class UserBuyer extends Menu{
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                }
+            }
+        };
+    }
+
+    private Menu getViewBalance() {
+        return new Menu("View Balance",this) {
+            @Override
+            public void show() {
+                System.out.println("View Balance:");
+                System.out.println("1.back");
+                System.out.println(controller.getCurrentAccount().getBalance());
+            }
+
+            @Override
+            public void execute() {
+                if (Integer.parseInt(scanner.nextLine()) == 1) {
+                    this.parentMenu.show();
+                    this.parentMenu.execute();
+                }
+            }
+        };
+    }
+
+    private Menu getViewDiscountCodes() {
+        return new Menu("View Discount Code:",this) {
+            @Override
+            public void show() {
+                System.out.println("View Discount Code:");
+                System.out.println("1.back");
+                System.out.println(controller.getCurrentAccount().getDiscountCodes());
+            }
+
+            @Override
+            public void execute() {
+                if (Integer.parseInt(scanner.nextLine()) == 1) {
+                    this.parentMenu.show();
+                    this.parentMenu.execute();
                 }
             }
         };

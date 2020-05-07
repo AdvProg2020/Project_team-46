@@ -23,50 +23,46 @@ public class UserManager extends Menu {
 
     @Override
     public void execute() {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (true) {
-            command = scanner.nextLine();
-            if (command.equals("1")) {
+        String command = scanner.nextLine();
+        switch (command) {
+            case "1":
                 submenus.get(1).show();
                 submenus.get(1).execute();
                 break;
-            }
-            else if (command.equals("2")) {
+            case "2":
                 getViewPersonalInfo().show();
                 getViewPersonalInfo().execute();
-            }
-            else if (command.equals("3")) {
+                break;
+            case "3":
                 getManageUsers().show();
                 getManageUsers().execute();
-            }
-            else if (command.equals("4")) {
+                break;
+            case "4":
                 getManageProducts().show();
                 getManageProducts().execute();
-            }
-            else if (command.equals("5")) {
+                break;
+            case "5":
                 getCreateDiscountCode().show();
                 getCreateDiscountCode().execute();
-            }
-            else if (command.equals("6")) {
+                break;
+            case "6":
                 getViewDiscountCode().show();
                 getViewDiscountCode().execute();
-            }
-            else if (command.equals("7")) {
+                break;
+            case "7":
                 getManageRequest().show();
                 getManageRequest().execute();
-            }
-            else if (command.equals("8")) {
+                break;
+            case "8":
                 getManageCategory().show();
                 getManageCategory().execute();
-            }
-            else if (command.equals("9")) {
+                break;
+            case "9":
                 parentMenu.show();
                 parentMenu.execute();
                 break;
-            }
         }
+
     }
 
     private void editPersonalInfo() {
