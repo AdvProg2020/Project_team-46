@@ -315,10 +315,6 @@ public class Controller {
 
     }
 
-    public void goToSortingPage() {
-
-    }
-
     public void sort(String sortingMethod) {
 
     }
@@ -327,7 +323,7 @@ public class Controller {
 
     }
 
-    public void disableSort(String sortingMethod) {
+    public void disableSort() {
 
     }
 
