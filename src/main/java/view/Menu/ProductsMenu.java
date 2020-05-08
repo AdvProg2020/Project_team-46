@@ -3,40 +3,36 @@ package view.Menu;
 import java.util.HashMap;
 
 public class ProductsMenu extends Menu{
-    private GoodMenu goodMenu = new GoodMenu(this,null);
-    private LoginMenu loginMenu = new LoginMenu(this);
 
     public ProductsMenu(Menu parentMenu) {
         super("productsMenu", parentMenu);
-        submenus.put(1,goodMenu);
-        submenus.put(2,loginMenu);
+        HashMap<Integer, Menu> submenus = new HashMap<>();
+        submenus.put(1, new GoodMenu(this,null));
+        submenus.put(2, new LoginMenu(this));
         this.setSubmenus(submenus);
     }
 
     @Override
-    public void show() {
+    public void execute() {
 
     }
 
-    @Override
-    public void execute() {
-        String chosenMenu = scanner.nextLine().trim();
-        if(chosenMenu.matches("(?i)show\\s+product\\s+\\S+")) {
-            String[] splitString = chosenMenu.split("\\s+");
-            goodMenu.setGoodId(splitString[2]);
-            goodMenu.show();
-            goodMenu.execute();
-        }
-        else if(chosenMenu.matches("(?i)create\\s+account\\s+\\S+\\s+\\S+")) {
-            loginMenu.show();
-            loginMenu.execute();
-        }
-        else if(chosenMenu.matches("(?i)back")) {
-            if(this.parentMenu != null) {
-                Menu nextMenu = this.parentMenu;
-                nextMenu.show();
-                nextMenu.execute();
+    private Menu getViewCategories() {
+        return new Menu("view categories",this) {
+            @Override
+            public void show() {
+                System.out.println("view categories Menu:");
+                System.out.println("1.back");
+                System.out.println(controller.getCategories());
             }
-        }
+
+            @Override
+            public void execute() {
+                if (Integer.parseInt(scanner.nextLine()) == 1) {
+                    this.parentMenu.show();
+                    this.parentMenu.execute();
+                }
+            }
+        };
     }
 }

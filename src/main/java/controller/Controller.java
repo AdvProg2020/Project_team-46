@@ -335,43 +335,47 @@ public class Controller {
 
     }
 
-    public static void showProduct(String productId) {
+    public void showProduct(String productId) {
 
     }
 
-    public static void digest() {
+    public void digest() {
 
     }
 
-    public static void addToCart() {
+    public void addToCart() {
 
     }
 
-    public static void selectSeller() {
+    public void selectSeller() {
 
     }
 
-    public static void attributes() {
+    public void attributes() {
 
     }
 
-    public static void compare(String productId) {
+    public void compare(String productId) {
 
     }
 
-    public static void comments() {
+    public void comments() {
 
     }
 
-    public static void addComment(String title, String content) {
+    public void addComment(String title, String content) {
 
     }
 
-    public static void offs() {
+    public void offs() {
 
     }
 
     public List<Account> getAccounts() {
         return accounts;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
     }
 }

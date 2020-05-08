@@ -48,6 +48,14 @@ public class UserBuyer extends Menu{
                 getViewDiscountCodes().show();
                 getViewDiscountCodes().execute();
                 break;
+            case "6":
+                getViewCart().show();
+                getViewCart().execute();
+                break;
+            case "7":
+                this.parentMenu.show();
+                this.parentMenu.execute();
+                break;
         }
 
     }
