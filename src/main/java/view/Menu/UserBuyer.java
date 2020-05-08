@@ -1,11 +1,16 @@
 package view.Menu;
 
 import model.Account;
+import model.Product;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 
 public class UserBuyer extends Menu{
+
+    private final Menu currentMenu;
+
     public UserBuyer(String name, Menu parentMenu) {
         super(name, parentMenu);
         HashMap<Integer, Menu> submenus = new HashMap<>();
@@ -14,7 +19,9 @@ public class UserBuyer extends Menu{
         submenus.put(3, getViewOrders());
         submenus.put(4, getViewBalance());
         submenus.put(5, getViewDiscountCodes());
+        submenus.put(6, getViewCart());
         this.setSubmenus(submenus);
+        currentMenu = this;
     }
 
     @Override
@@ -107,7 +114,7 @@ public class UserBuyer extends Menu{
             if (command.matches(regex = "show order (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                controller.showOrder(field);
+                System.out.println(controller.showOrder(field));
             }
             else if (command.matches(regex = "rate (\\S+) (\\d)")) {
                 (matcher = getMatcher(regex, command)).find();
@@ -116,6 +123,168 @@ public class UserBuyer extends Menu{
                 controller.rateProduct(field1,Integer.parseInt(field2));
             }
         }
+    }
+
+    private Menu manageCart(Menu parentMenu) {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches("show products")) {
+                for (Product product : controller.viewCart().keySet()) {
+                    System.out.println(product.getName() + product.getProductId() + controller.viewCart().get(product));
+                }
+            }
+            else if (command.matches(regex = "view (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field1 = matcher.group(1);
+                controller.viewProductInCart(field1);
+            }
+            else if (command.matches(regex = "increase (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.increaseProduct(field);
+            }
+            else if (command.matches(regex = "decrease (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String field = matcher.group(1);
+                controller.decreaseProduct(field);
+            }
+            else if (command.matches("show total price")) {
+                System.out.println(controller.showTotalPrice());
+            }
+            else if (command.matches("purchase")) {
+                return new Menu("purchase Menu",parentMenu) {
+                    @Override
+                    public void show() {
+                        System.out.println("Purchase Menu:");
+                        System.out.println("1.Next(receiving info)\n" +
+                                "2.back");
+                    }
+
+                    @Override
+                    public void execute() {
+                        switch (Integer.parseInt(scanner.nextLine())) {
+                            case 1:
+                                Menu menu = receiveInfo(this);
+                                menu.show();
+                                menu.execute();
+                                this.show();
+                                this.execute();
+                                break;
+                            case 2:
+                                this.parentMenu.show();
+                                this.parentMenu.execute();
+                                break;
+                        }
+                    }
+                };
+            }
+        }
+        return null;
+    }
+
+    private void infoReceiver() {
+        System.out.println("Enter your Address:");
+        String address = scanner.nextLine();
+        System.out.println("Enter your phone Number:");
+        String phoneNumber = scanner.nextLine();
+    }
+
+    private Menu receiveInfo(Menu parentMenu) {
+        return new Menu("Receive Info Menu",parentMenu) {
+            @Override
+            public void show() {
+                System.out.println("Purchase->Receive Info Menu:");
+                System.out.println("1.Next(receiving Discount Code\n)" +
+                        "2.back");
+                infoReceiver();
+            }
+
+            @Override
+            public void execute() {
+               switch (Integer.parseInt(scanner.nextLine())) {
+                   case 1:
+                        Menu menu = discountConfirm(this);
+                        menu.show();
+                        menu.execute();
+                        this.show();
+                        this.execute();
+                        break;
+                   case 2:
+                       this.parentMenu.show();
+                       this.parentMenu.execute();
+                       break;
+               }
+            }
+        };
+    }
+
+    private Menu discountConfirm(Menu parentMenu) {
+        return new Menu("discountCode Confirmation",parentMenu) {
+            @Override
+            public void show() {
+                System.out.println("Purchase->Receive Info->Discount Code Confirmation Menu:");
+                System.out.println("1.Next(payment)\n" +
+                        "2.back");
+            }
+
+            @Override
+            public void execute() {
+                System.out.println("Enter your discount code:");
+                String discount = scanner.nextLine();
+                if (controller.discountCodeConfirmation(discount)) {
+                    System.out.println("Discount Code Confirmed.");
+                }
+                else
+                    System.out.println("Discount Code Denied.");
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        Menu menu = payment(this);
+                        menu.show();
+                        menu.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+                }
+            }
+        };
+    }
+
+    private Menu payment(Menu parentMenu) {
+        return new Menu("paymentMenu",parentMenu) {
+            @Override
+            public void show() {
+                System.out.println("Purchase->Receive Info->Discount Code Confirmation->Payment Menu:");
+                System.out.println("[Product]-----[Number]");
+                for (Product product : controller.viewCart().keySet()) {
+                    System.out.println(product.getName() + "-----" + controller.viewCart().get(product));
+                }
+                System.out.println("---------------------");
+                System.out.println("Total Price:" + controller.showTotalPrice());
+                System.out.println("Are you sure to pay" + controller.showTotalPrice() + "?");
+                System.out.println("1.YES\n" +
+                        "2.back");
+            }
+
+            @Override
+            public void execute() {
+                System.out.println("Are you sure to pay" + controller.showTotalPrice() + "?");
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        controller.purchase();
+                        currentMenu.show();
+                        currentMenu.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+                }
+            }
+        };
     }
 
     private Menu getViewPersonalInfo() {
@@ -188,7 +357,7 @@ public class UserBuyer extends Menu{
             public void show() {
                 System.out.println("View Balance:");
                 System.out.println("1.back");
-                System.out.println(controller.getCurrentAccount().getBalance());
+                System.out.println(controller.viewBalance());
             }
 
             @Override
@@ -215,6 +384,38 @@ public class UserBuyer extends Menu{
                 if (Integer.parseInt(scanner.nextLine()) == 1) {
                     this.parentMenu.show();
                     this.parentMenu.execute();
+                }
+            }
+        };
+    }
+
+    private Menu getViewCart() {
+        return new Menu("View Cart",this) {
+
+            @Override
+            public void show() {
+                System.out.println("View Cart:");
+                System.out.println("1.show products/view [productId]/increase [productId]/decrease [productId]" +
+                        "show price/purchase\n" +
+                        "2.back");
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        Menu menu = manageCart(this);
+                        if (menu != null) {
+                            Objects.requireNonNull(menu).show();
+                            Objects.requireNonNull(menu).execute();
+                        }
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
                 }
             }
         };

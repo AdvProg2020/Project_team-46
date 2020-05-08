@@ -3,6 +3,7 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Controller {
     private List<Category> categories;
@@ -137,7 +138,6 @@ public class Controller {
         return new Account(userName,Role.MANAGER);
     }
 
-
     public void createDiscountCode() {
 
     }
@@ -244,12 +244,8 @@ public class Controller {
         return currentAccount.getBalance();
     }
 
-    public void viewCart() {
-
-    }
-
-    public void viewProductsInCart() {
-
+    public Map<Product, Integer> viewCart() {
+        return currentAccount.getCart();
     }
 
     public void viewProductInCart(String productId) {
@@ -264,12 +260,16 @@ public class Controller {
 
     }
 
-    public void showTotalPrice() {
-
+    public double showTotalPrice() {
+        return 0;
     }
 
     public void purchase() {
 
+    }
+
+    public boolean discountCodeConfirmation(String code) {
+        return true;
     }
 
     public void confirmPurchase() {
