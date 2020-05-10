@@ -1,6 +1,5 @@
 package view.Menu;
 
-import controller.*;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -12,6 +11,9 @@ public class GoodMenu extends Menu {
         HashMap<Integer, Menu> submenus = new HashMap<>();
         submenus.put(1, new LoginMenu(this));
         submenus.put(2, getDigest());
+        submenus.put(3, getAttributes());
+        submenus.put(4, getCompareProducts());
+        submenus.put(5, getComments());
         this.setSubmenus(submenus);
         this.goodId = goodId;
     }
@@ -27,6 +29,22 @@ public class GoodMenu extends Menu {
             case "2":
                 getDigest().show();
                 getDigest().execute();
+                break;
+            case "3":
+                getAttributes().show();
+                getAttributes().execute();
+                break;
+            case "4":
+                getCompareProducts().show();
+                getCompareProducts().execute();
+                break;
+            case "5":
+                getComments().show();
+                getComments().execute();
+                break;
+            case "6":
+                this.parentMenu.show();
+                this.parentMenu.execute();
                 break;
         }
     }
@@ -80,12 +98,66 @@ public class GoodMenu extends Menu {
         return new Menu("attributes menu",this) {
             @Override
             public void show() {
-                super.show();
+                System.out.println("Attributes Menu:");
+                System.out.println("1.back");
+                System.out.println(controller.attributes());
             }
 
             @Override
             public void execute() {
-                super.execute();
+                if (Integer.parseInt(scanner.nextLine()) == 1) {
+                    this.parentMenu.show();
+                    this.parentMenu.execute();
+                }
+            }
+        };
+    }
+
+    private Menu getCompareProducts() {
+        return new Menu("Compare Menu:",this) {
+            @Override
+            public void show() {
+                System.out.println("Compare Menu:");
+                System.out.println("1.back");
+                String input = scanner.nextLine();
+                System.out.println(controller.compare(input));
+            }
+
+            @Override
+            public void execute() {
+                if (Integer.parseInt(scanner.nextLine()) == 1) {
+                    this.parentMenu.show();
+                    this.parentMenu.execute();
+                }
+            }
+        };
+    }
+
+    private Menu getComments() {
+        return new Menu("Comments",this) {
+            @Override
+            public void show() {
+                System.out.println("Comments Menu:");
+                System.out.println("1.Add comment\n" +
+                        "2.back");
+                System.out.println(controller.comments());
+            }
+
+            @Override
+            public void execute() {
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        String title = scanner.nextLine();
+                        String content = scanner.nextLine();
+                        controller.addComment(title,content);
+                        this.show();
+                        this.execute();
+                        break;
+                    case 2:
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+                }
             }
         };
     }

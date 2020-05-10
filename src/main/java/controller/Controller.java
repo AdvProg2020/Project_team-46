@@ -348,16 +348,16 @@ public class Controller {
 
     }
 
-    public void attributes() {
-
+    public String attributes() {
+        return "test";
     }
 
-    public void compare(String productId) {
-
+    public String compare(String productId) {
+        return "test";
     }
 
-    public void comments() {
-
+    public String comments() {
+        return "test";
     }
 
     public void addComment(String title, String content) {
