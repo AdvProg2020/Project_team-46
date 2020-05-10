@@ -5,10 +5,12 @@ import java.util.regex.Matcher;
 
 public class ProductsMenu extends Menu{
 
+    private GoodMenu goodMenu = new GoodMenu(this,null);
+
     public ProductsMenu(Menu parentMenu) {
         super("productsMenu", parentMenu);
         HashMap<Integer, Menu> submenus = new HashMap<>();
-        submenus.put(1, new GoodMenu(this,null));
+        submenus.put(1, goodMenu);
         submenus.put(2, new LoginMenu(this));
         submenus.put(3, getViewCategories());
         submenus.put(4, getFiltering());
@@ -22,8 +24,11 @@ public class ProductsMenu extends Menu{
         String command = scanner.nextLine();
         switch (command) {
             case "1":
-                submenus.get(1).show();
-                submenus.get(1).execute();
+                System.out.println("Enter product Id:");
+                String goodId = scanner.nextLine();
+                goodMenu.setGoodId(goodId);
+                goodMenu.show();
+                goodMenu.execute();
                 break;
             case "2":
                 submenus.get(2).show();
@@ -42,6 +47,10 @@ public class ProductsMenu extends Menu{
                 getSorting().execute();
                 break;
             case "6":
+                getShowProducts().show();
+                getShowProducts().execute();
+                break;
+            case "7":
                 this.parentMenu.show();
                 this.parentMenu.execute();
                 break;

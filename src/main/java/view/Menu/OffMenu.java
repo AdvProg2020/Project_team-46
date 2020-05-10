@@ -5,41 +5,37 @@ import controller.*;
 import java.util.HashMap;
 
 public class OffMenu extends Menu {
-    private GoodMenu sub = new GoodMenu(this,null);
-    private LoginMenu loginMenu = new LoginMenu(this);
+
+    private GoodMenu goodMenu = new GoodMenu(this,null);
 
     public OffMenu(Menu parentMenu) {
         super("OffMenu", parentMenu);
-        submenus.put(1,sub);
-        submenus.put(2,loginMenu);
+        HashMap<Integer, Menu> submenus = new HashMap<>();
+        submenus.put(1, goodMenu);
+        submenus.put(2, new LoginMenu(this));
         this.setSubmenus(submenus);
     }
 
     @Override
-    public void show() {
-        Controller.offs();
+    public void execute() {
+        System.out.println(controller.offs());
+        switch (Integer.parseInt(scanner.nextLine())) {
+            case 1:
+                System.out.println("Enter product Id:");
+                String goodId = scanner.nextLine();
+                goodMenu.setGoodId(goodId);
+                goodMenu.show();
+                goodMenu.execute();
+                break;
+            case 2:
+                submenus.get(2).show();
+                submenus.get(2).execute();
+                break;
+            case 3:
+                this.parentMenu.show();
+                this.parentMenu.execute();
+                break;
+        }
     }
 
-    @Override
-    public void execute() {
-        String chosenMenu = scanner.nextLine().trim();
-        if(chosenMenu.matches("(?i)show\\s+product\\s+\\S+")) {
-            String[] splitString = chosenMenu.split("\\s+");
-            sub.setGoodId(splitString[2]);
-            sub.show();
-            sub.execute();
-        }
-        else if(chosenMenu.matches("(?i)create\\s+account\\s+\\S+\\s+\\S+")) {
-            String[] splitString = chosenMenu.split("\\s");
-            loginMenu.show();
-            loginMenu.execute();
-        }
-        else if(chosenMenu.matches("(?i)back")) {
-            if(this.parentMenu != null) {
-                Menu nextMenu = this.parentMenu;
-                nextMenu.show();
-                nextMenu.execute();
-            }
-        }
-    }
 }
