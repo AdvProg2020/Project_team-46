@@ -331,19 +331,20 @@ public class Controller {
 
     }
 
-    public void showProduct(String productId) {
+    public String digest(String productId) {
+        for (Product product : products) {
+            if (product.getProductId().equals(productId)) {
+                return product.toString();
+            }
+        }
+        return null;
+    }
+
+    public void addToCart(String productId) {
 
     }
 
-    public void digest() {
-
-    }
-
-    public void addToCart() {
-
-    }
-
-    public void selectSeller() {
+    public void selectSeller(String userName) {
 
     }
 

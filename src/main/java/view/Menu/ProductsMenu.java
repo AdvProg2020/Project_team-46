@@ -41,6 +41,10 @@ public class ProductsMenu extends Menu{
                 getSorting().show();
                 getSorting().execute();
                 break;
+            case "6":
+                this.parentMenu.show();
+                this.parentMenu.execute();
+                break;
         }
     }
 
@@ -189,20 +193,4 @@ public class ProductsMenu extends Menu{
         };
     }
 
-    /*
-    private Menu getShowGood() {
-        return new Menu("") {
-            @Override
-            public void show() {
-                super.show();
-            }
-
-            @Override
-            public void execute() {
-                super.execute();
-            }
-        }
-    }
-
-     */
 }
