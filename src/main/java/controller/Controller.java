@@ -17,7 +17,7 @@ public class Controller {
         categories = new ArrayList<>();
     }
 
-    public  Category getCategoryByName(String name) {
+    public Category getCategoryByName(String name) {
         for (Category category : categories) {
             if (category.getName().equals(name)) {
                 return category;
@@ -112,18 +112,6 @@ public class Controller {
 
     public void setCompanyName(String companyName) {
         currentAccount.setCompanyName(companyName);
-    }
-
-    public void login(String username, String password) {
-
-    }
-
-    public void edit(String field) {
-
-    }
-
-    public void viewPersonalInfo() {
-
     }
 
     public void view(String user) {
@@ -329,7 +317,7 @@ public class Controller {
 
     public void showProducts() {
 
-    }
+    }//needs to complete
 
     public String digest(String productId) {
         for (Product product : products) {
@@ -341,31 +329,78 @@ public class Controller {
     }
 
     public void addToCart(String productId) {
-
+        if (currentAccount.getRole() == Role.CUSTOMER) {
+            Map<Product,Integer> cart = currentAccount.getCart();
+            cart.put(getProductById(productId),1);
+            currentAccount.setCart(cart);
+        }
+        else
+            System.out.println("invalid command");
     }
 
     public void selectSeller(String userName) {
 
+    } //needs to complete
+
+    public ArrayList<String> attributes(String productId) {
+        ArrayList<String> attributes = new ArrayList<>();
+        Product product = getProductById(productId);
+        attributes.add(product.getName());
+        attributes.add(product.getBrandOrCompany());
+        attributes.add(product.getProductId());
+        attributes.add(product.getDescription());
+        attributes.add(product.getCategory().getName());
+        attributes.add(Integer.toString(product.getAmount()));
+        attributes.add(Double.toString(product.getAverageScore()));
+        attributes.add(product.getSeller().getUsername());
+        attributes.add(Double.toString(product.getValue()));
+        return attributes;
     }
 
-    public String attributes() {
-        return "test";
+    public ArrayList<String> compare(String firstId,String secondId) {
+        ArrayList<String> compare = new ArrayList<>();
+        Product product1 = getProductById(firstId);
+        Product product2 = getProductById(secondId);
+        if (product1.getCategory().equals(product2.getCategory())) {
+            compare.add(product1.getName() + "    " + product2.getName());
+            compare.add(product1.getBrandOrCompany() + "    " + product2.getBrandOrCompany());
+            compare.add(product1.getProductId() + "    " + product2.getProductId());
+            compare.add(product1.getDescription() + "    " + product2.getDescription());
+            compare.add(product1.getCategory().getName() + "    " + product2.getCategory().getName());
+            compare.add(product1.getAverageScore() + "    " + product2.getAverageScore());
+            compare.add(product1.getAmount() + "    " + product2.getAmount());
+            compare.add(product1.getSeller().getUsername() + "    " + product2.getSeller().getUsername());
+            compare.add(product1.getValue() + "    " + product2.getValue());
+        }
+        else
+            System.out.println("Products should be in one category to compare!");
+
+        return compare;
     }
 
-    public String compare(String productId) {
-        return "test";
+    public List<Comment> comments(String goodId) {
+        Product product  = getProductById(goodId);
+        return product.getComments();
     }
 
-    public String comments() {
-        return "test";
-    }
+    public void addComment(String title, String content,String goodId) {
+        Product product = getProductById(goodId);
+        boolean hasBought = product.hasBought(currentAccount.getUsername());
+        Comment comment = new Comment(currentAccount, product, title, content, hasBought,CommentStatus.PENDING_APPROVAL);
 
-    public void addComment(String title, String content) {
+    } //needs to complete
 
-    }
-
-    public String offs() {
-        return "test";
+    public ArrayList<String> offs() {
+        ArrayList<String> offs = new ArrayList<>();
+        for (Sale sale : Sale.sales) {
+            for (Product product : sale.getProducts()) {
+                double number = product.getValue() - (sale.getDiscountAmount() / 100.0)*product.getValue();
+                String output = product.getName()+ "   " + "   " + product.getProductId() + "   " +
+                        product.getValue() + "   " + number;
+                offs.add(output);
+            }
+        }
+        return offs;
     }
 
     public List<Account> getAccounts() {

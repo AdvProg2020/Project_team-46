@@ -1,5 +1,7 @@
 package view.Menu;
 
+import model.Comment;
+
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -100,7 +102,9 @@ public class GoodMenu extends Menu {
             public void show() {
                 System.out.println("Attributes Menu:");
                 System.out.println("1.back");
-                System.out.println(controller.attributes());
+                for (String attribute : controller.attributes(goodId)) {
+                    System.out.println(attribute);
+                }
             }
 
             @Override
@@ -120,7 +124,9 @@ public class GoodMenu extends Menu {
                 System.out.println("Compare Menu:");
                 System.out.println("1.back");
                 String input = scanner.nextLine();
-                System.out.println(controller.compare(input));
+                for (String productAttribute : controller.compare(goodId, input)) {
+                    System.out.println(productAttribute);
+                }
             }
 
             @Override
@@ -140,7 +146,11 @@ public class GoodMenu extends Menu {
                 System.out.println("Comments Menu:");
                 System.out.println("1.Add comment\n" +
                         "2.back");
-                System.out.println(controller.comments());
+                for (Comment comment : controller.comments(goodId)) {
+                    System.out.println(comment.getUser().getUsername());
+                    System.out.println(comment.getTitle());
+                    System.out.println(comment.getBody());
+                }
             }
 
             @Override
@@ -149,7 +159,7 @@ public class GoodMenu extends Menu {
                     case 1:
                         String title = scanner.nextLine();
                         String content = scanner.nextLine();
-                        controller.addComment(title,content);
+                        controller.addComment(title,content,goodId);
                         this.show();
                         this.execute();
                         break;

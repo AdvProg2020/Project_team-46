@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
-    private List<Account> buyers;
+    private List<Account> buyers = new ArrayList<>();
     private String productId;
     private ProductStatus productStatus;
+    private long value;
+    private int amount;
     private String name;
     private String brandOrCompany;
     private Account seller;
@@ -14,23 +16,20 @@ public class Product {
     private Category category;
     private String description;
     private double averageScore;
-    private List<Comment> comments;
-    private List<Score> scores;
+    private List<Comment> comments = new ArrayList<>();
+    private List<Score> scores = new ArrayList<>();
 
 
-    public Product(String productId, ProductStatus productStatus, String name, String brandOrCompany, Account seller,
-                   boolean isAvailable, String description) {
+    public Product(String productId, ProductStatus productStatus, long value, int amount,
+                   String name, String brandOrCompany, Account seller, Category category) {
         this.productId = productId;
         this.productStatus = productStatus;
+        this.value = value;
+        this.amount = amount;
         this.name = name;
         this.brandOrCompany = brandOrCompany;
         this.seller = seller;
-        this.isAvailable = isAvailable;
-        this.description = description;
-        buyers = new ArrayList<>();
-        comments = new ArrayList<>();
-        scores = new ArrayList<>();
-        this.averageScore = 0;
+        this.category = category;
     }
 
     public static void removeProductById(String id) {
@@ -131,6 +130,31 @@ public class Product {
 
     public void setScores(Score score) {
         scores.add(score);
+    }
+
+    public long getValue() {
+        return value;
+    }
+
+    public void setValue(long value) {
+        this.value = value;
+    }
+
+    public boolean hasBought(String userName) {
+        for (Account buyer : buyers) {
+            if (buyer.getUsername().equals(userName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @Override
