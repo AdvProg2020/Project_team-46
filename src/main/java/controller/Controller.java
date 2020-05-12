@@ -1,19 +1,20 @@
 package controller;
 import model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Controller {
     private List<Category> categories;
     private List<Product> products;
     private List<Account> accounts;
     private Account currentAccount ;
+    private String currentSortingMethod = "by number of views";
+    private ArrayList<String> currentFilter;
 
     public Controller() {
         accounts = new ArrayList<>();
         products = new ArrayList<>();
+        currentFilter = new ArrayList<>();
         categories = new ArrayList<>();
     }
 
@@ -287,37 +288,67 @@ public class Controller {
 
     }
 
-    public void showAvailableFilters() {
-
-    }
-
     public void filter(String filter) {
-
+        currentFilter.add(filter);
     }
 
     public void showCurrentFilters() {
-
+        for (String filter : currentFilter) {
+            System.out.println(filter);
+        }
     }
 
     public void disableFilter(String filter) {
-
+        currentFilter.remove(filter);
     }
 
-    public void sort(String sortingMethod) {
-
+    public List<Product> sort(String sortingMethod) {
+        if ("by Date".equals(sortingMethod)) {
+            for (int i = 0; i < products.size(); i++) {
+                for (int j = i + 1; j < products.size(); j++) {
+                    if (products.get(i).getDateModified().compareTo(products.get(j).getDateModified()) < 0) {
+                        Collections.swap(products, i, j);
+                    }
+                }
+            }
+            currentSortingMethod = "by Date";
+        } else if ("by score".equals(sortingMethod)) {
+            for (int i = 0; i < products.size(); i++) {
+                for (int j = i + 1; j < products.size(); j++) {
+                    if (products.get(i).getAverageScore() < products.get(j).getAverageScore()) {
+                        Collections.swap(products, i, j);
+                    }
+                }
+            }
+            currentSortingMethod = "by score";
+        } else if ("by number of views".equals(sortingMethod)) {
+            for (int i = 0; i < products.size(); i++) {
+                for (int j = i + 1; j < products.size(); j++) {
+                    if (products.get(i).getNumberOfViews() < products.get(j).getNumberOfViews()) {
+                        Collections.swap(products, i, j);
+                    }
+                }
+            }
+            currentSortingMethod = "by number of views";
+        }
+        return products;
     }
 
-    public void showCurrentSort() {
-
+    public String showCurrentSort() {
+        return currentSortingMethod;
     }
 
-    public void disableSort() {
-
+    public List<Product> disableSort() {
+        for (int i=0;i<products.size();i++) {
+            for (int j=i+1;j<products.size();j++) {
+                if (products.get(i).getNumberOfViews() < products.get(j).getNumberOfViews()) {
+                    Collections.swap(products,i,j);
+                }
+            }
+        }
+        currentSortingMethod = "by number of views";
+        return products;
     }
-
-    public void showProducts() {
-
-    }//needs to complete
 
     public String digest(String productId) {
         for (Product product : products) {
@@ -409,5 +440,9 @@ public class Controller {
 
     public List<Category> getCategories() {
         return categories;
+    }
+
+    public ArrayList<String> getCurrentFilter() {
+        return currentFilter;
     }
 }

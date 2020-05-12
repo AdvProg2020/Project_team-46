@@ -1,11 +1,17 @@
 package view.Menu;
 
+import model.Product;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 
 public class ProductsMenu extends Menu{
 
     private GoodMenu goodMenu = new GoodMenu(this,null);
+    private List<Product> listToSort;
+    private List<String> filters;
 
     public ProductsMenu(Menu parentMenu) {
         super("productsMenu", parentMenu);
@@ -16,6 +22,8 @@ public class ProductsMenu extends Menu{
         submenus.put(4, getFiltering());
         submenus.put(5, getSorting());
         submenus.put(6, getShowProducts());
+        listToSort = controller.disableSort();
+        filters = controller.getCurrentFilter();
         this.setSubmenus(submenus);
     }
 
@@ -27,6 +35,8 @@ public class ProductsMenu extends Menu{
                 System.out.println("Enter product Id:");
                 String goodId = scanner.nextLine();
                 goodMenu.setGoodId(goodId);
+                Product product = controller.getProductById(goodId);
+                product.setNumberOfViews(product.getNumberOfViews() + 1);
                 goodMenu.show();
                 goodMenu.execute();
                 break;
@@ -87,7 +97,9 @@ public class ProductsMenu extends Menu{
                 controller.filter(field);
             }
             else if (command.matches("show available filters")) {
-                controller.showAvailableFilters();
+                System.out.println("available filters:\n" +
+                        "1.by category\n" +
+                        "2.by name");
             }
             else if (command.matches("current filters")) {
                 controller.showCurrentFilters();
@@ -110,7 +122,7 @@ public class ProductsMenu extends Menu{
             if (command.matches(regex = "sort (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                controller.sort(field);
+                listToSort = controller.sort(field);
             }
             else if (command.matches("show available sorts")) {
                 System.out.println("sorting by:\n" +
@@ -119,10 +131,10 @@ public class ProductsMenu extends Menu{
                         "3.number of views");
             }
             else if (command.matches("current sort")) {
-                controller.showCurrentSort();
+                System.out.println(controller.showCurrentSort());
             }
             else if (command.matches("disable sort")) {
-                controller.disableSort();
+                listToSort = controller.disableSort();
             }
         }
     }
@@ -189,7 +201,9 @@ public class ProductsMenu extends Menu{
             public void show() {
                 System.out.println("Show Products Menu:");
                 System.out.println("1.back");
-                controller.showProducts();
+                for (Product product : listToSort) {
+                    System.out.println(product.getName() + "    " + product.getProductId());
+                }
             }
 
             @Override

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Product {
@@ -18,6 +19,8 @@ public class Product {
     private double averageScore;
     private List<Comment> comments = new ArrayList<>();
     private List<Score> scores = new ArrayList<>();
+    private int numberOfViews = 0;
+    private Date dateModified;
 
 
     public Product(String productId, ProductStatus productStatus, long value, int amount,
@@ -30,6 +33,7 @@ public class Product {
         this.brandOrCompany = brandOrCompany;
         this.seller = seller;
         this.category = category;
+        this.dateModified = new Date();
     }
 
     public static void removeProductById(String id) {
@@ -155,6 +159,22 @@ public class Product {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public int getNumberOfViews() {
+        return numberOfViews;
+    }
+
+    public Date getDateModified() {
+        return dateModified;
+    }
+
+    public void setNumberOfViews(int numberOfViews) {
+        this.numberOfViews = numberOfViews;
+    }
+
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
     }
 
     @Override
