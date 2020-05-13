@@ -9,7 +9,6 @@ public class Controller {
     private List<Account> accounts;
     private Account currentAccount ;
     private String currentSortingMethod = "by number of views";
-    //private ArrayList<String> currentFilter;
     public boolean hasCategoryFilter = false;
     public boolean hasNameFilter = false;
     public String filteredCategory;
@@ -18,7 +17,6 @@ public class Controller {
     public Controller() {
         accounts = new ArrayList<>();
         products = new ArrayList<>();
-        //currentFilter = new ArrayList<>();
         categories = new ArrayList<>();
     }
 
@@ -44,6 +42,15 @@ public class Controller {
         for (Account account : accounts) {
             if (account.getUsername().equals(username)) {
                 return account;
+            }
+        }
+        return null;
+    }
+
+    public Discount getDiscountByCode(String code) {
+        for (Discount discount : Discount.discounts) {
+            if (discount.getCode().equals(code)) {
+                return discount;
             }
         }
         return null;
@@ -204,7 +211,8 @@ public class Controller {
     public void addProduct(String[] inputs, Account seller) {
         boolean isAvailable;
         isAvailable = inputs[3].equals("1");
-        Product product = new Product(inputs[4], ProductStatus.UNDER_CONSTRUCTION, inputs[0], inputs[1], seller, isAvailable,  inputs[2]);
+        Product product = new Product(inputs[4], ProductStatus.UNDER_CONSTRUCTION, inputs[0],
+                inputs[1], seller, isAvailable,  inputs[2]);
         products.add(product);
     }
 
@@ -241,28 +249,57 @@ public class Controller {
         return currentAccount.getCart();
     }
 
-    public void viewProductInCart(String productId) {
-
-    }
-
     public void increaseProduct(String productId) {
-
+        if (getProductById(productId) != null) {
+            Product product = getProductById(productId);
+            Map<Product,Integer> cart = currentAccount.getCart();
+            if (currentAccount.getCart().containsKey(product)) {
+                if (product.getAmount() > 0) {
+                    int amount = currentAccount.getCart().get(product);
+                    cart.replace(product,amount,amount+1);
+                    currentAccount.setCart(cart);
+                }
+                else
+                    System.out.println("Sorry. not enough amount of this product.\n" +
+                            "Please try later");
+            }
+            else
+                System.out.println("this product is not in the cart yet");
+        }
+        else
+            System.out.println("product Id is invalid");
     }
 
     public void decreaseProduct(String productId) {
-
+        if (getProductById(productId) != null) {
+            Product product = getProductById(productId);
+            Map<Product,Integer> cart = currentAccount.getCart();
+            if (currentAccount.getCart().containsKey(product)) {
+                int amount = currentAccount.getCart().get(product);
+                cart.replace(product,amount,amount-1);
+                currentAccount.setCart(cart);
+            }
+            else
+                System.out.println("this product is not in the cart yet");
+        }
+        else
+            System.out.println("product Id is invalid");
     }
 
     public double showTotalPrice() {
         return 0;
-    }
+    } //needs to complete
 
-    public void purchase() {
+    public void purchase(String address,String phoneNumber,Discount discount) {
 
-    }
+    } //needs to complete
 
     public boolean discountCodeConfirmation(String code) {
-        return true;
+        if (getDiscountByCode(code) != null) {
+            Discount discount = getDiscountByCode(code);
+            return discount.getIncludedPeople().contains(currentAccount);
+        }
+        return false;
     }
 
     public void confirmPurchase() {

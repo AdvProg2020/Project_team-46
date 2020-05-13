@@ -1,6 +1,7 @@
 package view.Menu;
 
 import model.Account;
+import model.Discount;
 import model.Product;
 
 import java.util.HashMap;
@@ -146,7 +147,10 @@ public class UserBuyer extends Menu{
             else if (command.matches(regex = "view (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field1 = matcher.group(1);
-                controller.viewProductInCart(field1);
+                GoodMenu goodMenu = new GoodMenu(parentMenu,null);
+                goodMenu.setGoodId(field1);
+                goodMenu.show();
+                goodMenu.execute();
             }
             else if (command.matches(regex = "increase (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
@@ -192,13 +196,6 @@ public class UserBuyer extends Menu{
         return null;
     }
 
-    private void infoReceiver() {
-        System.out.println("Enter your Address:");
-        String address = scanner.nextLine();
-        System.out.println("Enter your phone Number:");
-        String phoneNumber = scanner.nextLine();
-    }
-
     private Menu receiveInfo(Menu parentMenu) {
         return new Menu("Receive Info Menu",parentMenu) {
             @Override
@@ -206,20 +203,23 @@ public class UserBuyer extends Menu{
                 System.out.println("Purchase->Receive Info Menu:");
                 System.out.println("1.Next(receiving Discount Code\n)" +
                         "2.back");
-                infoReceiver();
             }
 
             @Override
             public void execute() {
-               switch (Integer.parseInt(scanner.nextLine())) {
-                   case 1:
-                        Menu menu = discountConfirm(this);
+                System.out.println("Enter your Address:");
+                String address = scanner.nextLine();
+                System.out.println("Enter your phone Number:");
+                String phoneNumber = scanner.nextLine();
+                switch (Integer.parseInt(scanner.nextLine())) {
+                    case 1:
+                        Menu menu = discountConfirm(this,address,phoneNumber);
                         menu.show();
                         menu.execute();
                         this.show();
                         this.execute();
                         break;
-                   case 2:
+                    case 2:
                        this.parentMenu.show();
                        this.parentMenu.execute();
                        break;
@@ -228,27 +228,31 @@ public class UserBuyer extends Menu{
         };
     }
 
-    private Menu discountConfirm(Menu parentMenu) {
+    private Menu discountConfirm(Menu parentMenu,String address,String phoneNumber) {
         return new Menu("discountCode Confirmation",parentMenu) {
             @Override
             public void show() {
                 System.out.println("Purchase->Receive Info->Discount Code Confirmation Menu:");
-                System.out.println("1.Next(payment)\n" +
-                        "2.back");
             }
 
             @Override
             public void execute() {
-                System.out.println("Enter your discount code:");
+                System.out.println("Enter your discount code:(or type \"no discount code\" to continue)");
                 String discount = scanner.nextLine();
-                if (controller.discountCodeConfirmation(discount)) {
-                    System.out.println("Discount Code Confirmed.");
+                Discount discount1 = null;
+                if (!discount.equals("no discount code")) {
+                    if (controller.discountCodeConfirmation(discount)) {
+                        System.out.println("Discount Code Confirmed.");
+                        discount1 = controller.getDiscountByCode(discount);
+                    }
+                    else
+                        System.out.println("Discount Code Denied.");
                 }
-                else
-                    System.out.println("Discount Code Denied.");
+                System.out.println("1.Next(payment)\n" +
+                        "2.back");
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
-                        Menu menu = payment(this);
+                        Menu menu = payment(this,address,phoneNumber,discount1);
                         menu.show();
                         menu.execute();
                         break;
@@ -261,7 +265,7 @@ public class UserBuyer extends Menu{
         };
     }
 
-    private Menu payment(Menu parentMenu) {
+    private Menu payment(Menu parentMenu,String address,String phoneNumber,Discount discount) {
         return new Menu("paymentMenu",parentMenu) {
             @Override
             public void show() {
@@ -279,10 +283,9 @@ public class UserBuyer extends Menu{
 
             @Override
             public void execute() {
-                System.out.println("Are you sure to pay" + controller.showTotalPrice() + "?");
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
-                        controller.purchase();
+                        controller.purchase(address,phoneNumber,discount);
                         currentMenu.show();
                         currentMenu.execute();
                         break;
