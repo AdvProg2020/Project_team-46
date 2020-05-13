@@ -23,7 +23,6 @@ public class ProductsMenu extends Menu{
         submenus.put(5, getSorting());
         submenus.put(6, getShowProducts());
         listToSort = controller.disableSort();
-        filters = controller.getCurrentFilter();
         this.setSubmenus(submenus);
     }
 
@@ -94,7 +93,19 @@ public class ProductsMenu extends Menu{
             if (command.matches(regex = "filter (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                controller.filter(field);
+                if (field.matches("by category")) {
+                    System.out.println("Enter a category:");
+                    String categoryName = scanner.nextLine();
+                    controller.filter("by category",categoryName);
+                }
+                else if (field.matches("by name")) {
+                    System.out.println("Enter a name:");
+                    String name = scanner.nextLine();
+                    controller.filter("by name",name);
+                }
+                else
+                    System.out.println("Please Enter a validate filter");
+
             }
             else if (command.matches("show available filters")) {
                 System.out.println("available filters:\n" +
@@ -102,12 +113,24 @@ public class ProductsMenu extends Menu{
                         "2.by name");
             }
             else if (command.matches("current filters")) {
-                controller.showCurrentFilters();
+                System.out.println("Current Filters:");
+                if (controller.hasCategoryFilter) {
+                    System.out.println("by category:" + controller.filteredCategory);
+                }
+                if (controller.hasNameFilter) {
+                    System.out.println("by name:" + controller.filteredName);
+                }
+                else
+                    System.out.println("No filter yet");
             }
             else if (command.matches("disable filter (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                controller.disableFilter(field);
+                if (field.equals("by category") || field.equals("by name")) {
+                    controller.disableFilter(field);
+                }
+                else
+                    System.out.println("filter is not valid");
             }
             else
                 System.out.println("invalid command");
@@ -199,9 +222,23 @@ public class ProductsMenu extends Menu{
         return new Menu("show product",this) {
             @Override
             public void show() {
+                List<Product> filtered = listToSort;
                 System.out.println("Show Products Menu:");
                 System.out.println("1.back");
                 for (Product product : listToSort) {
+                    if (controller.hasNameFilter) {
+                        if (!(product.getName().contains(controller.filteredName))) {
+                            filtered.remove(product);
+                        }
+                    }
+                    if (controller.hasCategoryFilter) {
+                        if (product.getCategory().getName().equals(controller.filteredCategory) &&
+                                filtered.contains(product)) {
+                            filtered.remove(product);
+                        }
+                    }
+                }
+                for (Product product : filtered) {
                     System.out.println(product.getName() + "    " + product.getProductId());
                 }
             }

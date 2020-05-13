@@ -9,12 +9,16 @@ public class Controller {
     private List<Account> accounts;
     private Account currentAccount ;
     private String currentSortingMethod = "by number of views";
-    private ArrayList<String> currentFilter;
+    //private ArrayList<String> currentFilter;
+    public boolean hasCategoryFilter = false;
+    public boolean hasNameFilter = false;
+    public String filteredCategory;
+    public String filteredName;
 
     public Controller() {
         accounts = new ArrayList<>();
         products = new ArrayList<>();
-        currentFilter = new ArrayList<>();
+        //currentFilter = new ArrayList<>();
         categories = new ArrayList<>();
     }
 
@@ -284,22 +288,30 @@ public class Controller {
         product.setScores(score1);
     }
 
-    public void goToProductsPage() {
-
-    }
-
-    public void filter(String filter) {
-        currentFilter.add(filter);
-    }
-
-    public void showCurrentFilters() {
-        for (String filter : currentFilter) {
-            System.out.println(filter);
+    public void filter(String filter,String detail) {
+        if (filter.equals("by category")) {
+            if (getCategoryByName(detail) != null) {
+                hasCategoryFilter = true;
+                filteredCategory = detail;
+            }
+            else
+                System.out.println("category is invalid");
+        }
+        else if (filter.equals("by name")) {
+            hasNameFilter = true;
+            filteredName = detail;
         }
     }
 
     public void disableFilter(String filter) {
-        currentFilter.remove(filter);
+        if (filter.equals("by category")) {
+            hasCategoryFilter = false;
+            filteredCategory = null;
+        }
+        else if (filter.equals("by name")) {
+            hasNameFilter = false;
+            filteredName = null;
+        }
     }
 
     public List<Product> sort(String sortingMethod) {
@@ -442,7 +454,4 @@ public class Controller {
         return categories;
     }
 
-    public ArrayList<String> getCurrentFilter() {
-        return currentFilter;
-    }
 }
