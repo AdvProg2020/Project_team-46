@@ -15,7 +15,7 @@ public class UserBuyer extends Menu{
     public UserBuyer(String name, Menu parentMenu) {
         super(name, parentMenu);
         HashMap<Integer, Menu> submenus = new HashMap<>();
-        submenus.put(1, new LoginMenu(this));
+        submenus.put(1, new LoginMenu(parentMenu));
         submenus.put(2, getViewPersonalInfo());
         submenus.put(3, getViewOrders());
         submenus.put(4, getViewBalance());

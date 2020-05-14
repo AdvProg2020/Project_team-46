@@ -11,7 +11,7 @@ public class UserSeller extends Menu{
     public UserSeller(String name, Menu parentMenu) {
 
         super(name, parentMenu);
-        submenus.put(1, new LoginMenu(this));
+        submenus.put(1, new LoginMenu(parentMenu));
         submenus.put(2, getViewPersonalInfo());
         submenus.put(3, getCompanyInfo());
         submenus.put(4, getSalesHistory());
@@ -82,6 +82,9 @@ public class UserSeller extends Menu{
                 inputs[5] = scanner.nextLine();
                 inputs[6] = generateId();
                 new SellerRequest(account, generateId(), inputs, "add product");
+                System.out.println("product added");
+                parentMenu.show();
+                parentMenu.execute();
             }
         };
     }

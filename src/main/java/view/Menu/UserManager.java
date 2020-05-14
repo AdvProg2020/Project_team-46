@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 public class UserManager extends Menu {
     public UserManager(String name, Menu parentMenu) {
         super(name, parentMenu);
-        submenus.put(1, new LoginMenu(this));
+        submenus.put(1, new LoginMenu(parentMenu));
         submenus.put(2, getViewPersonalInfo());
         submenus.put(3, getManageUsers());
         submenus.put(4, getManageProducts());
