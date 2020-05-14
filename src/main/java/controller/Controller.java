@@ -280,10 +280,6 @@ public class Controller {
         return currentAccount.getCart();
     }
 
-    public void viewProductInCart(String productId) {
-
-    }
-
     public void increaseProduct(String productId) {
         if (getProductById(productId) != null) {
             Product product = getProductById(productId);
