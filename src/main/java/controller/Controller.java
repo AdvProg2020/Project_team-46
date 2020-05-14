@@ -91,6 +91,36 @@ public class Controller {
         return products;
     }
 
+    public void setNameOfProduct(String productId, String newName) {
+        getProductById(productId).setName(newName);
+        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+    }
+
+    public void setCompanyOfProduct(String productId, String company) {
+        getProductById(productId).setBrandOrCompany(company);
+        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+    }
+
+    public void setDescriptionOfProduct(String productId, String description) {
+        getProductById(productId).setDescription(description);
+        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+    }
+
+    public void setAvailabilityOfProduct(String productId, boolean isAvailable) {
+        getProductById(productId).setAvailable(isAvailable);
+        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+    }
+
+    public void setValueOfProduct(String productId, long value) {
+        getProductById(productId).setValue(value);
+        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+    }
+
+    public void setAmountOfProduct(String productId, int amount) {
+        getProductById(productId).setAmount(amount);
+        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+    }
+
     public void setPassword(String password) {
         currentAccount.setPassword(password);
     }
@@ -202,9 +232,9 @@ public class Controller {
     }
 
     public void addProduct(String[] inputs, Account seller) {
-        boolean isAvailable;
-        isAvailable = inputs[3].equals("1");
-        Product product = new Product(inputs[4], ProductStatus.UNDER_CONSTRUCTION, inputs[0], inputs[1], seller, isAvailable,  inputs[2]);
+        boolean isAvailable = inputs[5].equals("1");
+        Product product = new Product(inputs[6], ProductStatus.UNDER_CONSTRUCTION, Long.parseLong(inputs[2]) ,
+                Integer.parseInt(inputs[3]), inputs[0], inputs[1], seller, null, inputs[4], isAvailable);
         products.add(product);
     }
 

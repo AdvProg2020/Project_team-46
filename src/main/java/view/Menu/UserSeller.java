@@ -16,6 +16,7 @@ public class UserSeller extends Menu{
         submenus.put(3, getCompanyInfo());
         submenus.put(4, getSalesHistory());
         submenus.put(5, getManageProducts());
+        submenus.put(6, addProduct());
     }
 
 
@@ -45,6 +46,10 @@ public class UserSeller extends Menu{
                 case "5":
                     submenus.get(5).show();
                     submenus.get(5).execute();
+                    break;
+                case "6":
+                    submenus.get(6).show();
+                    submenus.get(6).execute();
             }
 
         }
@@ -59,19 +64,23 @@ public class UserSeller extends Menu{
 
             @Override
             public void execute() {
-                String[] inputs = new String[5];
+                String[] inputs = new String[10];
                 Account account = controller.getCurrentAccount();
                 System.out.println("Enter name of product");
                 inputs[0] = scanner.nextLine();
                 System.out.println("Enter brand or company of product:");
                 inputs[1] = scanner.nextLine();
-                System.out.println("Enter description of product:");
+                System.out.println("Enter price of the product:");
                 inputs[2] = scanner.nextLine();
-                System.out.println("Is the product available?\n" +
-                        "1. yes" +
-                        "2. no");
+                System.out.println("Enter amount or number of the product:");
                 inputs[3] = scanner.nextLine();
-                inputs[4] = generateId();
+                System.out.println("Enter description of product:");
+                inputs[4] = scanner.nextLine();
+                System.out.println("Is the product available?\n" +
+                        "1. yes\n" +
+                        "2. no");
+                inputs[5] = scanner.nextLine();
+                inputs[6] = generateId();
                 new SellerRequest(account, generateId(), inputs, "add product");
             }
         };
@@ -126,14 +135,16 @@ public class UserSeller extends Menu{
             if (command.matches(regex = "edit (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 product =  controller.getProductById(matcher.group(1));
-                inputs[0] = product.getProductId();
                 if (product != null) {
                     System.out.println("Enter a field: \n" +
                             "1. name \n" +
                             "2. brand or company \n" +
                             "3. description \n" +
-                            "4. availability"
+                            "4. availability\n" +
+                            "5. value\n" +
+                            "6. amount"
                     );
+                    inputs[0] = product.getProductId();
                     switch (Integer.parseInt(scanner.nextLine())) {
                         case 1:
                             System.out.println("Enter new name:");
@@ -147,7 +158,6 @@ public class UserSeller extends Menu{
                             new SellerRequest(account, generateId(), inputs, "edit company of product");
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
                             break;
-
                         case 3:
                             System.out.println("Enter new description:");
                             inputs[1] = scanner.nextLine();
@@ -160,6 +170,19 @@ public class UserSeller extends Menu{
                             inputs[1] = scanner.nextLine();
                             new SellerRequest(account, generateId(), inputs, "edit availability of product");
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            break;
+                        case 5:
+                            System.out.println("Enter new price:");
+                            inputs[1] = scanner.nextLine();
+                            new SellerRequest(account, generateId(), inputs, "edit price of product");
+                            product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            break;
+                        case 6:
+                            System.out.println("Enter new amount:");
+                            inputs[1] = scanner.nextLine();
+                            new SellerRequest(account, generateId(), inputs, "edit amount of product");
+                            product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            break;
                     }
                 } else {
                     System.out.println("invalid id");

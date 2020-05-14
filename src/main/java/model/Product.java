@@ -24,7 +24,7 @@ public class Product {
 
 
     public Product(String productId, ProductStatus productStatus, long value, int amount,
-                   String name, String brandOrCompany, Account seller, Category category) {
+                   String name, String brandOrCompany, Account seller, Category category, String description, boolean isAvailable) {
         this.productId = productId;
         this.productStatus = productStatus;
         this.value = value;
@@ -33,6 +33,8 @@ public class Product {
         this.brandOrCompany = brandOrCompany;
         this.seller = seller;
         this.category = category;
+        this.description = description;
+        this.isAvailable = isAvailable;
         this.dateModified = new Date();
     }
 

@@ -7,28 +7,28 @@ public class SellerRequest extends Request {
 
     @Override
     public void acceptRequest() {
-        Product product = controller.getProductById(inputs[0]);
         switch (details) {
             case "edit name of product":
-                product.setName(inputs[1]);
-                product.setProductStatus(ProductStatus.CONFIRMED);
+                controller.setNameOfProduct(inputs[0], inputs[1]);
                 break;
             case "edit company of product":
-                product.setBrandOrCompany(inputs[1]);
-                product.setProductStatus(ProductStatus.CONFIRMED);
+                controller.setCompanyOfProduct(inputs[0], inputs[1]);
                 break;
             case "edit description of product":
-                product.setDescription(inputs[1]);
-                product.setProductStatus(ProductStatus.CONFIRMED);
+                controller.setDescriptionOfProduct(inputs[0], inputs[1]);
                 break;
             case "edit availability of product":
                 if (inputs[1].equals("1")) {
-                    product.setAvailable(true);
-                    product.setProductStatus(ProductStatus.CONFIRMED);
+                    controller.setAvailabilityOfProduct(inputs[0], true);
                 } else if (inputs[1].equals("2")) {
-                    product.setProductStatus(ProductStatus.CONFIRMED);
-                    product.setAvailable(false);
+                    controller.setAvailabilityOfProduct(inputs[0], false);
                 }
+                break;
+            case "edit price of product":
+                controller.setValueOfProduct(inputs[0], Long.parseLong(inputs[1]));
+                break;
+            case "edit amount of product":
+                controller.setAmountOfProduct(inputs[0], Integer.parseInt(inputs[1]));
                 break;
             case "add product":
                 controller.addProduct(inputs, account);
