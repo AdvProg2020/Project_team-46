@@ -127,7 +127,7 @@ public class UserManager extends Menu {
             if (command.matches(regex = "view (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                controller.view(field);
+                System.out.println(controller.viewUsers(field));
             }
             else if (command.matches(regex = "delete user (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
