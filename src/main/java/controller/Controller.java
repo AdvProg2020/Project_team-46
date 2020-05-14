@@ -232,6 +232,12 @@ public class Controller {
 
     public void removeCategory(String category) {
         categories.remove(getCategoryByName(category));
+        List<Product> help = new ArrayList<>(products);
+        for (Product product : help) {
+            if (product.getCategory().getName().equals(category)) {
+                products.remove(product);
+            }
+        }
     }
 
     public String viewCompanyInformation() {
