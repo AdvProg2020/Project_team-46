@@ -11,7 +11,6 @@ public class ProductsMenu extends Menu{
 
     private GoodMenu goodMenu = new GoodMenu(this,null);
     private List<Product> listToSort;
-    private List<String> filters;
 
     public ProductsMenu(Menu parentMenu) {
         super("productsMenu", parentMenu);
@@ -222,7 +221,7 @@ public class ProductsMenu extends Menu{
         return new Menu("show product",this) {
             @Override
             public void show() {
-                List<Product> filtered = listToSort;
+                List<Product> filtered = new ArrayList<>(listToSort);
                 System.out.println("Show Products Menu:");
                 System.out.println("1.back");
                 for (Product product : listToSort) {
