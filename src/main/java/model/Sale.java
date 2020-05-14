@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 public class Sale {
-    public static List<Sale> sales = new ArrayList<>();
     private String offId;
     private List<Product> products;
     private Date startingDate;
@@ -13,21 +12,11 @@ public class Sale {
     private long discountAmount;
 
     public Sale(String offId, List<Product> products, Date startingDate, Date endingDate, long discountAmount) {
-        sales.add(this);
         this.offId = offId;
         this.products = products;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
         this.discountAmount = discountAmount;
-    }
-
-    public static Sale getSaleById(String offId) {
-        for (Sale sale : sales) {
-            if (sale.offId.equals(offId)) {
-                return sale;
-            }
-        }
-        return null;
     }
 
     public String getOffId() {

@@ -8,6 +8,7 @@ public class Controller {
     private List<Product> products;
     private List<Product> availableProducts;
     private List<Account> accounts;
+    private List<Sale> sales;
     private Account currentAccount;
     private String currentSortingMethod = "by number of views";
     //private ArrayList<String> currentFilter;
@@ -19,14 +20,25 @@ public class Controller {
     public Controller() {
         accounts = new ArrayList<>();
         products = new ArrayList<>();
+        availableProducts = new ArrayList<>();
         //currentFilter = new ArrayList<>();
         categories = new ArrayList<>();
+        sales = new ArrayList<>();
     }
 
     public Category getCategoryByName(String name) {
         for (Category category : categories) {
             if (category.getName().equals(name)) {
                 return category;
+            }
+        }
+        return null;
+    }
+
+    public Sale getSaleById(String offId) {
+        for (Sale sale : sales) {
+            if (sale.getOffId().equals(offId)) {
+                return sale;
             }
         }
         return null;
@@ -62,6 +74,7 @@ public class Controller {
     public Account getCurrentAccount() {
         return currentAccount;
     }
+
 
     public boolean logIn(String username, String password) {
         if (getAccountByUsername(username).getPassword().equals(password)) {
@@ -159,8 +172,12 @@ public class Controller {
         currentAccount.setCompanyName(companyName);
     }
 
-    public void view(String user) {
-
+    public ArrayList<String> viewBuyers(String productId) {
+        ArrayList<String> buyers = new ArrayList<>();
+        for (Account buyer : getProductById(productId).getBuyers()) {
+            buyers.add(buyer.getName());
+        }
+        return buyers;
     }
 
     public void deleteUser(String user) {
@@ -233,10 +250,6 @@ public class Controller {
         return getProductById(productId).toString();
     }
 
-    public List<Account> viewBuyers(String productId) {
-        return getProductById(productId).getBuyers();
-    }
-
     public List<Product> getAvailableProducts() {
         return availableProducts;
     }
@@ -259,8 +272,17 @@ public class Controller {
         availableProducts.remove(getProductById(productId));
     }
 
-    public List<Category> showCategories() {
-        return categories;
+    public ArrayList<String> viewSellersOff() {
+        ArrayList<String> offs = new ArrayList<>();
+        for (Sale sale : currentAccount.getOffList()) {
+            for (Product product : sale.getProducts()) {
+                double number = product.getValue() - (sale.getDiscountAmount() / 100.0)*product.getValue();
+                String output = product.getName()+ "   " + "   " + product.getProductId() + "   " +
+                        product.getValue() + "   " + number;
+                offs.add(output);
+            }
+        }
+        return offs;
     }
 
     public List<Sale> viewOffs() {
@@ -268,8 +290,7 @@ public class Controller {
     }
 
     public String viewOff(String offId) {
-        Sale sale = Sale.getSaleById(offId);
-        return sale.toString();
+        return getSaleById(offId).toString();
     }
 
     public void editOff(String offId) {
@@ -511,7 +532,7 @@ public class Controller {
 
     public ArrayList<String> offs() {
         ArrayList<String> offs = new ArrayList<>();
-        for (Sale sale : Sale.sales) {
+        for (Sale sale : sales) {
             for (Product product : sale.getProducts()) {
                 double number = product.getValue() - (sale.getDiscountAmount() / 100.0)*product.getValue();
                 String output = product.getName()+ "   " + "   " + product.getProductId() + "   " +

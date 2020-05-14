@@ -1,9 +1,6 @@
 package view.Menu;
 
-import model.Account;
-import model.Product;
-import model.ProductStatus;
-import model.SellerRequest;
+import model.*;
 
 import java.util.regex.Matcher;
 
@@ -18,20 +15,20 @@ public class UserSeller extends Menu{
         submenus.put(5, getManageProducts());
         submenus.put(6, addProduct());
         submenus.put(7, removeProduct());
+        submenus.put(8, showCategories());
+
     }
 
 
     @Override
     public void execute() {
         String command;
-        label:
-        while (true) {
             command = scanner.nextLine();
             switch (command) {
                 case "1":
                     submenus.get(1).show();
                     submenus.get(1).execute();
-                    break label;
+                    break;
                 case "2":
                     submenus.get(2).show();
                     submenus.get(2).execute();
@@ -52,8 +49,96 @@ public class UserSeller extends Menu{
                     submenus.get(6).show();
                     submenus.get(6).execute();
             }
+    }
 
+    private Menu viewOffs() {
+        return new Menu("view offs", this) {
+            @Override
+            public void show() {
+                for (String off : controller.viewSellersOff()) {
+                    System.out.println(off);
+                }
+                System.out.println("1. view off\n" +
+                        "2. edit off\n" +
+                        "3. add off\n" +
+                        "4. back");
+            }
+
+            @Override
+            public void execute() {
+                switch (scanner.nextLine()) {
+                    case "1":
+                        viewOff();
+                        this.show();
+                        this.execute();
+                        break;
+                    case  "2":
+                        editOff();
+                        this.show();
+                        this.execute();
+                        break;
+                    case "3":
+                        addOff();
+                        this.show();
+                        this.execute();
+                        break;
+                    case "4":
+                        parentMenu.show();
+                        parentMenu.execute();
+                }
+            }
+        };
+    }
+
+    private void viewOff() {
+        String command;
+        String regex;
+        Matcher matcher;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "view off (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String id = matcher.group(1);
+                if (controller.getSaleById(id) != null) {
+                    System.out.println(controller.getSaleById(id).toString());
+                } else {
+                    System.out.println("invalid id");
+                }
+            } else if (command.equals("help")){
+                System.out.println("view [offId]" + "\n"
+                        + "help" + "\n"
+                        + "back");
+            } else {
+                System.out.println("invalid command");
+            }
         }
+    }
+
+    private void editOff() {
+
+    }
+
+    private void addOff() {
+
+    }
+
+    private Menu showCategories() {
+        return new Menu("show categories", this) {
+            @Override
+            public void show() {
+                for (Category category : controller.getCategories()) {
+                    System.out.println(category.getName());
+                }
+                System.out.println("1. back");
+            }
+
+            @Override
+            public void execute() {
+                if (scanner.nextLine().equals("1")) {
+                    parentMenu.show();
+                    parentMenu.execute();
+                }
+            }
+        };
     }
 
     private Menu removeProduct() {
@@ -248,8 +333,8 @@ public class UserSeller extends Menu{
                 (matcher = getMatcher(regex, command)).find();
                 String id = matcher.group(1);
                 if (controller.getProductById(id) != null) {
-                    for (Account buyer : controller.getProductById(id).getBuyers()) {
-                        System.out.println(buyer.getUsername());
+                    for (String buyer : controller.viewBuyers(id)) {
+                        System.out.println(buyer);
                     }
                 } else {
                     System.out.println("invalid id");
