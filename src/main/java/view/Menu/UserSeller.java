@@ -17,6 +17,7 @@ public class UserSeller extends Menu{
         submenus.put(4, getSalesHistory());
         submenus.put(5, getManageProducts());
         submenus.put(6, addProduct());
+        submenus.put(7, removeProduct());
     }
 
 
@@ -55,6 +56,42 @@ public class UserSeller extends Menu{
         }
     }
 
+    private Menu removeProduct() {
+        return new Menu("remove product", this) {
+            @Override
+            public void show() {
+
+            }
+
+            @Override
+            public void execute() {
+                String command;
+                String regex;
+                Matcher matcher;
+                while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+                    if (command.matches(regex = "remove product (\\S+)")) {
+                        (matcher = getMatcher(regex, command)).find();
+                        String id = matcher.group(1);
+                        if (controller.getProductById(id) != null) {
+                             controller.removeProduct(id);
+                            System.out.println("product removed successfully");
+                        } else {
+                            System.out.println("invalid id");
+                        }
+                    } else if (command.equals("help")){
+                        System.out.println("remove product [productId]" + "\n"
+                                + "help" + "\n"
+                                + "back");
+                    } else {
+                        System.out.println("invalid command");
+                    }
+                }
+                parentMenu.show();
+                parentMenu.execute();
+            }
+        };
+    }
+
     private Menu addProduct() {
         return new Menu("add product", this) {
             @Override
@@ -81,8 +118,9 @@ public class UserSeller extends Menu{
                         "2. no");
                 inputs[5] = scanner.nextLine();
                 inputs[6] = generateId();
+                controller.createProduct(inputs, account);
                 new SellerRequest(account, generateId(), inputs, "add product");
-                System.out.println("product added");
+                System.out.println("product created");
                 parentMenu.show();
                 parentMenu.execute();
             }
@@ -93,7 +131,7 @@ public class UserSeller extends Menu{
         return new Menu("manage products", this) {
             @Override
             public void show() {
-                for (Product product : controller.getProducts()) {
+                for (Product product : controller.getAvailableProducts()) {
                     System.out.println(product.getName() + " " + product.getProductId());
                 }
                 System.out.println("1. view product" + "\n" +

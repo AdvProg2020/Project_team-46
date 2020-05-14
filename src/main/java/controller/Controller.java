@@ -6,8 +6,9 @@ import java.util.*;
 public class Controller {
     private List<Category> categories;
     private List<Product> products;
+    private List<Product> availableProducts;
     private List<Account> accounts;
-    private Account currentAccount ;
+    private Account currentAccount;
     private String currentSortingMethod = "by number of views";
     //private ArrayList<String> currentFilter;
     public boolean hasCategoryFilter = false;
@@ -236,19 +237,26 @@ public class Controller {
         return getProductById(productId).getBuyers();
     }
 
-    public void editProduct(String productId) {
-
+    public List<Product> getAvailableProducts() {
+        return availableProducts;
     }
 
-    public void addProduct(String[] inputs, Account seller) {
+    public void addProduct(String productId) {
+        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+        availableProducts.add(getProductById(productId));
+    }
+
+    public void createProduct(String[] inputs, Account seller) {
         boolean isAvailable = inputs[5].equals("1");
         Product product = new Product(inputs[6], ProductStatus.UNDER_CONSTRUCTION, Long.parseLong(inputs[2]) ,
                 Integer.parseInt(inputs[3]), inputs[0], inputs[1], seller, null, inputs[4], isAvailable);
         products.add(product);
+
     }
 
     public void removeProduct(String productId) {
-
+        products.remove(getProductById(productId));
+        availableProducts.remove(getProductById(productId));
     }
 
     public List<Category> showCategories() {

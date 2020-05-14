@@ -31,7 +31,7 @@ public class SellerRequest extends Request {
                 controller.setAmountOfProduct(inputs[0], Integer.parseInt(inputs[1]));
                 break;
             case "add product":
-                controller.addProduct(inputs, account);
+                controller.addProduct(inputs[6]);
         }
     }
 
