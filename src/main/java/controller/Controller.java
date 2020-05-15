@@ -172,6 +172,14 @@ public class Controller {
         currentAccount.setCompanyName(companyName);
     }
 
+    public String viewUsers(String user) {
+        if (getAccountByUsername(user) != null) {
+            Account account = getAccountByUsername(user);
+            return account.toString();
+        }
+        return "no user with this user name";
+    }
+
     public ArrayList<String> viewBuyers(String productId) {
         ArrayList<String> buyers = new ArrayList<>();
         for (Account buyer : getProductById(productId).getBuyers()) {
@@ -181,7 +189,12 @@ public class Controller {
     }
 
     public void deleteUser(String user) {
-
+        if (getAccountByUsername(user) != null) {
+            Account account = getAccountByUsername(user);
+            accounts.remove(account);
+        }
+        else
+            System.out.println("no user with this user name");
     }
 
     public Account createManager(String userName,Role role) {
