@@ -9,6 +9,7 @@ public class Controller {
     private List<Product> availableProducts;
     private List<Account> accounts;
     private List<Sale> sales;
+    private List<Sale> availableSales;
     private Account currentAccount;
     private String currentSortingMethod = "by number of views";
     //private ArrayList<String> currentFilter;
@@ -24,6 +25,7 @@ public class Controller {
         //currentFilter = new ArrayList<>();
         categories = new ArrayList<>();
         sales = new ArrayList<>();
+        availableSales = new ArrayList<>();
     }
 
     public Category getCategoryByName(String name) {
@@ -45,7 +47,7 @@ public class Controller {
     }
 
     public Product getProductById(String productId) {
-        for (Product product : availableProducts) {
+        for (Product product : products) {
             if (product.getProductId().equals(productId)) {
                 return product;
             }
@@ -261,10 +263,6 @@ public class Controller {
        return currentAccount.getSellingRecords();
     }
 
-    public void manageProducts() {
-
-    }
-
     public String viewProduct(String productId) {
         return getProductById(productId).toString();
     }
@@ -303,6 +301,17 @@ public class Controller {
             }
         }
         return offs;
+    }
+
+    public void addOff(String offId) {
+        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
+        availableSales.add(getSaleById(offId));
+    }
+
+    public void createOff(String offId, ArrayList<Product> products, Date startingDate, Date endingDate, int discountPercentage) {
+        Sale sale = new Sale(offId,products, startingDate, endingDate, discountPercentage);
+        sales.add(sale);
+        sale.setSaleStatus(SaleStatus.UNDER_CONSTRUCTION);
     }
 
     public List<Sale> viewOffs() {

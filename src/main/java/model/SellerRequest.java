@@ -1,8 +1,10 @@
 package model;
 
 public class SellerRequest extends Request {
+    private String[] inputs;
     public SellerRequest(Account account, String requestId, String[] inputs, String details) {
-        super(account, requestId, inputs, details);
+        super(account, requestId, details);
+        this.inputs = inputs;
     }
 
     @Override
@@ -49,6 +51,9 @@ public class SellerRequest extends Request {
                 break;
             case "edit discount percentage of sale":
                 controller.editDiscountPercentageOfSale(Integer.parseInt(inputs[0]), inputs[1]);
+                break;
+            case "add sale":
+                controller.addProduct(inputs[0]);
         }
     }
 

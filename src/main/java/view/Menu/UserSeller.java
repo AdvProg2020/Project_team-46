@@ -2,6 +2,8 @@ package view.Menu;
 
 import model.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 
 public class UserSeller extends Menu{
@@ -17,6 +19,7 @@ public class UserSeller extends Menu{
         submenus.put(7, removeProduct());
         submenus.put(8, showCategories());
         submenus.put(9, viewOffs());
+        submenus.put(10, viewBalance());
 
     }
 
@@ -50,6 +53,25 @@ public class UserSeller extends Menu{
                     submenus.get(6).show();
                     submenus.get(6).execute();
             }
+
+    }
+
+    private Menu viewBalance() {
+        return new Menu("view balance", this) {
+            @Override
+            public void show() {
+                System.out.println("Your current balance is: " + controller.viewBalance());
+                System.out.println("1. back");
+            }
+
+            @Override
+            public void execute() {
+                if (scanner.nextLine().equals("1")) {
+                    parentMenu.show();
+                    parentMenu.execute();
+                }
+            }
+        };
     }
 
     private Menu viewOffs() {
@@ -91,6 +113,47 @@ public class UserSeller extends Menu{
         };
     }
 
+    private void addOff() {
+        String command;
+        String regex;
+        Matcher matcher;
+        ArrayList<Product> products = new ArrayList<>();
+        Date startingDate;
+        Date endingDate;
+        int discountPercentage;
+        System.out.println("Enter products id's you want to add then enter finish");
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("finish")) {
+            if (controller.getProductById(command) == null) {
+                System.out.println("invalid id");
+            } else {
+                products.add(controller.getProductById(command));
+            }
+        }
+        System.out.println("Enter a starting date in format YYYY-MM-DD:");
+        while (!(command = scanner.nextLine()).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
+            System.out.println("invalid format");
+        }
+        (matcher = getMatcher(regex, command)).find();
+        startingDate = new Date(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
+        System.out.println("Enter an ending date in format YYYY-MM-DD:");
+        while (!(command = scanner.nextLine()).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
+            System.out.println("invalid format");
+        }
+        (matcher = getMatcher(regex, command)).find();
+        endingDate = new Date(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
+        System.out.println("Enter discount percentage:");
+        discountPercentage = Integer.parseInt(scanner.nextLine());
+        while (discountPercentage <= 0 || discountPercentage >= 100) {
+            System.out.println("Enter a valid number between 0 and 100!");
+            discountPercentage = Integer.parseInt(scanner.nextLine());
+        }
+        String[] inputs = new String[1];
+        inputs[0] = generateId();
+        controller.createOff(inputs[0], products, startingDate, endingDate, discountPercentage);
+        new SellerRequest(controller. getCurrentAccount(), generateId(), inputs, "add sale");
+        System.out.println("Sale created");
+    }
+
     private void viewOff() {
         String command;
         String regex;
@@ -119,8 +182,6 @@ public class UserSeller extends Menu{
         String regex;
         Matcher matcher;
         Sale sale;
-        Account account = controller.getCurrentAccount();
-        String[] inputs = new String[2];
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches(regex = "edit (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
@@ -132,7 +193,6 @@ public class UserSeller extends Menu{
                             "3. ending Date \n" +
                             "4. discount percentage"
                     );
-                    inputs[0] = sale.getOffId();
                     switch (Integer.parseInt(scanner.nextLine())) {
                         case 1:
                             editSaleProducts(sale);
@@ -219,6 +279,7 @@ public class UserSeller extends Menu{
     }
 
     private void editSaleProducts(Sale sale) {
+        System.out.println("Current sale products:");
         for (Product product : sale.getProducts()) {
             System.out.println(product.getName() + " : " + product.getProductId());
         }
@@ -254,9 +315,6 @@ public class UserSeller extends Menu{
         }
     }
 
-    private void addOff() {
-
-    }
 
     private Menu showCategories() {
         return new Menu("show categories", this) {
