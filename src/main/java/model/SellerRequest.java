@@ -32,6 +32,23 @@ public class SellerRequest extends Request {
                 break;
             case "add product":
                 controller.addProduct(inputs[6]);
+                break;
+            case "add product to sale":
+                controller.addProductToSale(inputs[1], inputs[0]);
+                break;
+            case "remove product from sale":
+                controller.removeProductFromSale(inputs[1], inputs[0]);
+                break;
+            case "edit starting date of sale":
+                controller.editStartingDateOfSale(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]),
+                        Integer.parseInt(inputs[2]), inputs[3]);
+                break;
+            case "edit ending date of sale":
+                controller.editEndingDateOfSale(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]),
+                        Integer.parseInt(inputs[2]), inputs[3]);
+                break;
+            case "edit discount percentage of sale":
+                controller.editDiscountPercentageOfSale(Integer.parseInt(inputs[0]), inputs[1]);
         }
     }
 

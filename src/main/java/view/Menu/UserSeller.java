@@ -16,6 +16,7 @@ public class UserSeller extends Menu{
         submenus.put(6, addProduct());
         submenus.put(7, removeProduct());
         submenus.put(8, showCategories());
+        submenus.put(9, viewOffs());
 
     }
 
@@ -114,7 +115,143 @@ public class UserSeller extends Menu{
     }
 
     private void editOff() {
+        String command;
+        String regex;
+        Matcher matcher;
+        Sale sale;
+        Account account = controller.getCurrentAccount();
+        String[] inputs = new String[2];
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "edit (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                sale = controller.getSaleById(matcher.group(1));
+                if (sale != null) {
+                    System.out.println("Enter a field: \n" +
+                            "1. products \n" +
+                            "2. starting Date \n" +
+                            "3. ending Date \n" +
+                            "4. discount percentage"
+                    );
+                    inputs[0] = sale.getOffId();
+                    switch (Integer.parseInt(scanner.nextLine())) {
+                        case 1:
+                            editSaleProducts(sale);
+                            break;
+                        case 2:
+                            editStartingDate(sale);
+                            break;
+                        case 3:
+                            editEndingDate(sale);
+                            break;
+                        case 4:
+                            editDiscountPercentage(sale);
+                    }
+                } else {
+                    System.out.println("invalid id");
+                }
+            } else if (command.equals("help")){
+                System.out.println("edit [offId]" + "\n"
+                        + "help" + "\n"
+                        + "back");
 
+            } else {
+                System.out.println("invalid command");
+            }
+        }
+    }
+
+    private void editDiscountPercentage(Sale sale) {
+        System.out.println("Current discount percentage is :" + sale.getDiscountPercentage() + "%");
+        System.out.println("Enter new discount percentage:");
+        int discountPercentage = Integer.parseInt(scanner.nextLine());
+        while (discountPercentage <= 0 || discountPercentage >= 100) {
+            System.out.println("Enter a valid number between 0 and 100!");
+            discountPercentage = Integer.parseInt(scanner.nextLine());
+        }
+        String[] inputs = new String[2];
+        inputs[0] = String.valueOf(discountPercentage);
+        inputs[1] = sale.getOffId();
+        new SellerRequest(controller.getCurrentAccount(), generateId(), inputs, "edit discount percentage of sale");
+        sale.setSaleStatus(SaleStatus.UNDER_REFORMATION);
+        System.out.println("Request sent");
+    }
+
+    private void editEndingDate(Sale sale) {
+        Matcher matcher;
+        String regex;
+        System.out.println("Current ending date is: " + sale.getStartingDate());
+        System.out.println("Enter new ending date in format YYYY-MM-DD:");
+        String date = scanner.nextLine();
+        while (!date.matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
+            System.out.println("invalid format");
+            date = scanner.nextLine();
+        }
+        (matcher = getMatcher(regex, date)).find();
+        String[] inputs = new String[4];
+        inputs[0] = matcher.group(1);
+        inputs[1] = matcher.group(2);
+        inputs[2] = matcher.group(3);
+        inputs[3] = sale.getOffId();
+        new SellerRequest(controller.getCurrentAccount(), generateId(), inputs, "edit ending date of sale");
+        sale.setSaleStatus(SaleStatus.UNDER_REFORMATION);
+        System.out.println("Request sent");
+    }
+
+    private void editStartingDate(Sale sale) {
+        Matcher matcher;
+        String regex;
+        System.out.println("Current Starting date is: " + sale.getStartingDate());
+        System.out.println("Enter new starting date in format YYYY-MM-DD:");
+        String date = scanner.nextLine();
+        while (!date.matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
+            System.out.println("invalid format");
+            date = scanner.nextLine();
+        }
+        (matcher = getMatcher(regex, date)).find();
+        String[] inputs = new String[4];
+        inputs[0] = matcher.group(1);
+        inputs[1] = matcher.group(2);
+        inputs[2] = matcher.group(3);
+        inputs[3] = sale.getOffId();
+        new SellerRequest(controller.getCurrentAccount(), generateId(), inputs, "edit starting date of sale");
+        sale.setSaleStatus(SaleStatus.UNDER_REFORMATION);
+        System.out.println("Request sent");
+    }
+
+    private void editSaleProducts(Sale sale) {
+        for (Product product : sale.getProducts()) {
+            System.out.println(product.getName() + " : " + product.getProductId());
+        }
+        System.out.println("1. add product\n" +
+                "2. remove product");
+        switch (scanner.nextLine()) {
+            case "1":
+                System.out.println("Enter product's id:");
+                String id = scanner.nextLine();
+                if (controller.getProductById(id) == null) {
+                    System.out.println("invalid id");
+                } else {
+                    String[] inputs = new String[2];
+                    inputs[0] = id;
+                    inputs[1] = sale.getOffId();
+                    new SellerRequest(controller.getCurrentAccount(), generateId(),inputs, "add product to sale");
+                    sale.setSaleStatus(SaleStatus.UNDER_REFORMATION);
+                }
+                break;
+            case "2":
+                System.out.println("Enter product's id:");
+                id = scanner.nextLine();
+                if (controller.getProductById(id) == null) {
+                    System.out.println("invalid id");
+                } else {
+                    String[] inputs = new String[2];
+                    inputs[0] = id;
+                    inputs[1] = sale.getOffId();
+                    new SellerRequest(controller.getCurrentAccount(), generateId(), inputs, "remove product from sale");
+                    sale.setSaleStatus(SaleStatus.UNDER_REFORMATION);
+                    System.out.println("Request sent");
+                }
+        }
     }
 
     private void addOff() {

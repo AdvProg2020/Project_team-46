@@ -45,7 +45,7 @@ public class Controller {
     }
 
     public Product getProductById(String productId) {
-        for (Product product : products) {
+        for (Product product : availableProducts) {
             if (product.getProductId().equals(productId)) {
                 return product;
             }
@@ -281,8 +281,9 @@ public class Controller {
     public ArrayList<String> viewSellersOff() {
         ArrayList<String> offs = new ArrayList<>();
         for (Sale sale : currentAccount.getOffList()) {
+            System.out.println("offId: " + sale.getOffId());
             for (Product product : sale.getProducts()) {
-                double number = product.getValue() - (sale.getDiscountAmount() / 100.0)*product.getValue();
+                double number = product.getValue() - (sale.getDiscountPercentage() / 100.0)*product.getValue();
                 String output = product.getName()+ "   " + "   " + product.getProductId() + "   " +
                         product.getValue() + "   " + number;
                 offs.add(output);
@@ -299,12 +300,29 @@ public class Controller {
         return getSaleById(offId).toString();
     }
 
-    public void editOff(String offId) {
-
+    public void editStartingDateOfSale(int year, int month, int day, String offId) {
+        getSaleById(offId).setStartingDate(new Date(year, month, day));
+        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
     }
 
-    public void addOff(){
+    public void editEndingDateOfSale(int year, int month, int day, String offId) {
+        getSaleById(offId).setEndingdate(new Date(year, month, day));
+        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
+    }
 
+    public void editDiscountPercentageOfSale(int discountPercentage, String offId) {
+        getSaleById(offId).setDiscountPercentage(discountPercentage);
+        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
+    }
+
+    public void addProductToSale(String offId, String productId) {
+        getSaleById(offId).addProduct(getProductById(productId));
+        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
+    }
+
+    public void removeProductFromSale(String offId, String productId) {
+        getSaleById(offId).removeProduct(getProductById(productId));
+        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
     }
 
     public long viewBalance() {
@@ -540,7 +558,7 @@ public class Controller {
         ArrayList<String> offs = new ArrayList<>();
         for (Sale sale : sales) {
             for (Product product : sale.getProducts()) {
-                double number = product.getValue() - (sale.getDiscountAmount() / 100.0)*product.getValue();
+                double number = product.getValue() - (sale.getDiscountPercentage() / 100.0)*product.getValue();
                 String output = product.getName()+ "   " + "   " + product.getProductId() + "   " +
                         product.getValue() + "   " + number;
                 offs.add(output);

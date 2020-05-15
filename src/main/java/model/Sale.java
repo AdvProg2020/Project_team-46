@@ -9,14 +9,23 @@ public class Sale {
     private List<Product> products;
     private Date startingDate;
     private Date endingDate;
-    private long discountAmount;
+    private int discountPercentage;
+    private SaleStatus saleStatus;
 
-    public Sale(String offId, List<Product> products, Date startingDate, Date endingDate, long discountAmount) {
+    public Sale(String offId, List<Product> products, Date startingDate, Date endingDate, int discountPercentage) {
         this.offId = offId;
         this.products = products;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
-        this.discountAmount = discountAmount;
+        this.discountPercentage = discountPercentage;
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
     }
 
     public String getOffId() {
@@ -47,16 +56,24 @@ public class Sale {
         return endingDate;
     }
 
-    public void setEndingdate(Date endingdate) {
-        this.endingDate = endingdate;
+    public void setEndingdate(Date endingDate) {
+        this.endingDate = endingDate;
     }
 
-    public long getDiscountAmount() {
-        return discountAmount;
+    public int getDiscountPercentage() {
+        return discountPercentage;
     }
 
-    public void setDiscountAmount(long discountAmount) {
-        this.discountAmount = discountAmount;
+    public void setDiscountPercentage(int discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public SaleStatus getSaleStatus() {
+        return saleStatus;
+    }
+
+    public void setSaleStatus(SaleStatus saleStatus) {
+        this.saleStatus = saleStatus;
     }
 
     @Override
@@ -66,7 +83,7 @@ public class Sale {
                 ", products=" + products +
                 ", startingDate=" + startingDate +
                 ", endingDate=" + endingDate +
-                ", discountAmount=" + discountAmount +
+                ", discountPercentage=" + discountPercentage +
                 '}';
     }
 }
