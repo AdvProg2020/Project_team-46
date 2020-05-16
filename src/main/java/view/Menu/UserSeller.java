@@ -126,7 +126,12 @@ public class UserSeller extends Menu{
             if (controller.getProductById(command) == null) {
                 System.out.println("invalid id");
             } else {
-                products.add(controller.getProductById(command));
+                if (controller.getProductById(command).isInSale()) {
+                    System.out.println("Product is already in a sale");
+                } else {
+                    controller.putProductInSale(command);
+                    products.add(controller.getProductById(command));
+                }
             }
         }
         System.out.println("Enter a starting date in format YYYY-MM-DD:");

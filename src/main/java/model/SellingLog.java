@@ -6,11 +6,13 @@ import java.util.List;
 
 public class SellingLog extends Log {
     private long receivedAmount;
-    private List<Product> soldProducts;
-    public SellingLog(String logId, Date date, String costumerName, String sellerName, DeliveryStatus deliveryStatus,long discountAmount, long receivedAmount) {
-        super(logId, date, costumerName, sellerName, deliveryStatus, discountAmount);
-        soldProducts = new ArrayList<>();
+    private Product soldProduct;
+    private String sellerName;
+    public SellingLog(String logId, Date date, String costumerName, String sellerName, Product soldProduct, DeliveryStatus deliveryStatus,long discountAmount, long receivedAmount) {
+        super(logId, date, costumerName, deliveryStatus, discountAmount);
+        this.soldProduct = soldProduct;
         this.receivedAmount = receivedAmount;
+        this.sellerName = sellerName;
     }
 
     public long getReceivedAmount() {
@@ -21,24 +23,16 @@ public class SellingLog extends Log {
         this.receivedAmount = receivedAmount;
     }
 
-    public List<Product> getSoldProducts() {
-        return soldProducts;
-    }
-
-    public void setSoldProducts(List<Product> soldProducts) {
-        this.soldProducts = soldProducts;
-    }
-
     @Override
     public String toString() {
         return "SellingLog{" +
                 "receivedAmount=" + receivedAmount +
-                ", soldProducts=" + soldProducts +
+                ", soldProduct=" + soldProduct +
+                ", sellerName='" + sellerName + '\'' +
                 ", logId='" + logId + '\'' +
                 ", date=" + date +
                 ", discountAmount=" + discountAmount +
                 ", costumerName='" + costumerName + '\'' +
-                ", sellerName='" + sellerName + '\'' +
                 ", deliveryStatus=" + deliveryStatus +
                 '}';
     }

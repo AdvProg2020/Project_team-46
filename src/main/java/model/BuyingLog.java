@@ -1,17 +1,14 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class BuyingLog extends Log {
     private long paidAmount;
-    private List<Product> boughtProducts;
-
-    public BuyingLog(String logId, Date date, String costumerName, String sellerName, DeliveryStatus deliveryStatus
+    private Map<Product, Account> sellerPerProduct;
+    public BuyingLog(String logId, Date date, String costumerName, Map<Product,Account> sellerPerProduct, DeliveryStatus deliveryStatus
             ,long discountAmount, long paidAmount) {
-        super(logId, date, costumerName, sellerName, deliveryStatus, discountAmount);
-        boughtProducts = new ArrayList<>();
+        super(logId, date, costumerName, deliveryStatus, discountAmount);
+        this.sellerPerProduct = sellerPerProduct;
         this.paidAmount = paidAmount;
     }
 
@@ -23,24 +20,15 @@ public class BuyingLog extends Log {
         this.paidAmount = paidAmount;
     }
 
-    public List<Product> getBoughtProducts() {
-        return boughtProducts;
-    }
-
-    public void setBoughtProducts(List<Product> boughtProducts) {
-        this.boughtProducts = boughtProducts;
-    }
-
     @Override
     public String toString() {
         return "BuyingLog{" +
                 "paidAmount=" + paidAmount +
-                ", boughtProducts=" + boughtProducts +
+                ", sellerPerProduct=" + sellerPerProduct +
                 ", logId='" + logId + '\'' +
                 ", date=" + date +
                 ", discountAmount=" + discountAmount +
                 ", costumerName='" + costumerName + '\'' +
-                ", sellerName='" + sellerName + '\'' +
                 ", deliveryStatus=" + deliveryStatus +
                 '}';
     }

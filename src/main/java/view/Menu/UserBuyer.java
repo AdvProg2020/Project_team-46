@@ -275,8 +275,8 @@ public class UserBuyer extends Menu{
                     System.out.println(product.getName() + "-----" + controller.viewCart().get(product));
                 }
                 System.out.println("---------------------");
-                System.out.println("Total Price:" + controller.showTotalPrice());
-                System.out.println("Are you sure to pay" + controller.showTotalPrice() + "?");
+                System.out.println("Total Price:" + controller.showTotalPrice(discount));
+                System.out.println("Are you sure to pay" + controller.showTotalPrice(discount) + "?");
                 System.out.println("1.YES\n" +
                         "2.back");
             }
@@ -285,7 +285,11 @@ public class UserBuyer extends Menu{
             public void execute() {
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
-                        controller.purchase(address,phoneNumber,discount);
+                        if (controller.showTotalPrice() > controller.getCurrentAccount().getBalance()) {
+                            System.out.println("Your balance is not enough!");
+                        } else {
+                            controller.purchase(discount);
+                        }
                         currentMenu.show();
                         currentMenu.execute();
                         break;

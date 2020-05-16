@@ -10,15 +10,13 @@ public class Log {
     protected Date date;
     protected long discountAmount;
     protected String costumerName;
-    protected String sellerName;
     protected DeliveryStatus deliveryStatus;
 
-    public Log(String logId, Date date, String costumerName, String sellerName, DeliveryStatus deliveryStatus, long discountAmount) {
+    public Log(String logId, Date date, String costumerName, DeliveryStatus deliveryStatus, long discountAmount) {
         logs.add(this);
         this.logId = logId;
         this.date = date;
         this.costumerName = costumerName;
-        this.sellerName = sellerName;
         this.deliveryStatus = deliveryStatus;
         this.discountAmount = discountAmount;
     }
@@ -53,14 +51,6 @@ public class Log {
 
     public void setCostumerName(String costumerName) {
         this.costumerName = costumerName;
-    }
-
-    public String getSellerName() {
-        return sellerName;
-    }
-
-    public void setSellerName(String sellerName) {
-        this.sellerName = sellerName;
     }
 
     public DeliveryStatus getDeliveryStatus() {

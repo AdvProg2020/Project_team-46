@@ -14,6 +14,7 @@ public class Product {
     private String brandOrCompany;
     private Account seller;
     private boolean isAvailable;
+    private boolean isInSale = false;
     private Category category;
     private String description;
     private double averageScore;
@@ -40,6 +41,14 @@ public class Product {
 
     public static void removeProductById(String id) {
 
+    }
+
+    public boolean isInSale() {
+        return isInSale;
+    }
+
+    public void setInSale(boolean inSale) {
+        isInSale = inSale;
     }
 
     public List<Score> getScores() {

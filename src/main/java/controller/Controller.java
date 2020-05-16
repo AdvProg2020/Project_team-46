@@ -390,17 +390,99 @@ public class Controller {
             System.out.println("product Id is invalid");
     }
 
-    public double showTotalPrice() {
-        return 0;
-    } //needs to complete
+    public void putProductInSale(String productId) {
+        getProductById(productId).setInSale(true);
+    }
 
-    public void purchase(String address,String phoneNumber,Discount discount) {
+    public Sale getSaleOfProduct(Product product) {
+        for (Sale availableSale : availableSales) {
+            if (availableSale.hasProduct(product)) {
+                return availableSale;
+            }
+        }
+        return null;
+    }
 
-    } //needs to complete
+    public long showTotalPrice(Discount discount) {
+        long totalPrice = 0;
+        Sale sale;
+        Date date = new Date();
+        for (Product product : currentAccount.getCart().keySet()) {
+            for (int i = 0; i < currentAccount.getCart().get(product); i++) {
+                sale = getSaleOfProduct(product);
+                if (sale != null && sale.getStartingDate().before(date) && sale.getEndingdate().after(date)) {
+                    totalPrice += (product.getValue() * (100 - getSaleOfProduct(product).getDiscountPercentage()) / 100);
+                } else {
+                    totalPrice += product.getValue();
+                }
+            }
+        }
+        if (discount != null && discount.getStartingDate().before(date) && discount.getEndingDate().after(date)) {
+            totalPrice -= showDiscountAmount(totalPrice, discount);
+        }
+        return totalPrice;
+    }
+
+    public long showTotalPrice() {
+        long totalPrice = 0;
+        Sale sale;
+        Date date = new Date();
+        for (Product product : currentAccount.getCart().keySet()) {
+            for (int i = 0; i < currentAccount.getCart().get(product); i++) {
+                sale = getSaleOfProduct(product);
+                if (sale != null && sale.getStartingDate().before(date) && sale.getEndingdate().after(date)) {
+                    totalPrice += (product.getValue() * (100 - getSaleOfProduct(product).getDiscountPercentage()) / 100);
+                } else {
+                    totalPrice += product.getValue();
+                }
+            }
+        }
+        return totalPrice;
+    }
+
+    public long showDiscountAmount(long totalPrice, Discount discount) {
+        if (discount != null) {
+            if ((100 - discount.getDiscountPercentage()) * totalPrice > discount.getMaximumDiscount()) {
+                return discount.getMaximumDiscount();
+            } else {
+                return totalPrice * discount.getDiscountPercentage();
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public void purchase(Discount discount) {
+        currentAccount.addToBalance(-showTotalPrice(discount));
+        Map<Product, Account> sellerPerProduct = new HashMap<>();
+        for (Product product : currentAccount.getCart().keySet()) {
+            for (int i = 0; i < currentAccount.getCart().get(product); i++) {
+                product.getSeller().addToBalance(receivedMoney(product));
+                product.getSeller().getSellingRecords().add(new SellingLog(generateId(), new Date(), currentAccount.getUsername(),
+                        product.getSeller().getUsername(), product, DeliveryStatus.IN_PROCESS, showDiscountAmount(product.getValue(), discount),
+                        receivedMoney(product)));
+            }
+            sellerPerProduct.put(product, product.getSeller());
+        }
+        currentAccount.getBuyingRecords().add(new BuyingLog(generateId(), new Date(), currentAccount.getUsername()
+                ,sellerPerProduct, DeliveryStatus.IN_PROCESS, showDiscountAmount(showTotalPrice(), discount),showTotalPrice(discount)));
+        currentAccount.getCart().clear();
+    }
+
+    public long receivedMoney(Product product) {
+        Sale sale = getSaleOfProduct(product);
+        Date date = new Date();
+        if (sale != null && sale.getStartingDate().before(date) && sale.getEndingdate().after(date)) {
+            return (100 - getSaleOfProduct(product).getDiscountPercentage()) * product.getValue();
+        } else {
+            return product.getValue();
+        }
+    }
 
     public boolean discountCodeConfirmation(String code) {
-        if (getDiscountByCode(code) != null) {
-            Discount discount = getDiscountByCode(code);
+        Discount discount = getDiscountByCode(code);
+        Date date = new Date();
+        if (discount != null && discount.getStartingDate().before(date) && discount.getEndingDate().after(date)) {
             return discount.getIncludedPeople().contains(currentAccount);
         }
         return false;
@@ -593,6 +675,17 @@ public class Controller {
 
     public List<Category> getCategories() {
         return categories;
+    }
+
+    public static String generateId() {
+        String chars = "1234567890";
+        StringBuilder string = new StringBuilder();
+        Random rnd = new Random();
+        while (string.length() < 10) {
+            int index = (int) (rnd.nextFloat() * chars.length());
+            string.append(chars.charAt(index));
+        }
+        return string.toString();
     }
 
 }

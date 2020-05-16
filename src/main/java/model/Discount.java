@@ -27,7 +27,6 @@ public class Discount {
         this.endingDate = endingDate;
         this.discountPercentage = discountPercentage;
         this.maximumDiscount = maximumDiscount;
-
     }
 
 

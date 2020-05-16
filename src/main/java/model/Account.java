@@ -1,10 +1,7 @@
 package model;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Account {
     private String username;
@@ -43,6 +40,10 @@ public class Account {
 
     public void deleteUser(String username) {
 
+    }
+
+    public void addToBalance(long amount) {
+        balance += amount;
     }
 
     public String getUsername() {

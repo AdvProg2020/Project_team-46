@@ -1,9 +1,8 @@
 package view.Menu;
 
-import model.Account;
-import model.Role;
-import model.Product;
-import model.Discount;
+import model.*;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -16,7 +15,7 @@ public class UserManager extends Menu {
         submenus.put(4, getManageProducts());
         submenus.put(5, getCreateDiscountCode());
         submenus.put(6, getViewDiscountCode());
-        submenus.put(7, getManageRequest()); //needs to complete
+        submenus.put(7, getManageRequest());
         submenus.put(8, getManageCategory());
         this.setSubmenus(submenus);
     }
@@ -212,7 +211,7 @@ public class UserManager extends Menu {
                             break;
                         case "max discount":
                             System.out.println("Enter new max discount(a positive Double)");
-                            discount.setMaximumDiscount(scanner.nextLong());
+                            discount.setMaximumDiscount(Long.parseLong(scanner.nextLine()));
                             break;
                         default:
                             System.out.println("invalid field");
@@ -452,7 +451,7 @@ public class UserManager extends Menu {
                 }
             }
         };
-    } //needs to complete request class
+    }
 
     private void declineRequest() {
         String command;

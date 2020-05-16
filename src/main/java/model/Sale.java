@@ -28,6 +28,10 @@ public class Sale {
         products.remove(product);
     }
 
+    public boolean hasProduct(Product product) {
+        return products.contains(product);
+    }
+
     public String getOffId() {
         return offId;
     }
