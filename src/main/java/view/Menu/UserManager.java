@@ -272,10 +272,12 @@ public class UserManager extends Menu {
         String command;
         String regex;
         Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches(regex = "edit (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
+                System.out.println("Enter new name:");
                 String newName = scanner.nextLine();
+                System.out.println("Enter new description:");
                 String newDescription = scanner.nextLine();
                 String field = matcher.group(1);
                 controller.editCategory(field,newName,newDescription);
@@ -283,6 +285,7 @@ public class UserManager extends Menu {
             else if (command.matches(regex = "add (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
+                System.out.println("add description for" + field);
                 String description = scanner.nextLine();
                 controller.addCategory(field,description);
             }
@@ -311,7 +314,7 @@ public class UserManager extends Menu {
                                 + "address: " + currentAccount.getAddress() + "\n"
                                 + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
                                 + "role: " + currentAccount.getRole() + "\n"
-                        + "1. edit field" + "\n"
+                        + "1. edit [field]" + "\n"
                         + "2. back"
                 );
             }
@@ -340,7 +343,7 @@ public class UserManager extends Menu {
             public void show() {
                 System.out.println(controller.getAccounts());
                 System.out.println(
-                        "1. manage users" + "\n"
+                        "1. view [username]/delete user [username]/create manager profile" + "\n"
                         + "2. back");
             }
 
@@ -367,7 +370,7 @@ public class UserManager extends Menu {
             public void show() {
                 System.out.println(controller.getProducts());
                 System.out.println(
-                        "1. manage products" + "\n"
+                        "1. remove [product id]" + "\n"
                                 + "2. back");
             }
 
@@ -599,7 +602,7 @@ public class UserManager extends Menu {
             @Override
             public void show() {
                 System.out.println("Manage Categories:");
-                System.out.println("1.edit/add/remove\n" +
+                System.out.println("1.edit/add/remove [category name]\n" +
                         "2.back");
                 System.out.println(controller.manageCategories());
             }
