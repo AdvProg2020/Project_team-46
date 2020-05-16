@@ -62,6 +62,8 @@ public class UserManager extends Menu {
                 parentMenu.show();
                 parentMenu.execute();
                 break;
+            default:
+                System.out.println("enter a number in validate range");
         }
 
     }
@@ -136,6 +138,7 @@ public class UserManager extends Menu {
                 controller.deleteUser(field);
             }
             else if (command.equalsIgnoreCase("create manager profile")) {
+                System.out.println("Enter manager username :");
                 String userName = scanner.nextLine();
                 Role manager = Role.MANAGER;
                 Account account = controller.createManager(userName,manager);
@@ -331,7 +334,8 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
-
+                    default:
+                        System.out.println("Enter a validate number");
                 }
             }
         };
@@ -359,6 +363,8 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
                 }
             }
         };
@@ -387,6 +393,8 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
                 }
             }
         };
@@ -413,6 +421,8 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
                 }
             }
         };
@@ -476,6 +486,8 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
                 }
             }
         };
@@ -513,6 +525,8 @@ public class UserManager extends Menu {
                     case "4":
                         parentMenu.show();
                         parentMenu.execute();
+                    default:
+                        System.out.println("Enter a validate number");
                 }
             }
         };
@@ -619,6 +633,8 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
                 }
             }
         };

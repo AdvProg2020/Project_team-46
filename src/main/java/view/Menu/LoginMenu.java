@@ -9,8 +9,8 @@ public class LoginMenu extends Menu {
 
     @Override
     public void show() {
-        System.out.println("1. Register \n" +
-                "2. Log in \n" +
+        System.out.println("1. Register(create account [Role] [Username]) \n" +
+                "2. Log in (login [Username])\n" +
                 "3. Log out \n" +
                 "4. Back");
     }
