@@ -424,11 +424,13 @@ public class UserManager extends Menu {
                 System.out.println("Please Enter starting date:(year/month/day)");
                 String startingDate = scanner.nextLine();
                 String[] split1 = startingDate.split("/");
-                Date start = new Date(Integer.parseInt(split1[0]),Integer.parseInt(split1[1]),Integer.parseInt(split1[2]));
+                Date start = new Date(Integer.parseInt(split1[0]),Integer.parseInt(split1[1]),
+                        Integer.parseInt(split1[2]));
                 System.out.println("Please Enter ending date:(year/month/day)");
                 String endingDate = scanner.nextLine();
                 String[] split2 = endingDate.split("/");
-                Date end = new Date(Integer.parseInt(split2[0]),Integer.parseInt(split2[1]),Integer.parseInt(split2[2]));
+                Date end = new Date(Integer.parseInt(split2[0]),Integer.parseInt(split2[1]),
+                        Integer.parseInt(split2[2]));
                 System.out.println("Please Enter discount percentage:(a positive Integer lower than 100)");
                 int percent = Integer.parseInt(scanner.nextLine());
                 System.out.println("Please Enter maximum discount amount:");
@@ -438,6 +440,10 @@ public class UserManager extends Menu {
             }
             catch (NumberFormatException numberFormatException) {
                 System.out.println("input should be a number\n" +
+                        "try again");
+            }
+            catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+                System.out.println("please Enter the date like this pattern (year/month/day)\n" +
                         "try again");
             }
         } while (continueLoop);

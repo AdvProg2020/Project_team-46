@@ -209,10 +209,6 @@ public class Controller {
         discountList.add(discount);
     }
 
-    public void viewDiscountCodes() {
-
-    }
-
     public String viewDiscountCode(String discountCode) {
         if (getDiscountByCode(discountCode) != null) {
             Discount discount = getDiscountByCode(discountCode);
@@ -405,7 +401,10 @@ public class Controller {
     public boolean discountCodeConfirmation(String code) {
         if (getDiscountByCode(code) != null) {
             Discount discount = getDiscountByCode(code);
-            return discount.getIncludedPeople().contains(currentAccount);
+            if (discount.getIncludedPeople().contains(currentAccount)) {
+                Date date = new Date();
+                return date.compareTo(discount.getEndingDate()) <= 0 && date.compareTo(discount.getStartingDate()) >= 0;
+            }
         }
         return false;
     }
@@ -575,8 +574,10 @@ public class Controller {
         Product product = getProductById(goodId);
         boolean hasBought = product.hasBought(currentAccount.getUsername());
         Comment comment = new Comment(currentAccount, product, title, content, hasBought,CommentStatus.PENDING_APPROVAL);
-
-    } //needs to complete
+        List<Comment> commentList = new ArrayList<>(product.getComments());
+        commentList.add(comment);
+        product.setComments(commentList);
+    }
 
     public ArrayList<String> offs() {
         ArrayList<String> offs = new ArrayList<>();
