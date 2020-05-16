@@ -1,9 +1,7 @@
 package view.Menu;
 
-import model.Account;
-import model.Role;
-import model.Product;
-import model.Discount;
+import model.*;
+
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -196,23 +194,6 @@ public class UserManager extends Menu {
         }
     }
 
-    private void manageRequests() {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
-            if (command.matches(regex = "details (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.showDetails(field);
-            }
-            else if (command.matches(regex = "accept (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-
-            }
-        }
-    } //needs to complete
 
     private void manageCategory() {
         String command;
@@ -394,23 +375,116 @@ public class UserManager extends Menu {
         return new Menu("Manage Request",this) {
             @Override
             public void show() {
-                System.out.println("Manage Request:");
-                System.out.println("1.details [requestId]\n" +
-                        "1.accept [requestId]\n" +
-                        "1.decline [requestId]\n" +
-                        "2.back");
-                System.out.println(controller.manageRequest());
+                for (Request request : Request.requests) {
+                    System.out.println("Request: " + request.getDetails() + "  From: " + request.getAccount() + "  request ID: "
+                            + request.getRequestId());
+                }
+                System.out.println("1.show details\n" +
+                        "2.accept request\n" +
+                        "3.decline request\n" +
+                        "4.back");
             }
 
             @Override
             public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-
+                switch (scanner.nextLine()) {
+                    case "1":
+                        showRequestDetails();
+                        this.show();
+                        this.execute();
+                    case "2":
+                        acceptRequest();
+                        this.show();
+                        this.execute();
+                    case "3":
+                        declineRequest();
+                        this.show();
+                        this.execute();
+                    case "4":
+                        parentMenu.show();
+                        parentMenu.execute();
                 }
             }
         };
     } //needs to complete request class
+
+    private void declineRequest() {
+        String command;
+        String regex;
+        Matcher matcher;
+        Request request;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "decline (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String id = matcher.group(1);
+                request = Request.getRequestById(id);
+                if (request != null) {
+                    request.acceptRequest();
+                    System.out.println("Request declined");
+                } else {
+                    System.out.println("invalid id");
+                }
+            } else if (command.equals("help")){
+                System.out.println("decline [requestId]" + "\n"
+                        + "help" + "\n"
+                        + "back");
+            } else {
+                System.out.println("invalid command");
+            }
+        }
+    }
+
+    private void acceptRequest() {
+        String command;
+        String regex;
+        Matcher matcher;
+        Request request;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "accept (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String id = matcher.group(1);
+                request = Request.getRequestById(id);
+                if (request != null) {
+                    request.acceptRequest();
+                    System.out.println("Request accepted");
+                } else {
+                    System.out.println("invalid id");
+                }
+            } else if (command.equals("help")){
+                System.out.println("accept [requestId]" + "\n"
+                        + "help" + "\n"
+                        + "back");
+            } else {
+                System.out.println("invalid command");
+            }
+        }
+    }
+
+    private void showRequestDetails() {
+        String command;
+        String regex;
+        Matcher matcher;
+        Request request;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+            if (command.matches(regex = "details (\\S+)")) {
+                (matcher = getMatcher(regex, command)).find();
+                String id = matcher.group(1);
+                request = Request.getRequestById(id);
+                if (request != null) {
+                    System.out.println("Request: " + request.getDetails() + "  From: " + request.getAccount() + "  request ID: "
+                            + request.getRequestId());
+                } else {
+                    System.out.println("invalid id");
+                }
+            } else if (command.equals("help")){
+                System.out.println("details [requestId]" + "\n"
+                        + "help" + "\n"
+                        + "back");
+            } else {
+                System.out.println("invalid command");
+            }
+        }
+    }
 
     private Menu getManageCategory() {
         return new Menu("Manage Category",this) {

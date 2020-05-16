@@ -55,6 +55,8 @@ public class SellerRequest extends Request {
             case "add sale":
                 controller.addProduct(inputs[0]);
         }
+
+
     }
 
 

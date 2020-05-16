@@ -29,6 +29,18 @@ public abstract class Request {
         return null;
     }
 
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
     public static void setController(Controller controller) {
         Request.controller = controller;
     }
