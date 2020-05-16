@@ -4,6 +4,8 @@ import model.Account;
 import model.Role;
 import model.Product;
 import model.Discount;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -179,12 +181,47 @@ public class UserManager extends Menu {
             if (command.matches(regex = "view discount code (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                controller.viewDiscountCode(field);
+                System.out.println(controller.viewDiscountCode(field));
             }
             else if (command.matches(regex = "edit discount code (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                controller.editDiscountCode(field);
+                if (controller.getDiscountByCode(field) != null) {
+                    Discount discount = controller.getDiscountByCode(field);
+                    System.out.println("Enter a field to edit:(starting date/ending date/" +
+                            "discount percentage/max discount/add an account [user name])");
+                    String input = scanner.nextLine();
+                    switch (input) {
+                        case "starting date":
+                            System.out.println("Enter new date(year/month/day)");
+                            String inputDate = scanner.nextLine();
+                            String[] split = inputDate.split("/");
+                            Date date = new Date(Integer.parseInt(split[0]),Integer.parseInt(split[1]),
+                                    Integer.parseInt(split[2]));
+                            discount.setStartingDate(date);
+                            break;
+                        case "ending date":
+                            System.out.println("Enter new date(year/month/day)");
+                            String inputDate1 = scanner.nextLine();
+                            String[] split1 = inputDate1.split("/");
+                            Date date1 = new Date(Integer.parseInt(split1[0]),Integer.parseInt(split1[1]),
+                                    Integer.parseInt(split1[2]));
+                            discount.setEndingDate(date1);
+                            break;
+                        case "discount percentage":
+                            System.out.println("Enter new percentage(a positive Integer)");
+                            discount.setDiscountPercentage(Integer.parseInt(scanner.nextLine()));
+                            break;
+                        case "max discount":
+                            System.out.println("Enter new max discount(a positive Double)");
+                            discount.setMaximumDiscount(scanner.nextLong());
+                            break;
+                        default:
+                            System.out.println("invalid field");
+                    }
+                }
+                else
+                    System.out.println("code is invalid");
             }
             else if (command.matches(regex = "remove discount code (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
@@ -348,7 +385,7 @@ public class UserManager extends Menu {
             public void execute() {
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
-                        controller.createDiscountCode();
+                        createDiscountCode();
                         this.show();
                         this.execute();
                         break;
@@ -359,6 +396,10 @@ public class UserManager extends Menu {
                 }
             }
         };
+    }
+
+    private void createDiscountCode() {
+
     }
 
     private Menu getViewDiscountCode() {
