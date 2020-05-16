@@ -96,6 +96,10 @@ public class Discount {
         this.maximumDiscount = maximumDiscount;
     }
 
+    public void setIncludedPeople(List<Account> includedPeople) {
+        this.includedPeople = includedPeople;
+    }
+
     @Override
     public String toString() {
         return "Discount{" +

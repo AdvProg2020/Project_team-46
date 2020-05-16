@@ -10,6 +10,7 @@ public class Controller {
     private List<Account> accounts;
     private List<Sale> sales;
     private List<Sale> availableSales;
+    private List<Discount> discountList;
     private Account currentAccount;
     private String currentSortingMethod = "by number of views";
     public boolean hasCategoryFilter = false;
@@ -24,6 +25,7 @@ public class Controller {
         categories = new ArrayList<>();
         sales = new ArrayList<>();
         availableSales = new ArrayList<>();
+        discountList = new ArrayList<>();
     }
 
     public Category getCategoryByName(String name) {
@@ -63,7 +65,7 @@ public class Controller {
     }
 
     public Discount getDiscountByCode(String code) {
-        for (Discount discount : Discount.discounts) {
+        for (Discount discount : discountList) {
             if (discount.getCode().equals(code)) {
                 return discount;
             }
@@ -197,16 +199,18 @@ public class Controller {
             System.out.println("no user with this user name");
     }
 
+    public void addUserManager(Account account) {
+        accounts.add(account);
+    }
+
     public Account createManager(String userName,Role role) {
         return new Account(userName,Role.MANAGER);
     }
 
-    public void createDiscountCode() {
-
-    }
-
-    public void viewDiscountCodes() {
-
+    public void createDiscountCode(String code,Date start,Date end,int percent,long max) {
+        List<Account> accountList = new ArrayList<>();
+        Discount discount = new Discount(code,start,end,percent,max,accountList);
+        discountList.add(discount);
     }
 
     public String viewDiscountCode(String discountCode) {
@@ -218,7 +222,7 @@ public class Controller {
     }
 
     public void removeDiscountCode(Discount discount) {
-        Discount.discounts.remove(discount);
+        discountList.remove(discount);
     }
 
     public List<Request> manageRequest() {
@@ -653,8 +657,10 @@ public class Controller {
         Product product = getProductById(goodId);
         boolean hasBought = product.hasBought(currentAccount.getUsername());
         Comment comment = new Comment(currentAccount, product, title, content, hasBought,CommentStatus.PENDING_APPROVAL);
-
-    } //needs to complete
+        List<Comment> commentList = new ArrayList<>(product.getComments());
+        commentList.add(comment);
+        product.setComments(commentList);
+    }
 
     public ArrayList<String> offs() {
         ArrayList<String> offs = new ArrayList<>();
@@ -688,4 +694,7 @@ public class Controller {
         return string.toString();
     }
 
+    public List<Discount> getDiscountList() {
+        return discountList;
+    }
 }

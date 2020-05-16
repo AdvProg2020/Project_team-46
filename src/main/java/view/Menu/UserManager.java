@@ -2,8 +2,10 @@ package view.Menu;
 
 import model.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 
 public class UserManager extends Menu {
@@ -60,6 +62,8 @@ public class UserManager extends Menu {
                 parentMenu.show();
                 parentMenu.execute();
                 break;
+            default:
+                System.out.println("enter a number in validate range");
         }
 
     }
@@ -134,6 +138,7 @@ public class UserManager extends Menu {
                 controller.deleteUser(field);
             }
             else if (command.equalsIgnoreCase("create manager profile")) {
+                System.out.println("Enter manager username :");
                 String userName = scanner.nextLine();
                 Role manager = Role.MANAGER;
                 Account account = controller.createManager(userName,manager);
@@ -149,6 +154,7 @@ public class UserManager extends Menu {
                 account.setEmail(scanner.nextLine());
                 System.out.println("Enter manager phone number :");
                 account.setPhoneNumber(scanner.nextLine());
+                controller.addUserManager(account);
             }
             else
                 System.out.println("invalid command");
@@ -186,7 +192,7 @@ public class UserManager extends Menu {
                 if (controller.getDiscountByCode(field) != null) {
                     Discount discount = controller.getDiscountByCode(field);
                     System.out.println("Enter a field to edit:(starting date/ending date/" +
-                            "discount percentage/max discount/add an account [user name])");
+                            "discount percentage/max discount/add an account/remove an account)");
                     String input = scanner.nextLine();
                     switch (input) {
                         case "starting date":
@@ -211,7 +217,38 @@ public class UserManager extends Menu {
                             break;
                         case "max discount":
                             System.out.println("Enter new max discount(a positive Double)");
-                            discount.setMaximumDiscount(Long.parseLong(scanner.nextLine()));
+                            discount.setMaximumDiscount(scanner.nextLong());
+                            break;
+                        case "add an account":
+                            System.out.println("Enter a user name:");
+                            String userName = scanner.nextLine();
+                            if (controller.getAccountByUsername(userName) != null) {
+                                Account account = controller.getAccountByUsername(userName);
+                                List<Discount> help = new ArrayList<>(account.getDiscountCodes());
+                                List<Account> accountList = new ArrayList<>(discount.getIncludedPeople());
+                                help.add(discount);
+                                accountList.add(account);
+                                account.setDiscountCodes(help);
+                                discount.setIncludedPeople(accountList);
+                            }
+                            else
+                                System.out.println("username is invalid");
+                            break;
+                        case "remove an account":
+                            System.out.println("Enter a username");
+                            String username = scanner.nextLine();
+                            if (controller.getAccountByUsername(username) != null) {
+                                Account account = controller.getAccountByUsername(username);
+                                List<Discount> discountList = new ArrayList<>(account.getDiscountCodes());
+                                List<Account> accountList = new ArrayList<>(discount.getIncludedPeople());
+                                discountList.remove(discount);
+                                accountList.remove(account);
+                                account.setDiscountCodes(discountList);
+                                discount.setIncludedPeople(accountList);
+                                System.out.println("Successfully removed");
+                            }
+                            else
+                                System.out.println("username is invalid");
                             break;
                         default:
                             System.out.println("invalid field");
@@ -240,10 +277,12 @@ public class UserManager extends Menu {
         String command;
         String regex;
         Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("end")) {
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches(regex = "edit (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
+                System.out.println("Enter new name:");
                 String newName = scanner.nextLine();
+                System.out.println("Enter new description:");
                 String newDescription = scanner.nextLine();
                 String field = matcher.group(1);
                 controller.editCategory(field,newName,newDescription);
@@ -251,6 +290,7 @@ public class UserManager extends Menu {
             else if (command.matches(regex = "add (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
+                System.out.println("add description for" + field);
                 String description = scanner.nextLine();
                 controller.addCategory(field,description);
             }
@@ -296,7 +336,9 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
-
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -308,7 +350,7 @@ public class UserManager extends Menu {
             public void show() {
                 System.out.println(controller.getAccounts());
                 System.out.println(
-                        "1. manage users" + "\n"
+                        "1. view [username]/delete user [username]/create manager profile" + "\n"
                         + "2. back");
             }
 
@@ -324,6 +366,9 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -335,7 +380,7 @@ public class UserManager extends Menu {
             public void show() {
                 System.out.println(controller.getProducts());
                 System.out.println(
-                        "1. manage products" + "\n"
+                        "1. remove [product id]" + "\n"
                                 + "2. back");
             }
 
@@ -352,6 +397,9 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -378,13 +426,46 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
     }
 
     private void createDiscountCode() {
-
+        boolean continueLoop = true;
+        do {
+            try {
+                System.out.println("Please Enter Discount Code:");
+                String code = scanner.nextLine();
+                System.out.println("Please Enter starting date:(year/month/day)");
+                String startingDate = scanner.nextLine();
+                String[] split1 = startingDate.split("/");
+                Date start = new Date(Integer.parseInt(split1[0]),Integer.parseInt(split1[1]),
+                        Integer.parseInt(split1[2]));
+                System.out.println("Please Enter ending date:(year/month/day)");
+                String endingDate = scanner.nextLine();
+                String[] split2 = endingDate.split("/");
+                Date end = new Date(Integer.parseInt(split2[0]),Integer.parseInt(split2[1]),
+                        Integer.parseInt(split2[2]));
+                System.out.println("Please Enter discount percentage:(a positive Integer lower than 100)");
+                int percent = Integer.parseInt(scanner.nextLine());
+                System.out.println("Please Enter maximum discount amount:");
+                long max = Long.parseLong(scanner.nextLine());
+                continueLoop = false;
+                controller.createDiscountCode(code,start,end,percent,max);
+            }
+            catch (NumberFormatException numberFormatException) {
+                System.out.println("input should be a number\n" +
+                        "try again");
+            }
+            catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+                System.out.println("please Enter the date like this pattern (year/month/day)\n" +
+                        "try again");
+            }
+        } while (continueLoop);
     }
 
     private Menu getViewDiscountCode() {
@@ -396,7 +477,7 @@ public class UserManager extends Menu {
                         "1.edit discount code [code]\n " +
                         "1.remove discount code [code]\n"+
                         "2.back");
-                System.out.println(Discount.discounts);
+                System.out.println(controller.getDiscountList());
             }
 
             @Override
@@ -411,6 +492,9 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -448,6 +532,9 @@ public class UserManager extends Menu {
                     case "4":
                         parentMenu.show();
                         parentMenu.execute();
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -537,7 +624,7 @@ public class UserManager extends Menu {
             @Override
             public void show() {
                 System.out.println("Manage Categories:");
-                System.out.println("1.edit/add/remove\n" +
+                System.out.println("1.edit/add/remove [category name]\n" +
                         "2.back");
                 System.out.println(controller.manageCategories());
             }
@@ -554,6 +641,9 @@ public class UserManager extends Menu {
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
