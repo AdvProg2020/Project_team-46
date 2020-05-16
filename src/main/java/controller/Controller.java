@@ -10,6 +10,7 @@ public class Controller {
     private List<Account> accounts;
     private List<Sale> sales;
     private List<Sale> availableSales;
+    private List<Discount> discountList;
     private Account currentAccount;
     private String currentSortingMethod = "by number of views";
     public boolean hasCategoryFilter = false;
@@ -24,6 +25,7 @@ public class Controller {
         categories = new ArrayList<>();
         sales = new ArrayList<>();
         availableSales = new ArrayList<>();
+        discountList = new ArrayList<>();
     }
 
     public Category getCategoryByName(String name) {
@@ -201,8 +203,10 @@ public class Controller {
         return new Account(userName,Role.MANAGER);
     }
 
-    public void createDiscountCode() {
-
+    public void createDiscountCode(String code,Date start,Date end,int percent,long max) {
+        List<Account> accountList = new ArrayList<>();
+        Discount discount = new Discount(code,start,end,percent,max,accountList);
+        discountList.add(discount);
     }
 
     public void viewDiscountCodes() {

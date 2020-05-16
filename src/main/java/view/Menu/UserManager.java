@@ -1,10 +1,11 @@
 package view.Menu;
 
-import model.Account;
-import model.Role;
-import model.Product;
-import model.Discount;
+import model.*;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 
 public class UserManager extends Menu {
@@ -187,7 +188,7 @@ public class UserManager extends Menu {
                 if (controller.getDiscountByCode(field) != null) {
                     Discount discount = controller.getDiscountByCode(field);
                     System.out.println("Enter a field to edit:(starting date/ending date/" +
-                            "discount percentage/max discount/add an account [user name])");
+                            "discount percentage/max discount/add an account/remove an account)");
                     String input = scanner.nextLine();
                     switch (input) {
                         case "starting date":
@@ -214,6 +215,37 @@ public class UserManager extends Menu {
                             System.out.println("Enter new max discount(a positive Double)");
                             discount.setMaximumDiscount(scanner.nextLong());
                             break;
+                        case "add an account":
+                            System.out.println("Enter a user name:");
+                            String userName = scanner.nextLine();
+                            if (controller.getAccountByUsername(userName) != null) {
+                                Account account = controller.getAccountByUsername(userName);
+                                List<Discount> help = new ArrayList<>(account.getDiscountCodes());
+                                List<Account> accountList = new ArrayList<>(discount.getIncludedPeople());
+                                help.add(discount);
+                                accountList.add(account);
+                                account.setDiscountCodes(help);
+                                discount.setIncludedPeople(accountList);
+                            }
+                            else
+                                System.out.println("username is invalid");
+                            break;
+                        case "remove an account":
+                            System.out.println("Enter a username");
+                            String username = scanner.nextLine();
+                            if (controller.getAccountByUsername(username) != null) {
+                                Account account = controller.getAccountByUsername(username);
+                                List<Discount> discountList = new ArrayList<>(account.getDiscountCodes());
+                                List<Account> accountList = new ArrayList<>(discount.getIncludedPeople());
+                                discountList.remove(discount);
+                                accountList.remove(account);
+                                account.setDiscountCodes(discountList);
+                                discount.setIncludedPeople(accountList);
+                                System.out.println("Successfully removed");
+                            }
+                            else
+                                System.out.println("username is invalid");
+                            break;
                         default:
                             System.out.println("invalid field");
                     }
@@ -235,7 +267,6 @@ public class UserManager extends Menu {
                 System.out.println("invalid command");
         }
     }
-
 
     private void manageCategory() {
         String command;
@@ -385,7 +416,31 @@ public class UserManager extends Menu {
     }
 
     private void createDiscountCode() {
-
+        boolean continueLoop = true;
+        do {
+            try {
+                System.out.println("Please Enter Discount Code:");
+                String code = scanner.nextLine();
+                System.out.println("Please Enter starting date:(year/month/day)");
+                String startingDate = scanner.nextLine();
+                String[] split1 = startingDate.split("/");
+                Date start = new Date(Integer.parseInt(split1[0]),Integer.parseInt(split1[1]),Integer.parseInt(split1[2]));
+                System.out.println("Please Enter ending date:(year/month/day)");
+                String endingDate = scanner.nextLine();
+                String[] split2 = endingDate.split("/");
+                Date end = new Date(Integer.parseInt(split2[0]),Integer.parseInt(split2[1]),Integer.parseInt(split2[2]));
+                System.out.println("Please Enter discount percentage:(a positive Integer lower than 100)");
+                int percent = Integer.parseInt(scanner.nextLine());
+                System.out.println("Please Enter maximum discount amount:");
+                long max = Long.parseLong(scanner.nextLine());
+                continueLoop = false;
+                controller.createDiscountCode(code,start,end,percent,max);
+            }
+            catch (NumberFormatException numberFormatException) {
+                System.out.println("input should be a number\n" +
+                        "try again");
+            }
+        } while (continueLoop);
     }
 
     private Menu getViewDiscountCode() {
