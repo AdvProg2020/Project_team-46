@@ -476,7 +476,7 @@ public class UserManager extends Menu {
                         "1.edit discount code [code]\n " +
                         "1.remove discount code [code]\n"+
                         "2.back");
-                System.out.println(Discount.discounts);
+                System.out.println(controller.getDiscountList());
             }
 
             @Override

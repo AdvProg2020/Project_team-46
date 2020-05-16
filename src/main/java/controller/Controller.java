@@ -65,7 +65,7 @@ public class Controller {
     }
 
     public Discount getDiscountByCode(String code) {
-        for (Discount discount : Discount.discounts) {
+        for (Discount discount : discountList) {
             if (discount.getCode().equals(code)) {
                 return discount;
             }
@@ -222,7 +222,7 @@ public class Controller {
     }
 
     public void removeDiscountCode(Discount discount) {
-        Discount.discounts.remove(discount);
+        discountList.remove(discount);
     }
 
     public List<Request> manageRequest() {
@@ -604,4 +604,7 @@ public class Controller {
         return categories;
     }
 
+    public List<Discount> getDiscountList() {
+        return discountList;
+    }
 }
