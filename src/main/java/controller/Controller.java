@@ -12,7 +12,6 @@ public class Controller {
     private List<Sale> availableSales;
     private Account currentAccount;
     private String currentSortingMethod = "by number of views";
-    //private ArrayList<String> currentFilter;
     public boolean hasCategoryFilter = false;
     public boolean hasNameFilter = false;
     public String filteredCategory;
@@ -22,7 +21,6 @@ public class Controller {
         accounts = new ArrayList<>();
         products = new ArrayList<>();
         availableProducts = new ArrayList<>();
-        //currentFilter = new ArrayList<>();
         categories = new ArrayList<>();
         sales = new ArrayList<>();
         availableSales = new ArrayList<>();
@@ -211,16 +209,16 @@ public class Controller {
 
     }
 
-    public void viewDiscountCode(String discountCode) {
-
+    public String viewDiscountCode(String discountCode) {
+        if (getDiscountByCode(discountCode) != null) {
+            Discount discount = getDiscountByCode(discountCode);
+            return discount.toString();
+        }
+        return null;
     }
 
-    public void editDiscountCode(String discountCode) {
-
-    }
-
-    public void removeDiscountCode(String discountCode) {
-
+    public void removeDiscountCode(Discount discount) {
+        Discount.discounts.remove(discount);
     }
 
     public List<Request> manageRequest() {
