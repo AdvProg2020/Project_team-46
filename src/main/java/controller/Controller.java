@@ -217,10 +217,8 @@ public class Controller {
         return null;
     }
 
-   // public void editDiscountCode(String discountCode) {}
-
-    public void removeDiscountCode(String discountCode) {
-
+    public void removeDiscountCode(Discount discount) {
+        Discount.discounts.remove(discount);
     }
 
     public List<Request> manageRequest() {

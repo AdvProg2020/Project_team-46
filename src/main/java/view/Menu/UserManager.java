@@ -226,7 +226,12 @@ public class UserManager extends Menu {
             else if (command.matches(regex = "remove discount code (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                controller.removeDiscountCode(field);
+                if (controller.getDiscountByCode(field) != null) {
+                    Discount discount = controller.getDiscountByCode(field);
+                    controller.removeDiscountCode(discount);
+                }
+                else
+                    System.out.println("code is invalid");
             }
             else
                 System.out.println("invalid command");
