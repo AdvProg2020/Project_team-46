@@ -199,6 +199,10 @@ public class Controller {
             System.out.println("no user with this user name");
     }
 
+    public void addUserManager(Account account) {
+        accounts.add(account);
+    }
+
     public Account createManager(String userName,Role role) {
         return new Account(userName,Role.MANAGER);
     }

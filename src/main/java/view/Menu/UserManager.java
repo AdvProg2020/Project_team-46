@@ -154,6 +154,7 @@ public class UserManager extends Menu {
                 account.setEmail(scanner.nextLine());
                 System.out.println("Enter manager phone number :");
                 account.setPhoneNumber(scanner.nextLine());
+                controller.addUserManager(account);
             }
             else
                 System.out.println("invalid command");
@@ -336,6 +337,7 @@ public class UserManager extends Menu {
                         break;
                     default:
                         System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -365,6 +367,7 @@ public class UserManager extends Menu {
                         break;
                     default:
                         System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -395,6 +398,7 @@ public class UserManager extends Menu {
                         break;
                     default:
                         System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -423,6 +427,7 @@ public class UserManager extends Menu {
                         break;
                     default:
                         System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -488,6 +493,7 @@ public class UserManager extends Menu {
                         break;
                     default:
                         System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
@@ -527,10 +533,11 @@ public class UserManager extends Menu {
                         parentMenu.execute();
                     default:
                         System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
-    } //needs to complete request class
+    }
 
     private void declineRequest() {
         String command;
@@ -635,6 +642,7 @@ public class UserManager extends Menu {
                         break;
                     default:
                         System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
