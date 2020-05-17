@@ -46,8 +46,25 @@ public class Controller {
         return null;
     }
 
+    public Sale getAvailableSaleById(String offId) {
+        for (Sale sale : availableSales) {
+            if (sale.getOffId().equals(offId)) {
+                return sale;
+            }
+        }
+        return null;
+    }
     public Product getProductById(String productId) {
         for (Product product : products) {
+            if (product.getProductId().equals(productId)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+    public Product getAvailableProductById(String productId) {
+        for (Product product : availableProducts) {
             if (product.getProductId().equals(productId)) {
                 return product;
             }
@@ -117,38 +134,38 @@ public class Controller {
     }
 
     public void setNameOfProduct(String productId, String newName) {
-        getProductById(productId).setName(newName);
-        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+        getAvailableProductById(productId).setName(newName);
+        getAvailableProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
     }
 
     public void setCompanyOfProduct(String productId, String company) {
-        getProductById(productId).setBrandOrCompany(company);
-        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+        getAvailableProductById(productId).setBrandOrCompany(company);
+        getAvailableProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
     }
 
     public void setDescriptionOfProduct(String productId, String description) {
-        getProductById(productId).setDescription(description);
-        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+        getAvailableProductById(productId).setDescription(description);
+        getAvailableProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
     }
 
     public void setAvailabilityOfProduct(String productId, boolean isAvailable) {
-        getProductById(productId).setAvailable(isAvailable);
-        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+        getAvailableProductById(productId).setAvailable(isAvailable);
+        getAvailableProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
     }
 
     public void setValueOfProduct(String productId, long value) {
-        getProductById(productId).setValue(value);
-        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+        getAvailableProductById(productId).setValue(value);
+        getAvailableProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
     }
 
     public void setAmountOfProduct(String productId, int amount) {
-        getProductById(productId).setAmount(amount);
-        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+        getAvailableProductById(productId).setAmount(amount);
+        getAvailableProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
     }
 
     public void setCategoryOfProduct(String productId, Category category) {
-        getProductById(productId).setCategory(category);
-        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+        getAvailableProductById(productId).setCategory(category);
+        getAvailableProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
     }
 
     public void setPassword(String password) {
@@ -193,7 +210,7 @@ public class Controller {
 
     public ArrayList<String> viewBuyers(String productId) {
         ArrayList<String> buyers = new ArrayList<>();
-        for (Account buyer : getProductById(productId).getBuyers()) {
+        for (Account buyer : getAvailableProductById(productId).getBuyers()) {
             buyers.add(buyer.getName());
         }
         return buyers;
@@ -275,7 +292,7 @@ public class Controller {
     }
 
     public String viewProduct(String productId) {
-        return getProductById(productId).toString();
+        return getAvailableProductById(productId).toString();
     }
 
     public List<Product> getAvailableProducts() {
@@ -330,7 +347,7 @@ public class Controller {
     }
 
     public String viewOff(String offId) {
-        return getSaleById(offId).toString();
+        return getAvailableSaleById(offId).toString();
     }
 
     public void editStartingDateOfSale(int year, int month, int day, String offId) {
@@ -339,23 +356,23 @@ public class Controller {
     }
 
     public void editEndingDateOfSale(int year, int month, int day, String offId) {
-        getSaleById(offId).setEndingdate(new Date(year, month, day));
-        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
+        getAvailableSaleById(offId).setEndingdate(new Date(year, month, day));
+        getAvailableSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
     }
 
     public void editDiscountPercentageOfSale(int discountPercentage, String offId) {
-        getSaleById(offId).setDiscountPercentage(discountPercentage);
-        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
+        getAvailableSaleById(offId).setDiscountPercentage(discountPercentage);
+        getAvailableSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
     }
 
     public void addProductToSale(String offId, String productId) {
-        getSaleById(offId).addProduct(getProductById(productId));
-        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
+        getAvailableSaleById(offId).addProduct(getAvailableProductById(productId));
+        getAvailableSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
     }
 
     public void removeProductFromSale(String offId, String productId) {
-        getSaleById(offId).removeProduct(getProductById(productId));
-        getSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
+        getAvailableSaleById(offId).removeProduct(getAvailableProductById(productId));
+        getAvailableSaleById(offId).setSaleStatus(SaleStatus.CONFIRMED);
     }
 
     public long viewBalance() {
@@ -367,8 +384,8 @@ public class Controller {
     }
 
     public void increaseProduct(String productId) {
-        if (getProductById(productId) != null) {
-            Product product = getProductById(productId);
+        if (getAvailableProductById(productId) != null) {
+            Product product = getAvailableProductById(productId);
             Map<Product,Integer> cart = currentAccount.getCart();
             if (currentAccount.getCart().containsKey(product)) {
                 if (product.getAmount() > 0) {
@@ -388,8 +405,8 @@ public class Controller {
     }
 
     public void decreaseProduct(String productId) {
-        if (getProductById(productId) != null) {
-            Product product = getProductById(productId);
+        if (getAvailableProductById(productId) != null) {
+            Product product = getAvailableProductById(productId);
             Map<Product,Integer> cart = currentAccount.getCart();
             if (currentAccount.getCart().containsKey(product)) {
                 int amount = currentAccount.getCart().get(product);
@@ -404,7 +421,7 @@ public class Controller {
     }
 
     public void putProductInSale(String productId) {
-        getProductById(productId).setInSale(true);
+        getAvailableProductById(productId).setInSale(true);
     }
 
     public Sale getSaleOfProduct(Product product) {
@@ -519,7 +536,7 @@ public class Controller {
     }
 
     public void rateProduct(String productId, double score) {
-        Product product = getProductById(productId);
+        Product product = getAvailableProductById(productId);
         Score score1 = new Score(currentAccount,score,product);
         product.setScores(score1);
     }
@@ -610,7 +627,7 @@ public class Controller {
     public void addToCart(String productId) {
         if (currentAccount.getRole() == Role.CUSTOMER) {
             Map<Product,Integer> cart = currentAccount.getCart();
-            cart.put(getProductById(productId),1);
+            cart.put(getAvailableProductById(productId),1);
             currentAccount.setCart(cart);
         }
         else
@@ -623,7 +640,7 @@ public class Controller {
 
     public ArrayList<String> attributes(String productId) {
         ArrayList<String> attributes = new ArrayList<>();
-        Product product = getProductById(productId);
+        Product product = getAvailableProductById(productId);
         attributes.add(product.getName());
         attributes.add(product.getBrandOrCompany());
         attributes.add(product.getProductId());
@@ -638,8 +655,8 @@ public class Controller {
 
     public ArrayList<String> compare(String firstId,String secondId) {
         ArrayList<String> compare = new ArrayList<>();
-        Product product1 = getProductById(firstId);
-        Product product2 = getProductById(secondId);
+        Product product1 = getAvailableProductById(firstId);
+        Product product2 = getAvailableProductById(secondId);
         if (product1.getCategory().equals(product2.getCategory())) {
             compare.add(product1.getName() + "    " + product2.getName());
             compare.add(product1.getBrandOrCompany() + "    " + product2.getBrandOrCompany());
@@ -658,12 +675,12 @@ public class Controller {
     }
 
     public List<Comment> comments(String goodId) {
-        Product product  = getProductById(goodId);
+        Product product  = getAvailableProductById(goodId);
         return product.getComments();
     }
 
     public void addComment(String title, String content,String goodId) {
-        Product product = getProductById(goodId);
+        Product product = getAvailableProductById(goodId);
         boolean hasBought = product.hasBought(currentAccount.getUsername());
         Comment comment = new Comment(currentAccount, product, title, content, hasBought,CommentStatus.PENDING_APPROVAL);
         List<Comment> commentList = new ArrayList<>(product.getComments());
