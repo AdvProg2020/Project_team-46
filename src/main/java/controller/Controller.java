@@ -146,6 +146,11 @@ public class Controller {
         getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
     }
 
+    public void setCategoryOfProduct(String productId, Category category) {
+        getProductById(productId).setCategory(category);
+        getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
+    }
+
     public void setPassword(String password) {
         currentAccount.setPassword(password);
     }
@@ -172,6 +177,10 @@ public class Controller {
 
     public void setCompanyName(String companyName) {
         currentAccount.setCompanyName(companyName);
+    }
+
+    public void setBalance(long balance) {
+        currentAccount.setBalance(balance);
     }
 
     public String viewUsers(String user) {
@@ -281,7 +290,7 @@ public class Controller {
     public void createProduct(String[] inputs, Account seller) {
         boolean isAvailable = inputs[5].equals("1");
         Product product = new Product(inputs[6], ProductStatus.UNDER_CONSTRUCTION, Long.parseLong(inputs[2]) ,
-                Integer.parseInt(inputs[3]), inputs[0], inputs[1], seller, null, inputs[4], isAvailable);
+                Integer.parseInt(inputs[3]), inputs[0], inputs[1], seller, getCategoryByName(inputs[7]), inputs[4], isAvailable);
         products.add(product);
 
     }

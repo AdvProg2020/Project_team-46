@@ -32,6 +32,8 @@ public class SellerRequest extends Request {
             case "edit amount of product":
                 controller.setAmountOfProduct(inputs[0], Integer.parseInt(inputs[1]));
                 break;
+            case "edit category of product":
+                controller.setCategoryOfProduct(inputs[0], controller.getCategoryByName(inputs[1]));
             case "add product":
                 controller.addProduct(inputs[6]);
                 break;

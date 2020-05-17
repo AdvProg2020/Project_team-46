@@ -427,6 +427,12 @@ public class UserSeller extends Menu{
                         "2. no");
                 inputs[5] = scanner.nextLine();
                 inputs[6] = generateId();
+                System.out.println("Enter the category of the product or enter skip:\n" +
+                        "available categories:");
+                for (Category category : controller.getCategories()) {
+                    System.out.println(category.getName());
+                }
+                inputs[7] = scanner.nextLine();
                 controller.createProduct(inputs, account);
                 new SellerRequest(account, generateId(), inputs, "add product");
                 System.out.println("product created");
@@ -492,7 +498,8 @@ public class UserSeller extends Menu{
                             "3. description \n" +
                             "4. availability\n" +
                             "5. value\n" +
-                            "6. amount"
+                            "6. amount\n" +
+                            "7. category"
                     );
                     inputs[0] = product.getProductId();
                     switch (Integer.parseInt(scanner.nextLine())) {
@@ -539,6 +546,17 @@ public class UserSeller extends Menu{
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
                             System.out.println("Request sent");
                             break;
+                        case 7:
+                            System.out.println("Enter new category:");
+                            command = scanner.nextLine();
+                            if (controller.getCategoryByName(command) != null) {
+                                inputs[1] = command;
+                                new SellerRequest(account, generateId(), inputs, "edit category of product");
+                                product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                                System.out.println("Request sent");
+                            } else {
+                                System.out.println("Category not found");
+                            }
                     }
                 } else {
                     System.out.println("invalid id");

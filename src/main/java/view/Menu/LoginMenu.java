@@ -66,6 +66,8 @@ public class LoginMenu extends Menu {
                     controller.setAddress(scanner.nextLine());
                     System.out.println("Enter your phone number:");
                     controller.setPhoneNumber(scanner.nextLine());
+                    System.out.println("Enter your balance:");
+                    controller.setBalance(Long.parseLong(scanner.nextLine()));
                     if (matcher.group(1).equals("seller")) {
                         System.out.println("Enter your company's name:");
                         controller.setCompanyName(scanner.nextLine());
