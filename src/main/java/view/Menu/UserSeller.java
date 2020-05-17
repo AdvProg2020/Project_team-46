@@ -578,13 +578,18 @@ public class UserSeller extends Menu{
             @Override
             public void show() {
                 System.out.println(controller.getCurrentAccount().getSellingRecords().toString());
-                System.out.println("1. back");            }
+                System.out.println("1. back");
+            }
 
             @Override
             public void execute() {
                 if (Integer.parseInt(scanner.nextLine()) == 1) {
                     parentMenu.show();
-                    parentMenu.show();
+                    parentMenu.execute();
+                }
+                else {
+                    System.out.println("Enter a validate number");
+                    this.execute();
                 }
             }
         };
@@ -661,7 +666,11 @@ public class UserSeller extends Menu{
             public void execute() {
                 if (Integer.parseInt(scanner.nextLine()) == 1) {
                     parentMenu.show();
-                    parentMenu.show();
+                    parentMenu.execute();
+                }
+                else {
+                    System.out.println("Enter a validate number");
+                    this.execute();
                 }
             }
         };
@@ -698,7 +707,9 @@ public class UserSeller extends Menu{
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
-
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
