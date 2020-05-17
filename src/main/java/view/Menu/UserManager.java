@@ -552,7 +552,7 @@ public class UserManager extends Menu {
                 String id = matcher.group(1);
                 request = Request.getRequestById(id);
                 if (request != null) {
-                    request.acceptRequest();
+                    request.declineRequest();
                     System.out.println("Request declined");
                 } else {
                     System.out.println("invalid id");
