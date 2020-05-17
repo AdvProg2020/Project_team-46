@@ -501,18 +501,21 @@ public class UserSeller extends Menu{
                             inputs[1] = scanner.nextLine();
                             new SellerRequest(account, generateId(), inputs, "edit name of product");
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            System.out.println("Request sent");
                             break;
                         case 2:
                             System.out.println("Enter new brand or company:");
                             inputs[1] = scanner.nextLine();
                             new SellerRequest(account, generateId(), inputs, "edit company of product");
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            System.out.println("Request sent");
                             break;
                         case 3:
                             System.out.println("Enter new description:");
                             inputs[1] = scanner.nextLine();
                             new SellerRequest(account, generateId(), inputs, "edit description of product");
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            System.out.println("Request sent");
                             break;
                         case 4:
                             System.out.println("1. enable product\n" +
@@ -520,18 +523,21 @@ public class UserSeller extends Menu{
                             inputs[1] = scanner.nextLine();
                             new SellerRequest(account, generateId(), inputs, "edit availability of product");
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            System.out.println("Request sent");
                             break;
                         case 5:
                             System.out.println("Enter new price:");
                             inputs[1] = scanner.nextLine();
                             new SellerRequest(account, generateId(), inputs, "edit price of product");
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            System.out.println("Request sent");
                             break;
                         case 6:
                             System.out.println("Enter new amount:");
                             inputs[1] = scanner.nextLine();
                             new SellerRequest(account, generateId(), inputs, "edit amount of product");
                             product.setProductStatus(ProductStatus.UNDER_REFORMATION);
+                            System.out.println("Request sent");
                             break;
                     }
                 } else {

@@ -506,7 +506,7 @@ public class UserManager extends Menu {
             @Override
             public void show() {
                 for (Request request : Request.requests) {
-                    System.out.println("Request: " + request.getDetails() + "  From: " + request.getAccount() + "  request ID: "
+                    System.out.println("Request: " + request.getDetails() + "  From: " + request.getAccount().getUsername() + "  request ID: "
                             + request.getRequestId());
                 }
                 System.out.println("1.show details\n" +
@@ -604,7 +604,7 @@ public class UserManager extends Menu {
                 String id = matcher.group(1);
                 request = Request.getRequestById(id);
                 if (request != null) {
-                    System.out.println("Request: " + request.getDetails() + "  From: " + request.getAccount() + "  request ID: "
+                    System.out.println("Request: " + request.getDetails() + "  From: " + request.getAccount().getUsername() + "  request ID: "
                             + request.getRequestId());
                 } else {
                     System.out.println("invalid id");
