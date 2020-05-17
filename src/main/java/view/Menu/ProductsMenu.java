@@ -32,11 +32,17 @@ public class ProductsMenu extends Menu{
             case "1":
                 System.out.println("Enter product Id:");
                 String goodId = scanner.nextLine();
-                goodMenu.setGoodId(goodId);
-                Product product = controller.getProductById(goodId);
-                product.setNumberOfViews(product.getNumberOfViews() + 1);
-                goodMenu.show();
-                goodMenu.execute();
+                if (controller.getAvailableProductById(goodId) == null) {
+                    System.out.println("product not found");
+                    this.show();
+                    this.execute();
+                } else {
+                    goodMenu.setGoodId(goodId);
+                    Product product = controller.getProductById(goodId);
+                    product.setNumberOfViews(product.getNumberOfViews() + 1);
+                    goodMenu.show();
+                    goodMenu.execute();
+                }
                 break;
             case "2":
                 submenus.get(2).show();
@@ -223,6 +229,9 @@ public class ProductsMenu extends Menu{
             public void show() {
                 List<Product> filtered = new ArrayList<>(listToSort);
                 System.out.println("Show Products Menu:");
+                for (Product product : filtered) {
+                    System.out.println(product.getName() + "    " + product.getProductId());
+                }
                 System.out.println("1.back");
                 for (Product product : listToSort) {
                     if (controller.hasNameFilter) {
@@ -236,9 +245,6 @@ public class ProductsMenu extends Menu{
                             filtered.remove(product);
                         }
                     }
-                }
-                for (Product product : filtered) {
-                    System.out.println(product.getName() + "    " + product.getProductId());
                 }
             }
 

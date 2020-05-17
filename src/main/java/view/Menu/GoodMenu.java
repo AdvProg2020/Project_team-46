@@ -144,22 +144,25 @@ public class GoodMenu extends Menu {
             @Override
             public void show() {
                 System.out.println("Comments Menu:");
-                System.out.println("1.Add comment\n" +
-                        "2.back");
                 for (Comment comment : controller.comments(goodId)) {
                     System.out.println(comment.getUser().getUsername());
                     System.out.println(comment.getTitle());
                     System.out.println(comment.getBody());
                 }
+                System.out.println("1.Add comment\n" +
+                        "2.back");
             }
 
             @Override
             public void execute() {
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
+                        System.out.println("Enter a title:");
                         String title = scanner.nextLine();
+                        System.out.println("Enter your comment:");
                         String content = scanner.nextLine();
                         controller.addComment(title,content,goodId);
+                        System.out.println("Comment added");
                         this.show();
                         this.execute();
                         break;

@@ -497,6 +497,7 @@ public class Controller {
         currentAccount.getBuyingRecords().add(new BuyingLog(generateId(), new Date(), currentAccount.getUsername()
                 ,sellerPerProduct, DeliveryStatus.IN_PROCESS, showDiscountAmount(showTotalPrice(), discount),showTotalPrice(discount)));
         currentAccount.getCart().clear();
+        discountList.remove(discount);
     }
 
     public long receivedMoney(Product product) {
