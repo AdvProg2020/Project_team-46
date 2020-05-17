@@ -64,6 +64,7 @@ public class UserManager extends Menu {
                 break;
             default:
                 System.out.println("enter a number in validate range");
+                this.execute();
         }
 
     }
@@ -290,7 +291,7 @@ public class UserManager extends Menu {
             else if (command.matches(regex = "add (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                System.out.println("add description for" + field);
+                System.out.println("add description for " + field);
                 String description = scanner.nextLine();
                 controller.addCategory(field,description);
             }

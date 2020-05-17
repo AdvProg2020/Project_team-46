@@ -52,6 +52,30 @@ public class UserSeller extends Menu{
                 case "6":
                     submenus.get(6).show();
                     submenus.get(6).execute();
+                    break;
+                case "7":
+                    submenus.get(7).show();
+                    submenus.get(7).execute();
+                    break;
+                case "8":
+                    submenus.get(8).show();
+                    submenus.get(8).execute();
+                    break;
+                case "9":
+                    submenus.get(9).show();
+                    submenus.get(9).execute();
+                    break;
+                case "10":
+                    submenus.get(10).show();
+                    submenus.get(10).execute();
+                    break;
+                case "11":
+                    parentMenu.show();
+                    parentMenu.execute();
+                    break;
+                default:
+                    System.out.println("enter a number in validate range");
+                    this.execute();
             }
 
     }
