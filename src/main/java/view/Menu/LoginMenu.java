@@ -17,27 +17,28 @@ public class LoginMenu extends Menu {
 
     @Override
     public void execute() {
-        switch (Integer.parseInt(scanner.nextLine())) {
-            case 1:
+        switch (scanner.nextLine()) {
+            case "1":
                 register();
                 parentMenu.show();
                 parentMenu.execute();
                 break;
-            case 2:
+            case "2":
                 logIn();
                 parentMenu.show();
                 parentMenu.execute();
                 break;
-            case 3:
+            case "3":
                 logOut();
                 mainMenu.show();
                 mainMenu.execute();
                 break;
-            case 4:
+            case "4":
                 parentMenu.show();
                 parentMenu.execute();
                 break;
             default:
+                System.out.println("Enter a validate number");
                 this.execute();
         }
     }

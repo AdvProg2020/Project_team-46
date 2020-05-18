@@ -48,6 +48,9 @@ public class GoodMenu extends Menu {
                 this.parentMenu.show();
                 this.parentMenu.execute();
                 break;
+            default:
+                System.out.println("Enter a validate number");
+                this.execute();
         }
     }
 

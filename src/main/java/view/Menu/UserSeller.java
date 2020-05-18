@@ -750,13 +750,13 @@ public class UserSeller extends Menu{
 
             @Override
             public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
+                switch (scanner.nextLine()) {
+                    case "1":
                         editPersonalInfo();
                         this.show();
                         this.execute();
                         break;
-                    case 2:
+                    case "2":
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
