@@ -101,6 +101,11 @@ public class UserBuyer extends Menu{
                         currentAccount.setPhoneNumber(scanner.nextLine());
                         System.out.println("Field updated");
                         break;
+                    case "balance":
+                        System.out.println("Enter new balance:");
+                        currentAccount.setBalance(Long.parseLong(scanner.nextLine()));
+                        System.out.println("Field updated");
+                        break;
                     default:
                         System.out.println("Invalid field");
                 }

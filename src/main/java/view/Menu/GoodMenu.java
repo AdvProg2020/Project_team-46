@@ -58,6 +58,7 @@ public class GoodMenu extends Menu {
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches("add to cart")) {
                 controller.addToCart(goodId);
+                System.out.println("product added to cart");
             }
             else if (command.matches(regex = "select seller (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
