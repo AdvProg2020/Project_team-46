@@ -569,7 +569,7 @@ public class Controller {
     }
 
     public List<Product> sort(String sortingMethod) {
-        if ("by Date".equals(sortingMethod)) {
+        if ("Date".equals(sortingMethod)) {
             for (int i = 0; i < products.size(); i++) {
                 for (int j = i + 1; j < products.size(); j++) {
                     if (products.get(i).getDateModified().compareTo(products.get(j).getDateModified()) < 0) {
@@ -578,7 +578,7 @@ public class Controller {
                 }
             }
             currentSortingMethod = "by Date";
-        } else if ("by score".equals(sortingMethod)) {
+        } else if ("score".equals(sortingMethod)) {
             for (int i = 0; i < products.size(); i++) {
                 for (int j = i + 1; j < products.size(); j++) {
                     if (products.get(i).getAverageScore() < products.get(j).getAverageScore()) {
@@ -587,7 +587,7 @@ public class Controller {
                 }
             }
             currentSortingMethod = "by score";
-        } else if ("by number of views".equals(sortingMethod)) {
+        } else if ("views".equals(sortingMethod)) {
             for (int i = 0; i < products.size(); i++) {
                 for (int j = i + 1; j < products.size(); j++) {
                     if (products.get(i).getNumberOfViews() < products.get(j).getNumberOfViews()) {
