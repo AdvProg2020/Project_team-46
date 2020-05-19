@@ -639,6 +639,10 @@ public class Controller {
 
     } //needs to complete
 
+    public void setCurrentAccount(Account currentAccount) {
+        this.currentAccount = currentAccount;
+    }
+
     public ArrayList<String> attributes(String productId) {
         ArrayList<String> attributes = new ArrayList<>();
         Product product = getAvailableProductById(productId);
