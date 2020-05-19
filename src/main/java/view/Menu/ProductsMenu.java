@@ -101,12 +101,12 @@ public class ProductsMenu extends Menu{
             if (command.matches(regex = "filter (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                if (field.matches("by category")) {
+                if (field.matches("category")) {
                     System.out.println("Enter a category:");
                     String categoryName = scanner.nextLine();
                     controller.filter("by category",categoryName);
                 }
-                else if (field.matches("by name")) {
+                else if (field.matches("name")) {
                     System.out.println("Enter a name:");
                     String name = scanner.nextLine();
                     controller.filter("by name",name);
@@ -134,7 +134,7 @@ public class ProductsMenu extends Menu{
             else if (command.matches("disable filter (\\S+)")) {
                 (matcher = getMatcher(regex, command)).find();
                 String field = matcher.group(1);
-                if (field.equals("by category") || field.equals("by name")) {
+                if (field.equals("category") || field.equals("name")) {
                     controller.disableFilter(field);
                 }
                 else
@@ -155,7 +155,7 @@ public class ProductsMenu extends Menu{
                 String field = matcher.group(1);
                 listToSort = controller.sort(field);
             }
-            else if (command.matches("show available sorts")) {
+            else if (command.matches("show available sorting")) {
                 System.out.println("sorting by:\n" +
                         "1.Date\n" +
                         "2.score\n" +
@@ -211,16 +211,19 @@ public class ProductsMenu extends Menu{
 
             @Override
             public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
+                switch (scanner.nextLine()) {
+                    case "1":
                         manageSorting();
                         this.show();
                         this.execute();
                         break;
-                    case 2:
+                    case "2":
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a  validate number");
+                        this.execute();
                 }
             }
         };
@@ -232,9 +235,6 @@ public class ProductsMenu extends Menu{
             public void show() {
                 List<Product> filtered = new ArrayList<>(listToSort);
                 System.out.println("Show Products Menu:");
-                for (Product product : filtered) {
-                    System.out.println(product.getName() + "    " + product.getProductId());
-                }
                 System.out.println("1.back");
                 for (Product product : listToSort) {
                     if (controller.hasNameFilter) {
@@ -243,11 +243,15 @@ public class ProductsMenu extends Menu{
                         }
                     }
                     if (controller.hasCategoryFilter) {
-                        if (product.getCategory().getName().equals(controller.filteredCategory) &&
-                                filtered.contains(product)) {
+                        if (!(product.getCategory().getName().equals(controller.filteredCategory))) {
                             filtered.remove(product);
                         }
                     }
+                }
+                for (Product product : filtered) {
+                    System.out.println(product.getName() + "    " + product.getProductId() + "    " +
+                            product.getCategory().getName() + "    " + product.getNumberOfViews() + "    " +
+                            product.getDateModified());
                 }
             }
 
