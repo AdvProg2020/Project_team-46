@@ -558,11 +558,11 @@ public class Controller {
     }
 
     public void disableFilter(String filter) {
-        if (filter.equals("by category")) {
+        if (filter.equals("category")) {
             hasCategoryFilter = false;
             filteredCategory = null;
         }
-        else if (filter.equals("by name")) {
+        else if (filter.equals("name")) {
             hasNameFilter = false;
             filteredName = null;
         }

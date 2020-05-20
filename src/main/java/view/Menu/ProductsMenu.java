@@ -185,16 +185,19 @@ public class ProductsMenu extends Menu{
 
             @Override
             public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
+                switch (scanner.nextLine()) {
+                    case "1":
                         manageFilters();
                         this.show();
                         this.execute();
                         break;
-                    case 2:
+                    case "2":
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
+                    default:
+                        System.out.println("Enter a validate number");
+                        this.execute();
                 }
             }
         };
