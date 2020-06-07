@@ -392,6 +392,7 @@ public class Controller {
                     int amount = currentAccount.getCart().get(product);
                     cart.replace(product,amount,amount+1);
                     currentAccount.setCart(cart);
+                    product.setAmount(product.getAmount() - 1);
                 }
                 else
                     System.out.println("Sorry. not enough amount of this product.\n" +
@@ -412,6 +413,7 @@ public class Controller {
                 int amount = currentAccount.getCart().get(product);
                 cart.replace(product,amount,amount-1);
                 currentAccount.setCart(cart);
+                product.setAmount(product.getAmount() + 1);
             }
             else
                 System.out.println("this product is not in the cart yet");
