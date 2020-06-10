@@ -541,6 +541,7 @@ public class Controller {
     public void rateProduct(String productId, double score) {
         Product product = getAvailableProductById(productId);
         Score score1 = new Score(currentAccount,score,product);
+        product.setAverageScore(product.getAverageScore() * product.getScores().size() + score / (product.getScores().size() + 1));
         product.setScores(score1);
     }
 

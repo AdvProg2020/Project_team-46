@@ -167,8 +167,6 @@ public class Account {
                 ", role=" + role +
                 ", companyName='" + companyName + '\'' +
                 ", discountCodes=" + discountCodes +
-                ", sellingRecords=" + sellingRecords +
-                ", buyingRecords=" + buyingRecords +
                 ", cart=" + cart +
                 ", balance=" + balance +
                 '}';

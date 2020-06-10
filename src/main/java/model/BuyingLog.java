@@ -24,7 +24,6 @@ public class BuyingLog extends Log {
     public String toString() {
         return "BuyingLog{" +
                 "paidAmount=" + paidAmount +
-                ", sellerPerProduct=" + sellerPerProduct +
                 ", logId='" + logId + '\'' +
                 ", date=" + date +
                 ", discountAmount=" + discountAmount +
