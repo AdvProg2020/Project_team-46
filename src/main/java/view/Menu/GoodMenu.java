@@ -125,7 +125,7 @@ public class GoodMenu extends Menu {
         return new Menu("Compare Menu:",this) {
             @Override
             public void show() {
-                System.out.println("Compare Menu:");
+                System.out.println("Compare Menu");
                 System.out.println("1.back");
                 String input = scanner.nextLine();
                 for (String productAttribute : controller.compare(goodId, input)) {

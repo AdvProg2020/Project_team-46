@@ -149,7 +149,8 @@ public class UserBuyer extends Menu{
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches("show products")) {
                 for (Product product : controller.viewCart().keySet()) {
-                    System.out.println(product.getName() + product.getProductId() + controller.viewCart().get(product));
+                    System.out.println(product.getName() +"   "+ product.getProductId() +"   "+
+                            controller.viewCart().get(product));
                 }
             }
             else if (command.matches(regex = "view (\\S+)")) {
