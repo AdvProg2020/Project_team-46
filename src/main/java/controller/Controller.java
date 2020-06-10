@@ -630,9 +630,14 @@ public class Controller {
 
     public void addToCart(String productId) {
         if (currentAccount.getRole() == Role.CUSTOMER) {
-            Map<Product,Integer> cart = currentAccount.getCart();
-            cart.put(getAvailableProductById(productId),1);
-            currentAccount.setCart(cart);
+            if (getProductById(productId).getAmount() > 0) {
+                Map<Product,Integer> cart = currentAccount.getCart();
+                cart.put(getAvailableProductById(productId),1);
+                currentAccount.setCart(cart);
+                getProductById(productId).setAmount(getProductById(productId).getAmount() - 1);
+            }
+            else
+                System.out.println("not available");
         }
         else
             System.out.println("invalid command");

@@ -128,8 +128,13 @@ public class GoodMenu extends Menu {
                 System.out.println("Compare Menu");
                 System.out.println("1.back");
                 String input = scanner.nextLine();
-                for (String productAttribute : controller.compare(goodId, input)) {
-                    System.out.println(productAttribute);
+                if (controller.getProductById(input) != null) {
+                    for (String productAttribute : controller.compare(goodId, input)) {
+                        System.out.println(productAttribute);
+                    }
+                }
+                else {
+                    System.out.println("invalid id");
                 }
             }
 
