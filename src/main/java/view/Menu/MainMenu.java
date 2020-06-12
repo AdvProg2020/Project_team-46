@@ -1,5 +1,11 @@
 package view.Menu;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 import java.util.HashMap;
 
 public class MainMenu extends Menu{
@@ -11,6 +17,35 @@ public class MainMenu extends Menu{
         submenus.put(3, new OffMenu(this));
         submenus.put(4, new LoginMenu(this));
         this.setSubmenus(submenus);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        //Layout
+        HBox mainLayout = new HBox(20);
+        VBox layout1 = new VBox(20);
+        VBox layout2 = new VBox(20);
+        HBox layout3 = new HBox(20);
+        mainLayout.getChildren().addAll(layout1,layout2,layout3);
+        Scene scene = new Scene(mainLayout,200,200);
+
+        //Buttons
+        Button loginButton = new Button("Login Menu");
+        Button productButton = new Button("Product Menu");
+        Button offButton = new Button("Off Menu");
+        Button userButton = new Button("User Menu");
+        Button exit = new Button("Exit");
+
+        layout1.getChildren().addAll(loginButton,productButton);
+        layout2.getChildren().addAll(userButton,offButton);
+        layout3.getChildren().add(exit);
+
+
+
+
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 

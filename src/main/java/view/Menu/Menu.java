@@ -1,6 +1,7 @@
 package view.Menu;
 
 import controller.Controller;
+import javafx.application.Application;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Menu {
+public abstract class Menu extends Application {
     protected static Controller controller;
     protected String name;
     protected HashMap<Integer, Menu> submenus;
@@ -86,6 +87,12 @@ public abstract class Menu {
         nextMenu.show();
         nextMenu.execute();
     }
+
+    public void execute(int input) {
+
+    }
+
+
 
     public Matcher getMatcher(String regex, String input) {
         return Pattern.compile(regex).matcher(input);

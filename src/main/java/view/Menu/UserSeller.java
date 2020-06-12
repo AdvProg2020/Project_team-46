@@ -1,5 +1,9 @@
 package view.Menu;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.*;
 
 import java.util.ArrayList;
@@ -7,6 +11,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 
 public class UserSeller extends Menu{
+
     public UserSeller(String name, Menu parentMenu) {
 
         super(name, parentMenu);
@@ -23,59 +28,57 @@ public class UserSeller extends Menu{
 
     }
 
-
     @Override
-    public void execute() {
-        String command;
-            command = scanner.nextLine();
-            switch (command) {
-                case "1":
-                    submenus.get(1).show();
-                    submenus.get(1).execute();
-                    break;
-                case "2":
-                    submenus.get(2).show();
-                    submenus.get(2).execute();
-                    break;
-                case "3":
-                    submenus.get(3).show();
-                    submenus.get(3).execute();
-                    break;
-                case "4":
-                    submenus.get(4).show();
-                    submenus.get(4).execute();
-                    break;
-                case "5":
-                    submenus.get(5).show();
-                    submenus.get(5).execute();
-                    break;
-                case "6":
-                    submenus.get(6).show();
-                    submenus.get(6).execute();
-                    break;
-                case "7":
-                    submenus.get(7).show();
-                    submenus.get(7).execute();
-                    break;
-                case "8":
-                    submenus.get(8).show();
-                    submenus.get(8).execute();
-                    break;
-                case "9":
-                    submenus.get(9).show();
-                    submenus.get(9).execute();
-                    break;
-                case "10":
-                    submenus.get(10).show();
-                    submenus.get(10).execute();
-                    break;
-                case "11":
-                    parentMenu.show();
-                    parentMenu.execute();
-                    break;
-                default:
-                    System.out.println("enter a number in validate range");
-                    this.execute();
+    public void execute(int command) {
+
+        switch (command) {
+            case 1:
+                submenus.get(1).show();
+                submenus.get(1).execute();
+                break;
+            case 2:
+                submenus.get(2).show();
+                submenus.get(2).execute();
+                break;
+            case 3:
+                submenus.get(3).show();
+                submenus.get(3).execute();
+                break;
+            case 4:
+                submenus.get(4).show();
+                submenus.get(4).execute();
+                break;
+            case 5:
+                submenus.get(5).show();
+                submenus.get(5).execute();
+                break;
+            case 6:
+                submenus.get(6).show();
+                submenus.get(6).execute();
+                break;
+            case 7:
+                submenus.get(7).show();
+                submenus.get(7).execute();
+                break;
+            case 8:
+                submenus.get(8).show();
+                submenus.get(8).execute();
+                break;
+            case 9:
+                submenus.get(9).show();
+                submenus.get(9).execute();
+                break;
+            case 10:
+                submenus.get(10).show();
+                submenus.get(10).execute();
+                break;
+            case 11:
+                parentMenu.show();
+                parentMenu.execute();
+                break;
+            default:
+                System.out.println("enter a number in validate range");
+                this.execute();
             }
 
     }
@@ -343,7 +346,6 @@ public class UserSeller extends Menu{
                 }
         }
     }
-
 
     private Menu showCategories() {
         return new Menu("show categories", this) {
@@ -732,20 +734,8 @@ public class UserSeller extends Menu{
     private Menu getViewPersonalInfo() {
         return new Menu("view personal info", this) {
             @Override
-            public void show() {
-                Account currentAccount = controller.getCurrentAccount();
-                System.out.println(
-                        "username: " + currentAccount.getUsername() + "\n"
-                                + "password: " + currentAccount.getPassword() + "\n"
-                                + "name: " + currentAccount.getName() + "\n"
-                                + "lastName: " + currentAccount.getLastName() + "\n"
-                                + "email: " + currentAccount.getEmail() + "\n"
-                                + "address: " + currentAccount.getAddress() + "\n"
-                                + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
-                                + "role: " + currentAccount.getRole() + "\n"
-                                + "1. edit field" + "\n"
-                                + "2. back"
-                );
+            public void start(Stage primaryStage) throws Exception {
+
             }
 
             @Override
@@ -766,5 +756,28 @@ public class UserSeller extends Menu{
                 }
             }
         };
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        VBox layout = new VBox(20);
+        Scene scene = new Scene(layout,200,200);
+
+        Button loginButton = new Button("Login Button");loginButton.setOnAction(event -> execute(1));
+        Button personalButton = new Button("Personal Info");personalButton.setOnAction(event -> execute(2));
+        Button companyButton = new Button("Company Info");companyButton.setOnAction(event -> execute(3));
+        Button salesHistoryButton = new Button("Sales History");salesHistoryButton.setOnAction(event -> execute(4));
+        Button addButton = new Button("Add Product");addButton.setOnAction(event -> execute(6));
+        Button removeButton = new Button("Remove Product");removeButton.setOnAction(event -> execute(7));
+        Button manageProductButton = new Button("Manage Products");manageProductButton.setOnAction(event -> execute(5));
+        Button balanceButton = new Button("View Balance");balanceButton.setOnAction(event -> execute(10));
+        Button offButton = new Button("View Off");offButton.setOnAction(event -> execute(9));
+        Button categoryButton = new Button("Show Categories");categoryButton.setOnAction(event -> execute(8));
+        Button backButton = new Button("Back");backButton.setOnAction(event -> execute(11));
+
+        layout.getChildren().addAll(loginButton,personalButton,companyButton,salesHistoryButton,addButton,removeButton
+        ,manageProductButton,balanceButton,offButton,categoryButton,backButton);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

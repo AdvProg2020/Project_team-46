@@ -1,6 +1,11 @@
 package view.Menu;
 
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 public class UserMenu extends Menu {
 
     private UserBuyer userBuyer;
@@ -30,10 +35,9 @@ public class UserMenu extends Menu {
     }
 
     @Override
-    public void execute() {
+    public void execute(int chosenMenu) {
         Menu nextMenu = null;
         if (controller.getCurrentAccount() == null) {
-            int chosenMenu = Integer.parseInt(scanner.nextLine());
             if (chosenMenu == submenus.size() + 1) {
                 if (this.parentMenu == null)
                     System.exit(1);
@@ -57,5 +61,34 @@ public class UserMenu extends Menu {
         }
         nextMenu.show();
         nextMenu.execute();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        if (controller.getCurrentAccount() == null) {
+            VBox layout = new VBox(20);
+            Scene firstScene = new Scene(layout,200,200);
+
+            Button loginButton = new Button("Login Menu");
+            Button backButton = new Button("Back");
+
+            loginButton.setOnAction(event -> {
+                primaryStage.close();
+                execute(1);
+            });
+            backButton.setOnAction(event -> {
+                primaryStage.close();
+                execute(2);
+            });
+
+            layout.getChildren().addAll(loginButton,backButton);
+            primaryStage.setScene(firstScene);
+            primaryStage.show();
+        }
+        else {
+            primaryStage.close();
+            execute(0);
+        }
     }
 }
