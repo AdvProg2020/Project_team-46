@@ -2,6 +2,10 @@ package view.Menu;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
@@ -25,7 +29,6 @@ public class UserSeller extends Menu{
         submenus.put(8, showCategories());
         submenus.put(9, viewOffs());
         submenus.put(10, viewBalance());
-
     }
 
     @Override
@@ -735,18 +738,60 @@ public class UserSeller extends Menu{
         return new Menu("view personal info", this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                VBox editLayout = new VBox(20);
+                Scene editScene = new Scene(editLayout,200,200);
+                Scene scene = new Scene(layout,200,200);
 
+                HBox passBox = new HBox(20,new Label("password:"));PasswordField passwordField = new PasswordField();
+                passBox.getChildren().addAll(passwordField);
+                HBox nameBox = new HBox(20,new Label("name"));TextField nameField = new TextField();
+                nameBox.getChildren().addAll(nameField);
+                HBox lastBox = new HBox(20,new Label("last name"));TextField lastField = new TextField();
+                lastBox.getChildren().addAll(lastField);
+                HBox emailBox = new HBox(20,new Label("E-mail"));TextField emailField = new TextField();
+                emailBox.getChildren().addAll(emailField);
+                HBox addressBox = new HBox(20,new Label("address"));TextField addressField = new TextField();
+                addressBox.getChildren().addAll(addressField);
+                HBox numberBox = new HBox(20,new Label("phone number"));TextField numberField = new TextField();
+                numberBox.getChildren().addAll(numberField);
+                Button updateButton = new Button("Update");Button backButton = new Button("Back");
+                updateButton.setOnAction(event -> {
+
+                });
+
+                editLayout.getChildren().addAll(passBox,nameBox,lastBox,emailBox,addressBox,numberBox,updateButton,backButton);
+
+                Account currentAccount = controller.getCurrentAccount();
+                Label info = new Label("username: " + currentAccount.getUsername() + "\n"
+                        + "password: " + currentAccount.getPassword() + "\n"
+                        + "name: " + currentAccount.getName() + "\n"
+                        + "lastName: " + currentAccount.getLastName() + "\n"
+                        + "email: " + currentAccount.getEmail() + "\n"
+                        + "address: " + currentAccount.getAddress() + "\n"
+                        + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
+                        + "role: " + currentAccount.getRole());
+                Button editButton = new Button("Edit Field");
+                editButton.setOnAction(event -> {
+                    primaryStage.setScene(editScene);
+
+                });
+                Button backButton = new Button("Back");
+
+                layout.getChildren().addAll(info,editButton,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
-            public void execute() {
-                switch (scanner.nextLine()) {
-                    case "1":
+            public void execute(int input) {
+                switch (input) {
+                    case 1:
                         editPersonalInfo();
                         this.show();
                         this.execute();
                         break;
-                    case "2":
+                    case 2:
                         this.parentMenu.show();
                         this.parentMenu.execute();
                         break;
