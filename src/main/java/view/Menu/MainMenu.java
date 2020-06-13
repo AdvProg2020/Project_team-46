@@ -40,10 +40,6 @@ public class MainMenu extends Menu{
         layout2.getChildren().addAll(userButton,offButton);
         layout3.getChildren().add(exit);
 
-
-
-
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }

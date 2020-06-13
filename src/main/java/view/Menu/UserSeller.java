@@ -1,10 +1,7 @@
 package view.Menu;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -409,7 +406,22 @@ public class UserSeller extends Menu{
     private Menu addProduct() {
         return new Menu("add product", this) {
             @Override
-            public void show() {
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                HBox nameBox = new HBox(20,new Label("Enter name of product"));
+                TextField nameField = new TextField(); nameBox.getChildren().add(nameField);
+                HBox companyBox = new HBox(20,new Label("Enter brand or company of product"));
+                TextField companyField = new TextField(); companyBox.getChildren().add(companyField);
+                HBox priceBox = new HBox(20,new Label("Enter price of the product"));
+                TextField priceField = new TextField(); priceBox.getChildren().add(priceField);
+                HBox amountBox = new HBox(20,new Label("Enter amount or number of the product"));
+                TextField amountField = new TextField(); amountBox.getChildren().add(amountField);
+                HBox descripBox = new HBox(20,new Label("Enter description of product"));
+                TextField descripField = new TextField(); descripBox.getChildren().add(descripField);
+                CheckBox available = new CheckBox("Is the product available?");
+                HBox categoryBox = new HBox(20,new Label("Enter the category of the product"));
+                TextField categoryField = new TextField(); categoryBox.getChildren().add(categoryField);
 
             }
 
@@ -417,22 +429,22 @@ public class UserSeller extends Menu{
             public void execute() {
                 String[] inputs = new String[10];
                 Account account = controller.getCurrentAccount();
-                System.out.println("Enter name of product");
+                System.out.println("");
                 inputs[0] = scanner.nextLine();
-                System.out.println("Enter brand or company of product:");
+                System.out.println(":");
                 inputs[1] = scanner.nextLine();
-                System.out.println("Enter price of the product:");
+                System.out.println(":");
                 inputs[2] = scanner.nextLine();
-                System.out.println("Enter amount or number of the product:");
+                System.out.println(":");
                 inputs[3] = scanner.nextLine();
-                System.out.println("Enter description of product:");
+                System.out.println(":");
                 inputs[4] = scanner.nextLine();
-                System.out.println("Is the product available?\n" +
+                System.out.println("\n" +
                         "1. yes\n" +
                         "2. no");
                 inputs[5] = scanner.nextLine();
                 inputs[6] = generateId();
-                System.out.println("Enter the category of the product or enter skip:\n" +
+                System.out.println(" or enter skip:\n" +
                         "available categories:");
                 for (Category category : controller.getCategories()) {
                     System.out.println(category.getName());
@@ -450,10 +462,21 @@ public class UserSeller extends Menu{
     private Menu getManageProducts() {
         return new Menu("manage products", this) {
             @Override
-            public void show() {
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label productsLabel = new Label();
                 for (Product product : controller.getAvailableProducts()) {
-                    System.out.println(product.getName() + " " + product.getProductId());
+                    productsLabel.setText(productsLabel.getText() + "\n" + product.getName() + " " + product.getProductId());
                 }
+
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+
+            @Override
+            public void show() {
+
                 System.out.println("1. view product" + "\n" +
                         "2. view buyers \n" +
                         "3. edit product \n" +
@@ -629,107 +652,77 @@ public class UserSeller extends Menu{
     private Menu getSalesHistory() {
         return new Menu("view sales history", this) {
             @Override
-            public void show() {
-                System.out.println(controller.getCurrentAccount().getSellingRecords().toString());
-                System.out.println("1. back");
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label history = new Label(controller.getCurrentAccount().getSellingRecords().toString());
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(history,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
-            @Override
-            public void execute() {
-                if (Integer.parseInt(scanner.nextLine()) == 1) {
-                    parentMenu.show();
-                    parentMenu.execute();
-                }
-                else {
-                    System.out.println("Enter a validate number");
-                    this.execute();
-                }
-            }
         };
     }
 
-    private void editPersonalInfo() {
-        String command;
-        String regex;
-        Matcher matcher;
+    private void editPersonalInfo(String command,String input) {
         Account currentAccount = controller.getCurrentAccount();
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "edit (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                switch (field) {
+                switch (command) {
                     case "password":
-                        System.out.println("Enter new password:");
-                        currentAccount.setPassword(scanner.nextLine());
-                        System.out.println("Field updated");
+                        currentAccount.setPassword(input);
                         break;
                     case "name":
-                        System.out.println("Enter new name:");
-                        currentAccount.setName(scanner.nextLine());
-                        System.out.println("Field updated");
+                        currentAccount.setName(input);
                         break;
                     case "lastName":
-                        System.out.println("Enter new lastName:");
-                        currentAccount.setLastName(scanner.nextLine());
-                        System.out.println("Field updated");
+                        currentAccount.setLastName(input);
                         break;
                     case "email":
-                        System.out.println("Enter new email:");
-                        currentAccount.setEmail(scanner.nextLine());
-                        System.out.println("Field updated");
+                        currentAccount.setEmail(input);
                         break;
                     case "address":
-                        System.out.println("Enter new address:");
-                        currentAccount.setAddress(scanner.nextLine());
-                        System.out.println("Field updated");
+                        currentAccount.setAddress(input);
                         break;
                     case "phoneNumber":
-                        System.out.println("Enter new phoneNumber:");
-                        currentAccount.setPhoneNumber(scanner.nextLine());
-                        System.out.println("Field updated");
+                        currentAccount.setPhoneNumber(input);
                         break;
                     case "company":
-                        System.out.println("Enter new company name:");
-                        currentAccount.setPhoneNumber(scanner.nextLine());
-                        System.out.println("Field updated");
+                        currentAccount.setCompanyName(input);
                         break;
                     case "balance":
-                        System.out.println("Enter new balance:");
-                        currentAccount.setBalance(Long.parseLong(scanner.nextLine()));
-                        System.out.println("Field updated");
+                        currentAccount.setBalance(Long.parseLong(input));
                         break;
-                    default:
-                        System.out.println("Invalid field");
                 }
-            } else if (command.equals("help")){
-                System.out.println("edit [field]" + "\n"
-                + "help" + "\n"
-                + "back");
 
-            } else {
-                System.out.println("invalid command");
-            }
-        }
+
     }
 
     private Menu getCompanyInfo() {
         return new Menu("view company information", this) {
             @Override
-            public void show() {
-                System.out.println(controller.getCurrentAccount().getCompanyName() + "\n" +
-                        "1. back");
-            }
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label companyInfo = new Label(controller.getCurrentAccount().getCompanyName() + "\n");
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
-            @Override
-            public void execute() {
-                if (Integer.parseInt(scanner.nextLine()) == 1) {
-                    parentMenu.show();
-                    parentMenu.execute();
-                }
-                else {
-                    System.out.println("Enter a validate number");
-                    this.execute();
-                }
+                layout.getChildren().addAll(companyInfo,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
     }
@@ -755,11 +748,73 @@ public class UserSeller extends Menu{
                 addressBox.getChildren().addAll(addressField);
                 HBox numberBox = new HBox(20,new Label("phone number"));TextField numberField = new TextField();
                 numberBox.getChildren().addAll(numberField);
+                HBox companyBox = new HBox(20,new Label("company"));TextField companyField = new TextField();
+                companyBox.getChildren().addAll(companyField);
                 Button updateButton = new Button("Update");Button backButton = new Button("Back");
                 updateButton.setOnAction(event -> {
-
+                    if (!passwordField.getText().isEmpty()) {
+                        editPersonalInfo("password",passwordField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!nameField.getText().isEmpty()) {
+                        editPersonalInfo("name",nameField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!lastField.getText().isEmpty()) {
+                        editPersonalInfo("lastName",lastField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!emailField.getText().isEmpty()) {
+                        editPersonalInfo("email",emailField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!addressField.getText().isEmpty()) {
+                        editPersonalInfo("address",addressField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!numberField.getText().isEmpty()) {
+                        editPersonalInfo("phoneNumber",numberField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!companyField.getText().isEmpty()) {
+                        editPersonalInfo("company",companyField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
-
                 editLayout.getChildren().addAll(passBox,nameBox,lastBox,emailBox,addressBox,numberBox,updateButton,backButton);
 
                 Account currentAccount = controller.getCurrentAccount();
@@ -774,32 +829,20 @@ public class UserSeller extends Menu{
                 Button editButton = new Button("Edit Field");
                 editButton.setOnAction(event -> {
                     primaryStage.setScene(editScene);
-
                 });
-                Button backButton = new Button("Back");
+                Button backButton2 = new Button("Back");backButton2.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
                 layout.getChildren().addAll(info,editButton,backButton);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
 
-            @Override
-            public void execute(int input) {
-                switch (input) {
-                    case 1:
-                        editPersonalInfo();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                    default:
-                        System.out.println("Enter a validate number");
-                        this.execute();
-                }
-            }
         };
     }
 
