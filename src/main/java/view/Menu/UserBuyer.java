@@ -1,5 +1,13 @@
 package view.Menu;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.Account;
 import model.Discount;
 import model.Product;
@@ -64,63 +72,36 @@ public class UserBuyer extends Menu{
 
     }
 
-    private void editPersonalInfo() {
-        String command;
-        String regex;
-        Matcher matcher;
+    private void editPersonalInfo(String command,String input) {
         Account currentAccount = controller.getCurrentAccount();
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "edit (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                switch (field) {
-                    case "password":
-                        System.out.println("Enter new password:");
-                        currentAccount.setPassword(scanner.nextLine());
-                        System.out.println("Field updated");
-                        break;
-                    case "name":
-                        System.out.println("Enter new name:");
-                        currentAccount.setName(scanner.nextLine());
-                        System.out.println("Field updated");
-                        break;
-                    case "lastName":
-                        System.out.println("Enter new lastName:");
-                        currentAccount.setLastName(scanner.nextLine());
-                        System.out.println("Field updated");
-                        break;
-                    case "email":
-                        System.out.println("Enter new email:");
-                        currentAccount.setEmail(scanner.nextLine());
-                        System.out.println("Field updated");
-                        break;
-                    case "address":
-                        System.out.println("Enter new address:");
-                        currentAccount.setAddress(scanner.nextLine());
-                        System.out.println("Field updated");
-                        break;
-                    case "phoneNumber":
-                        System.out.println("Enter new phoneNumber");
-                        currentAccount.setPhoneNumber(scanner.nextLine());
-                        System.out.println("Field updated");
-                        break;
-                    case "balance":
-                        System.out.println("Enter new balance:");
-                        currentAccount.setBalance(Long.parseLong(scanner.nextLine()));
-                        System.out.println("Field updated");
-                        break;
-                    default:
-                        System.out.println("Invalid field");
-                }
-            } else if (command.equals("help")){
-                System.out.println("edit [field]" + "\n"
-                        + "help" + "\n"
-                        + "back");
-
-            } else {
-                System.out.println("invalid command");
-            }
+        switch (command) {
+            case "password":
+                currentAccount.setPassword(input);
+                break;
+            case "name":
+                currentAccount.setName(input);
+                break;
+            case "lastName":
+                currentAccount.setLastName(input);
+                break;
+            case "email":
+                currentAccount.setEmail(input);
+                break;
+            case "address":
+                currentAccount.setAddress(input);
+                break;
+            case "phoneNumber":
+                currentAccount.setPhoneNumber(input);
+                break;
+            case "company":
+                currentAccount.setCompanyName(input);
+                break;
+            case "balance":
+                currentAccount.setBalance(Long.parseLong(input));
+                break;
         }
+
+
     }
 
     private void manageOrders() {
@@ -315,36 +296,119 @@ public class UserBuyer extends Menu{
         return new Menu("view personal info",this) {
 
             @Override
-            public void show() {
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                VBox editLayout = new VBox(20);
+                Scene editScene = new Scene(editLayout,200,200);
+                Scene scene = new Scene(layout,200,200);
+
+                HBox passBox = new HBox(20,new Label("password:"));
+                PasswordField passwordField = new PasswordField();
+                passBox.getChildren().addAll(passwordField);
+                HBox nameBox = new HBox(20,new Label("name"));
+                TextField nameField = new TextField();
+                nameBox.getChildren().addAll(nameField);
+                HBox lastBox = new HBox(20,new Label("last name"));TextField lastField = new TextField();
+                lastBox.getChildren().addAll(lastField);
+                HBox emailBox = new HBox(20,new Label("E-mail"));TextField emailField = new TextField();
+                emailBox.getChildren().addAll(emailField);
+                HBox addressBox = new HBox(20,new Label("address"));TextField addressField = new TextField();
+                addressBox.getChildren().addAll(addressField);
+                HBox numberBox = new HBox(20,new Label("phone number"));TextField numberField = new TextField();
+                numberBox.getChildren().addAll(numberField);
+                HBox companyBox = new HBox(20,new Label("company"));TextField companyField = new TextField();
+                companyBox.getChildren().addAll(companyField);
+                Button updateButton = new Button("Update");Button backButton = new Button("Back");
+                updateButton.setOnAction(event -> {
+                    if (!passwordField.getText().isEmpty()) {
+                        editPersonalInfo("password",passwordField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!nameField.getText().isEmpty()) {
+                        editPersonalInfo("name",nameField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!lastField.getText().isEmpty()) {
+                        editPersonalInfo("lastName",lastField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!emailField.getText().isEmpty()) {
+                        editPersonalInfo("email",emailField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!addressField.getText().isEmpty()) {
+                        editPersonalInfo("address",addressField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!numberField.getText().isEmpty()) {
+                        editPersonalInfo("phoneNumber",numberField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!companyField.getText().isEmpty()) {
+                        editPersonalInfo("company",companyField.getText());
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                editLayout.getChildren().addAll(passBox,nameBox,lastBox,emailBox,addressBox,numberBox,updateButton,backButton);
+
                 Account currentAccount = controller.getCurrentAccount();
-                System.out.println(
-                        "username: " + currentAccount.getUsername() + "\n"
-                                + "password: " + currentAccount.getPassword() + "\n"
-                                + "name: " + currentAccount.getName() + "\n"
-                                + "lastName: " + currentAccount.getLastName() + "\n"
-                                + "email: " + currentAccount.getEmail() + "\n"
-                                + "address: " + currentAccount.getAddress() + "\n"
-                                + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
-                                + "role: " + currentAccount.getRole() + "\n"
-                                + "1. edit field" + "\n"
-                                + "2. back"
-                );
-            }
+                Label info = new Label("username: " + currentAccount.getUsername() + "\n"
+                        + "password: " + currentAccount.getPassword() + "\n"
+                        + "name: " + currentAccount.getName() + "\n"
+                        + "lastName: " + currentAccount.getLastName() + "\n"
+                        + "email: " + currentAccount.getEmail() + "\n"
+                        + "address: " + currentAccount.getAddress() + "\n"
+                        + "phoneNumber: " + currentAccount.getPhoneNumber() + "\n"
+                        + "role: " + currentAccount.getRole());
+                Button editButton = new Button("Edit Field");
+                editButton.setOnAction(event -> {
+                    primaryStage.setScene(editScene);
+                });
+                Button backButton2 = new Button("Back");backButton2.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        editPersonalInfo();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-
-                }
+                layout.getChildren().addAll(info,editButton,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
     }
@@ -352,10 +416,28 @@ public class UserBuyer extends Menu{
     private Menu getViewOrders() {
         return new Menu("view orders",this) {
             @Override
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label orderLabel = new Label(controller.viewOrders().toString());
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(orderLabel,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+
+            @Override
             public void show() {
                 System.out.println("View Orders Menu:");
                 System.out.println("1.show order [orderId]/rate [productId] [1-5]");
-                System.out.println(controller.viewOrders());
+                System.out.println();
             }
 
             @Override
@@ -373,23 +455,26 @@ public class UserBuyer extends Menu{
                 }
             }
         };
-    }
+    } //needs to complete
 
     private Menu getViewBalance() {
         return new Menu("View Balance",this) {
             @Override
-            public void show() {
-                System.out.println("View Balance:");
-                System.out.println("1.back");
-                System.out.println(controller.viewBalance());
-            }
-
-            @Override
-            public void execute() {
-                if (Integer.parseInt(scanner.nextLine()) == 1) {
-                    this.parentMenu.show();
-                    this.parentMenu.execute();
-                }
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label balanceLabel = new Label(String.valueOf(controller.viewBalance()));
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(balanceLabel,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
     }
@@ -397,18 +482,21 @@ public class UserBuyer extends Menu{
     private Menu getViewDiscountCodes() {
         return new Menu("View Discount Code:",this) {
             @Override
-            public void show() {
-                System.out.println("View Discount Code:");
-                System.out.println("1.back");
-                System.out.println(controller.getCurrentAccount().getDiscountCodes());
-            }
-
-            @Override
-            public void execute() {
-                if (Integer.parseInt(scanner.nextLine()) == 1) {
-                    this.parentMenu.show();
-                    this.parentMenu.execute();
-                }
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label discountLabel = new Label(controller.getCurrentAccount().getDiscountCodes().toString());
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(discountLabel,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
     }
@@ -443,5 +531,10 @@ public class UserBuyer extends Menu{
                 }
             }
         };
+    } //needs to complete
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }
