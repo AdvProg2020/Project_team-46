@@ -86,8 +86,26 @@ public class UserSeller extends Menu{
     private Menu viewBalance() {
         return new Menu("view balance", this) {
             @Override
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label balanceLabel = new Label("Your current balance is: " + controller.viewBalance());
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(balanceLabel,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+
+            @Override
             public void show() {
-                System.out.println("Your current balance is: " + controller.viewBalance());
+                System.out.println();
                 System.out.println("1. back");
             }
 
@@ -103,6 +121,11 @@ public class UserSeller extends Menu{
 
     private Menu viewOffs() {
         return new Menu("view offs", this) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 for (String off : controller.viewSellersOff()) {
@@ -138,7 +161,7 @@ public class UserSeller extends Menu{
                 }
             }
         };
-    }
+    } //graphic is needed for products
 
     private void addOff() {
         String command;
@@ -350,10 +373,30 @@ public class UserSeller extends Menu{
     private Menu showCategories() {
         return new Menu("show categories", this) {
             @Override
-            public void show() {
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label categoryLabel = new Label();
                 for (Category category : controller.getCategories()) {
-                    System.out.println(category.getName());
+                    categoryLabel.setText(categoryLabel.getText() + "\n" + category.getName());
                 }
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(categoryLabel,backButton);
+
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+
+            @Override
+            public void show() {
+
                 System.out.println("1. back");
             }
 
@@ -370,7 +413,7 @@ public class UserSeller extends Menu{
     private Menu removeProduct() {
         return new Menu("remove product", this) {
             @Override
-            public void show() {
+            public void start(Stage primaryStage) throws Exception {
 
             }
 
@@ -401,12 +444,13 @@ public class UserSeller extends Menu{
                 parentMenu.execute();
             }
         };
-    }
+    } //graphic is needed for products
 
     private Menu addProduct() {
         return new Menu("add product", this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                Account account = controller.getCurrentAccount();
                 VBox layout = new VBox(20);
                 Scene scene = new Scene(layout,200,200);
                 HBox nameBox = new HBox(20,new Label("Enter name of product"));
@@ -422,39 +466,47 @@ public class UserSeller extends Menu{
                 CheckBox available = new CheckBox("Is the product available?");
                 HBox categoryBox = new HBox(20,new Label("Enter the category of the product"));
                 TextField categoryField = new TextField(); categoryBox.getChildren().add(categoryField);
+                String[] input = new String[10];
+                Button confirmButton = new Button("Confirm");
+                Button backButton = new Button("Back");
+                Label errorLabel = new Label();
+                confirmButton.setOnAction(event -> {
+                    if (nameField.getText().isEmpty() || companyField.getText().isEmpty() || priceField.getText().isEmpty()
+                    || amountField.getText().isEmpty() || descripField.getText().isEmpty() || categoryField.getText().isEmpty()) {
+                        errorLabel.setText("complete all fields");
+                    }
+                    else {
+                        input[0] = nameField.getText();
+                        input[1] = companyField.getText();
+                        input[2] = priceField.getText();
+                        input[3] = amountField.getText();
+                        input[4] = descripField.getText();
+                        if (available.isSelected())
+                            input[5] = "1";
+                        else
+                            input[5] = "2";
+                        input[6] = generateId();
+                        input[7] = categoryField.getText();
+                        controller.createProduct(input, account);
+                        new SellerRequest(account, generateId(), input, "add product");
+                        try {
+                            this.parentMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
-            }
-
-            @Override
-            public void execute() {
-                String[] inputs = new String[10];
-                Account account = controller.getCurrentAccount();
-                System.out.println("");
-                inputs[0] = scanner.nextLine();
-                System.out.println(":");
-                inputs[1] = scanner.nextLine();
-                System.out.println(":");
-                inputs[2] = scanner.nextLine();
-                System.out.println(":");
-                inputs[3] = scanner.nextLine();
-                System.out.println(":");
-                inputs[4] = scanner.nextLine();
-                System.out.println("\n" +
-                        "1. yes\n" +
-                        "2. no");
-                inputs[5] = scanner.nextLine();
-                inputs[6] = generateId();
-                System.out.println(" or enter skip:\n" +
-                        "available categories:");
-                for (Category category : controller.getCategories()) {
-                    System.out.println(category.getName());
-                }
-                inputs[7] = scanner.nextLine();
-                controller.createProduct(inputs, account);
-                new SellerRequest(account, generateId(), inputs, "add product");
-                System.out.println("product created");
-                parentMenu.show();
-                parentMenu.execute();
+                layout.getChildren().addAll(nameBox,companyBox,priceBox,amountBox,descripBox,available,categoryBox,errorLabel,confirmButton,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
     }
@@ -506,7 +558,7 @@ public class UserSeller extends Menu{
                 }
             }
         };
-    }
+    } //graphic is needed for products
 
     private void editProduct() {
         String command;
