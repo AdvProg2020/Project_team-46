@@ -88,7 +88,7 @@ public abstract class Menu extends Application {
         nextMenu.execute();
     }
 
-    public void execute(int input) {
+    public void execute(int input) throws Exception {
 
     }
 

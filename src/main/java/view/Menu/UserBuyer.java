@@ -34,40 +34,29 @@ public class UserBuyer extends Menu{
     }
 
     @Override
-    public void execute() {
-        String command = scanner.nextLine();
+    public void execute(int command) throws Exception {
         switch (command) {
-            case "1":
-                submenus.get(1).show();
-                submenus.get(1).execute();
+            case 1:
+                submenus.get(1).start(new Stage());
                 break;
-            case "2":
-                getViewPersonalInfo().show();
-                getViewPersonalInfo().execute();
+            case 2:
+                getViewPersonalInfo().start(new Stage());
                 break;
-            case "3":
-                getViewOrders().show();
-                getViewOrders().execute();
+            case 3:
+                getViewOrders().start(new Stage());
                 break;
-            case "4":
-                getViewBalance().show();
-                getViewBalance().execute();
+            case 4:
+                getViewBalance().start(new Stage());
                 break;
-            case "5":
-                getViewDiscountCodes().show();
-                getViewDiscountCodes().execute();
+            case 5:
+                getViewDiscountCodes().start(new Stage());
                 break;
-            case "6":
-                getViewCart().show();
-                getViewCart().execute();
+            case 6:
+                getViewCart().start(new Stage());
                 break;
-            case "7":
-                this.parentMenu.show();
-                this.parentMenu.execute();
+            case 7:
+                this.parentMenu.start(new Stage());
                 break;
-            default:
-                System.out.println("Enter a validate number");
-                this.execute();
         }
 
     }
@@ -158,6 +147,11 @@ public class UserBuyer extends Menu{
             else if (command.matches("purchase")) {
                 return new Menu("purchase Menu",parentMenu) {
                     @Override
+                    public void start(Stage primaryStage) throws Exception {
+
+                    }
+
+                    @Override
                     public void show() {
                         System.out.println("Purchase Menu:");
                         System.out.println("1.Next(receiving info)\n" +
@@ -184,10 +178,15 @@ public class UserBuyer extends Menu{
             }
         }
         return null;
-    }
+    } //needs to complete
 
     private Menu receiveInfo(Menu parentMenu) {
         return new Menu("Receive Info Menu",parentMenu) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 System.out.println("Purchase->Receive Info Menu:");
@@ -216,10 +215,15 @@ public class UserBuyer extends Menu{
                }
             }
         };
-    }
+    } //needs to complete
 
     private Menu discountConfirm(Menu parentMenu,String address,String phoneNumber) {
         return new Menu("discountCode Confirmation",parentMenu) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 System.out.println("Purchase->Receive Info->Discount Code Confirmation Menu:");
@@ -253,10 +257,15 @@ public class UserBuyer extends Menu{
                 }
             }
         };
-    }
+    } //needs to complete
 
     private Menu payment(Menu parentMenu,String address,String phoneNumber,Discount discount) {
         return new Menu("paymentMenu",parentMenu) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 System.out.println("Purchase->Receive Info->Discount Code Confirmation->Payment Menu:");
@@ -290,7 +299,7 @@ public class UserBuyer extends Menu{
                 }
             }
         };
-    }
+    } //needs to complete
 
     private Menu getViewPersonalInfo() {
         return new Menu("view personal info",this) {
@@ -505,6 +514,11 @@ public class UserBuyer extends Menu{
         return new Menu("View Cart",this) {
 
             @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
+            @Override
             public void show() {
                 System.out.println("View Cart:");
                 System.out.println("1.show products/view [productId]/increase [productId]/decrease [productId]" +
@@ -535,6 +549,61 @@ public class UserBuyer extends Menu{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        VBox layout = new VBox(20);
+        Scene scene = new Scene(layout,200,200);
 
+        Button loginButton = new Button("Login Menu"); loginButton.setOnAction(event -> {
+            try {
+                execute(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button infoButton = new Button("Personal Info"); infoButton.setOnAction(event -> {
+            try {
+                execute(2);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button orderButton = new Button("View Orders"); orderButton.setOnAction(event -> {
+            try {
+                execute(3);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button balanceButton = new Button("View Balance"); balanceButton.setOnAction(event -> {
+            try {
+                execute(4);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button discountButton = new Button("Discount Codes"); discountButton.setOnAction(event -> {
+            try {
+                execute(5);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button cartButton = new Button("View Cart"); cartButton.setOnAction(event -> {
+            try {
+                execute(6);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+            try {
+                execute(7);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        layout.getChildren().addAll(loginButton,infoButton,orderButton,balanceButton,discountButton,cartButton,backButton);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

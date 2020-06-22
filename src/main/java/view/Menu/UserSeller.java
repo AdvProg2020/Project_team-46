@@ -30,57 +30,85 @@ public class UserSeller extends Menu{
 
     @Override
     public void execute(int command) {
-
         switch (command) {
             case 1:
-                submenus.get(1).show();
-                submenus.get(1).execute();
+                try {
+                    submenus.get(1).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 2:
-                submenus.get(2).show();
-                submenus.get(2).execute();
+                try {
+                    submenus.get(2).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 3:
-                submenus.get(3).show();
-                submenus.get(3).execute();
+                try {
+                    submenus.get(3).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 4:
-                submenus.get(4).show();
-                submenus.get(4).execute();
+                try {
+                    submenus.get(4).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 5:
-                submenus.get(5).show();
-                submenus.get(5).execute();
+                try {
+                    submenus.get(5).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 6:
-                submenus.get(6).show();
-                submenus.get(6).execute();
+                try {
+                    submenus.get(6).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 7:
-                submenus.get(7).show();
-                submenus.get(7).execute();
+                try {
+                    submenus.get(7).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 8:
-                submenus.get(8).show();
-                submenus.get(8).execute();
+                try {
+                    submenus.get(8).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 9:
-                submenus.get(9).show();
-                submenus.get(9).execute();
+                try {
+                    submenus.get(9).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 10:
-                submenus.get(10).show();
-                submenus.get(10).execute();
+                try {
+                    submenus.get(10).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 11:
-                parentMenu.show();
-                parentMenu.execute();
+                try {
+                    parentMenu.start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
-            default:
-                System.out.println("enter a number in validate range");
-                this.execute();
             }
-
     }
 
     private Menu viewBalance() {
