@@ -54,6 +54,7 @@ public class Controller {
         }
         return null;
     }
+
     public Product getProductById(String productId) {
         for (Product product : products) {
             if (product.getProductId().equals(productId)) {
@@ -93,7 +94,6 @@ public class Controller {
     public Account getCurrentAccount() {
         return currentAccount;
     }
-
 
     public boolean logIn(String username, String password) {
         if (getAccountByUsername(username).getPassword().equals(password)) {

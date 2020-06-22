@@ -184,113 +184,160 @@ public class UserBuyer extends Menu{
         return new Menu("Receive Info Menu",parentMenu) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
-            }
+                Label infoLabel = new Label("Purchase --> Receive Info Menu:");
+                HBox addressBox = new HBox(20);
+                Label addressLabel = new Label("Enter Your Address: "); TextField addressField = new TextField();
+                addressBox.getChildren().addAll(addressLabel,addressField);
+                HBox phoneBox = new HBox(20);
+                Label phoneLabel = new Label("Enter your phone Number: "); TextField phoneField = new TextField();
+                phoneBox.getChildren().addAll(phoneLabel,phoneField);
+                Button confirmButton = new Button("Confirm"); confirmButton.setOnAction(event -> {
+                    Menu menu = discountConfirm(this,addressField.getText(),phoneField.getText());
+                    try {
+                        menu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(infoLabel,addressBox,phoneBox,confirmButton,backButton);
 
-            @Override
-            public void show() {
-                System.out.println("Purchase->Receive Info Menu:");
-                System.out.println("1.Next(receiving Discount Code\n)" +
-                        "2.back");
-            }
-
-            @Override
-            public void execute() {
-                System.out.println("Enter your Address:");
-                String address = scanner.nextLine();
-                System.out.println("Enter your phone Number:");
-                String phoneNumber = scanner.nextLine();
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        Menu menu = discountConfirm(this,address,phoneNumber);
-                        menu.show();
-                        menu.execute();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                       this.parentMenu.show();
-                       this.parentMenu.execute();
-                       break;
-               }
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
-    } //needs to complete
+    }
 
     private Menu discountConfirm(Menu parentMenu,String address,String phoneNumber) {
+        final Discount[] discount = {null};
         return new Menu("discountCode Confirmation",parentMenu) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
-            }
-
-            @Override
-            public void show() {
-                System.out.println("Purchase->Receive Info->Discount Code Confirmation Menu:");
-            }
-
-            @Override
-            public void execute() {
-                System.out.println("Enter your discount code:(or type \"no discount code\" to continue)");
-                String discount = scanner.nextLine();
-                Discount discount1 = null;
-                if (!discount.equals("no discount code")) {
-                    if (controller.discountCodeConfirmation(discount)) {
-                        System.out.println("Discount Code Confirmed.");
-                        discount1 = controller.getDiscountByCode(discount);
+                Label infoLabel = new Label("Purchase->Receive Info->Discount Code Confirmation Menu");
+                HBox discountBox = new HBox(20); Label errorLabel = new Label();
+                Label discountLabel = new Label("Enter your discount code: "); TextField discountField = new TextField();
+                discountBox.getChildren().addAll(discountLabel,discountField);
+                Button discountButton = new Button("Confirm Code"); discountButton.setOnAction(event -> {
+                    if (!discountField.getText().isEmpty()) {
+                        if (controller.discountCodeConfirmation(discountField.getText())) {
+                            errorLabel.setText("Discount Code Confirmed.");
+                            discount[0] = controller.getDiscountByCode(discountField.getText());
+                        }
+                        else
+                            errorLabel.setText("Discount Code Denied.");
                     }
-                    else
-                        System.out.println("Discount Code Denied.");
-                }
-                System.out.println("1.Next(payment)\n" +
-                        "2.back");
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        Menu menu = payment(this,address,phoneNumber,discount1);
-                        menu.show();
-                        menu.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                }
+                    else {
+                        errorLabel.setText("Enter a Code...");
+                    }
+                });
+                Button nextButton = new Button("Next"); nextButton.setOnAction(event -> {
+                    Menu menu = payment(this,address,phoneNumber,discount[0]);
+                    try {
+                        menu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(infoLabel,discountBox,discountButton,errorLabel,nextButton,backButton);
+
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
-    } //needs to complete
+    }
 
     private Menu payment(Menu parentMenu,String address,String phoneNumber,Discount discount) {
         return new Menu("paymentMenu",parentMenu) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
+                Label infoLabel = new Label("Purchase->Receive Info->Discount Code Confirmation->Payment Menu\n" +
+                        "[Product]-----------[Number]\n" +
+                        "Total Price: " + controller.showTotalPrice(discount));
+                Label errorLabel = new Label();
+                Button acceptButton = new Button("Pay it"); acceptButton.setOnAction(event -> {
+                    if (controller.showTotalPrice(discount) > controller.getCurrentAccount().getBalance()) {
+                        errorLabel.setText("Your balance is not enough!");
+                    }
+                    else {
+                        controller.purchase(discount);
+                    }
+                    try {
+                        currentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(infoLabel,acceptButton,errorLabel,backButton);
+
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+        };
+    }
+
+    private Menu getViewOrders() {
+        return new Menu("view orders",this) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Label orderLabel = new Label(controller.viewOrders().toString());
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(orderLabel,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
             public void show() {
-                System.out.println("Purchase->Receive Info->Discount Code Confirmation->Payment Menu:");
-                System.out.println("[Product]-----[Number]");
-                for (Product product : controller.viewCart().keySet()) {
-                    System.out.println(product.getName() + "-----" + controller.viewCart().get(product));
-                }
-                System.out.println("---------------------");
-                System.out.println("Total Price:" + controller.showTotalPrice(discount));
-                System.out.println("Are you sure to pay" + controller.showTotalPrice(discount) + "?");
-                System.out.println("1.YES\n" +
-                        "2.back");
+                System.out.println("View Orders Menu:");
+                System.out.println("1.show order [orderId]/rate [productId] [1-5]");
+                System.out.println();
             }
 
             @Override
             public void execute() {
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
-                        if (controller.showTotalPrice() > controller.getCurrentAccount().getBalance()) {
-                            System.out.println("Your balance is not enough!");
-                        } else {
-                            controller.purchase(discount);
-                        }
-                        currentMenu.show();
-                        currentMenu.execute();
+                        manageOrders();
+                        this.show();
+                        this.execute();
                         break;
                     case 2:
                         this.parentMenu.show();
@@ -421,50 +468,6 @@ public class UserBuyer extends Menu{
             }
         };
     }
-
-    private Menu getViewOrders() {
-        return new Menu("view orders",this) {
-            @Override
-            public void start(Stage primaryStage) throws Exception {
-                VBox layout = new VBox(20);
-                Scene scene = new Scene(layout,200,200);
-                Label orderLabel = new Label(controller.viewOrders().toString());
-                Button backButton = new Button("Back");
-                backButton.setOnAction(event -> {
-                    try {
-                        this.parentMenu.start(primaryStage);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-                layout.getChildren().addAll(orderLabel,backButton);
-                primaryStage.setScene(scene);
-                primaryStage.show();
-            }
-
-            @Override
-            public void show() {
-                System.out.println("View Orders Menu:");
-                System.out.println("1.show order [orderId]/rate [productId] [1-5]");
-                System.out.println();
-            }
-
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        manageOrders();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                }
-            }
-        };
-    } //needs to complete
 
     private Menu getViewBalance() {
         return new Menu("View Balance",this) {
