@@ -1,5 +1,12 @@
 package view.Menu;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.*;
 
 import java.util.ArrayList;
@@ -277,7 +284,6 @@ public class UserManager extends Menu {
                 System.out.println("invalid command");
         }
     }
-
 
     private void manageCategory() {
         String command;
@@ -628,31 +634,72 @@ public class UserManager extends Menu {
         return new Menu("Manage Category",this) {
 
             @Override
-            public void show() {
-                System.out.println("Manage Categories:");
-                System.out.println("1.edit/add/remove [category name]\n" +
-                        "2.back");
-                System.out.println(controller.manageCategories());
-            }
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20); VBox editLayout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Scene editScene = new Scene(editLayout,200,200);
 
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        manageCategory();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                    default:
-                        System.out.println("Enter a validate number");
-                        this.execute();
+                ArrayList<Button> buttons = new ArrayList<>();
+                for (Category category : controller.manageCategories()) {
+                    Button button = new Button(category.getName()); button.setOnAction(event -> {
+                        editLayout.getChildren().clear();
+                        HBox nameBox = new HBox(20);
+                        Label nameLabel = new Label("Enter new name: "); TextField nameField = new TextField(category.getName());
+                        nameBox.getChildren().addAll(nameLabel,nameField);
+                        HBox descriptionBox = new HBox(20);
+                        Label descriptionLabel = new Label("Enter new description");TextField descriptionField = new TextField(category.getDescription());
+                        descriptionBox.getChildren().addAll(descriptionLabel,descriptionField);
+                        Button confirmButton = new Button("Confirm"); confirmButton.setOnAction(event1 -> {
+                            controller.editCategory(category.getName(),nameField.getText(),descriptionField.getText());
+                        });
+                        Button removeButton = new Button("Remove Category"); removeButton.setOnAction(event1 -> {
+                            controller.removeCategory(category.getName());
+                            primaryStage.setScene(scene);
+                        });
+                        Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                            primaryStage.setScene(scene);
+                        });
+                        editLayout.getChildren().addAll(nameBox,descriptionBox,confirmButton,backButton);
+
+                        primaryStage.setScene(editScene);
+                    });
+                    buttons.add(button);
                 }
+                Button addButton = new Button("Add Category"); addButton.setOnAction(event -> {
+                    editLayout.getChildren().clear();
+                    HBox nameBox = new HBox(20);
+                    Label nameLabel = new Label("Enter name: "); TextField nameField = new TextField();
+                    nameBox.getChildren().addAll(nameLabel,nameField);
+                    HBox descriptionBox = new HBox(20);
+                    Label descriptionLabel = new Label("Enter description: "); TextField descriptionField = new TextField();
+                    descriptionBox.getChildren().addAll(descriptionLabel,descriptionField);
+                    Button confirmButton = new Button("Confirm"); confirmButton.setOnAction(event1 -> {
+                        controller.addCategory(nameField.getText(),descriptionField.getText());
+                    });
+                    Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                        primaryStage.setScene(scene);
+                    });
+                    editLayout.getChildren().addAll(nameBox,descriptionBox,confirmButton,backButton);
+
+                    primaryStage.setScene(editScene);
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }
 
