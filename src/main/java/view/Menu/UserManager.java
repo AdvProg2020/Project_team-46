@@ -358,6 +358,11 @@ public class UserManager extends Menu {
     private Menu getManageProducts() {
         return new Menu("manage products",this) {
             @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
+            @Override
             public void show() {
                 System.out.println(controller.getProducts());
                 System.out.println(
@@ -384,73 +389,73 @@ public class UserManager extends Menu {
                 }
             }
         };
-    }
+    } //to do
 
     private Menu getCreateDiscountCode() {
         return new Menu("create discount code",this) {
             @Override
-            public void show() {
-                System.out.println("create Discount Code:");
-                System.out.println("1.Create discount code \n" +
-                        "2.back");
-            }
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        createDiscountCode();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                    default:
-                        System.out.println("Enter a validate number");
-                        this.execute();
-                }
+                HBox codeBox = new HBox(20); TextField codeField = new TextField();
+                codeBox.getChildren().addAll(new Label("Enter Discount Code: "),codeField);
+                HBox startBox = new HBox(20); TextField startField = new TextField("year/month/day");
+                startBox.getChildren().addAll(new Label("Enter starting date: "),startField);
+                HBox endBox = new HBox(20); TextField endField = new TextField("year/month/day");
+                endBox.getChildren().addAll(new Label("Enter ending date: "),endField);
+                HBox percentBox = new HBox(20); TextField percentField = new TextField();
+                percentBox.getChildren().addAll(new Label("Enter Discount Percent: "),percentField);
+                HBox maxBox = new HBox(20); TextField maxField = new TextField();
+                maxBox.getChildren().addAll(new Label("Enter maximum discount amount: "),maxField);
+                Label errorLabel = new Label();
+                Button createButton = new Button("Create Discount"); createButton.setOnAction(event -> {
+                    createDiscountCode(codeField.getText(),startField.getText(),endField.getText(),percentField.getText()
+                            ,maxField.getText(),errorLabel);
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                layout.getChildren().addAll(codeBox,startBox,endBox,percentBox,maxBox,createButton,errorLabel,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
-    }
+    } //done
 
-    private void createDiscountCode() {
-        boolean continueLoop = true;
-        do {
-            try {
-                System.out.println("Please Enter Discount Code:");
-                String code = scanner.nextLine();
-                System.out.println("Please Enter starting date:(year/month/day)");
-                String startingDate = scanner.nextLine();
-                String[] split1 = startingDate.split("/");
-                Date start = new Date(Integer.parseInt(split1[0]),Integer.parseInt(split1[1]),
-                        Integer.parseInt(split1[2]));
-                System.out.println("Please Enter ending date:(year/month/day)");
-                String endingDate = scanner.nextLine();
-                String[] split2 = endingDate.split("/");
-                Date end = new Date(Integer.parseInt(split2[0]),Integer.parseInt(split2[1]),
-                        Integer.parseInt(split2[2]));
-                System.out.println("Please Enter discount percentage:(a positive Integer lower than 100)");
-                int percent = Integer.parseInt(scanner.nextLine());
-                System.out.println("Please Enter maximum discount amount:");
-                long max = Long.parseLong(scanner.nextLine());
-                continueLoop = false;
-                controller.createDiscountCode(code,start,end,percent,max);
-            }
-            catch (NumberFormatException numberFormatException) {
-                System.out.println("input should be a number\n" +
-                        "try again");
-            }
-            catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-                System.out.println("please Enter the date like this pattern (year/month/day)\n" +
-                        "try again");
-            }
-        } while (continueLoop);
+    private void createDiscountCode(String code, String startingDate, String endingDate, String percentage,
+                                    String maxDiscount, Label error) {
+        try {
+            String[] split1 = startingDate.split("/");
+            Date start = new Date(Integer.parseInt(split1[0]),Integer.parseInt(split1[1]), Integer.parseInt(split1[2]));
+            String[] split2 = endingDate.split("/");
+            Date end = new Date(Integer.parseInt(split2[0]),Integer.parseInt(split2[1]), Integer.parseInt(split2[2]));
+            int percent = Integer.parseInt(percentage);
+            long max = Long.parseLong(maxDiscount);
+            controller.createDiscountCode(code,start,end,percent,max);
+        }
+        catch (NumberFormatException numberFormatException) {
+            error.setText("input should be a number\n" +
+                    "try again");
+        }
+        catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+            error.setText("please Enter the date like this pattern (year/month/day)\n" +
+                    "try again");
+        }
     }
 
     private Menu getViewDiscountCode() {
         return new Menu("View Discount Code",this) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 System.out.println("View Discount Code:");
@@ -479,7 +484,7 @@ public class UserManager extends Menu {
                 }
             }
         };
-    }
+    } //to do
 
     private Menu getManageRequest() {
         return new Menu("Manage Request",this) {
