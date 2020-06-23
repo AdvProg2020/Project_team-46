@@ -285,37 +285,6 @@ public class UserManager extends Menu {
         }
     }
 
-    private void manageCategory() {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "edit (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                System.out.println("Enter new name:");
-                String newName = scanner.nextLine();
-                System.out.println("Enter new description:");
-                String newDescription = scanner.nextLine();
-                String field = matcher.group(1);
-                controller.editCategory(field,newName,newDescription);
-            }
-            else if (command.matches(regex = "add (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                System.out.println("add description for " + field);
-                String description = scanner.nextLine();
-                controller.addCategory(field,description);
-            }
-            else if (command.matches(regex = "remove (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.removeCategory(field);
-            }
-            else
-                System.out.println("invalid command");
-        }
-    }
-
     private Menu getViewPersonalInfo() {
         return new Menu("view personal info",this) {
 
@@ -515,120 +484,50 @@ public class UserManager extends Menu {
     private Menu getManageRequest() {
         return new Menu("Manage Request",this) {
             @Override
-            public void show() {
-                for (Request request : Request.requests) {
-                    System.out.println("Request: " + request.getDetails() + "  From: " + request.getAccount().getUsername() + "  request ID: "
-                            + request.getRequestId());
-                }
-                System.out.println("1.show details\n" +
-                        "2.accept request\n" +
-                        "3.decline request\n" +
-                        "4.back");
-            }
+            public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20); VBox detailBox = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
+                Scene detailScene = new Scene(detailBox,200,200);
 
-            @Override
-            public void execute() {
-                switch (scanner.nextLine()) {
-                    case "1":
-                        showRequestDetails();
-                        this.show();
-                        this.execute();
-                    case "2":
-                        acceptRequest();
-                        this.show();
-                        this.execute();
-                    case "3":
-                        declineRequest();
-                        this.show();
-                        this.execute();
-                    case "4":
-                        parentMenu.show();
-                        parentMenu.execute();
-                    default:
-                        System.out.println("Enter a validate number");
-                        this.execute();
+                for (Request request : Request.requests) {
+                    HBox requestBox = new HBox(20);
+                    Label infoLabel = new Label();
+                    infoLabel.setText(infoLabel.getText() + "\n" + "Request: "
+                            + request.getDetails() + "  From: " + request.getAccount().getUsername() + "  request ID: "
+                            + request.getRequestId());
+                    Button acceptButton = new Button("Accept"); acceptButton.setOnAction(event -> {
+                        request.acceptRequest();
+                    });
+                    Button declineButton = new Button("Decline"); declineButton.setOnAction(event -> {
+                        request.declineRequest();
+                    });
+                    Button detailButton = new Button("Details"); detailButton.setOnAction(event -> {
+                        detailBox.getChildren().clear();
+                        Label detailLabel = new Label("Request: "
+                                + request.getDetails() + "\nFrom: " + request.getAccount().getUsername() + "\nrequest ID: "
+                                + request.getRequestId() + "\nSender Email: " + request.getAccount().getEmail() + "\nCompany: "
+                                + request.getAccount().getCompanyName() + "\nSender Phone Number: " + request.getAccount().getPhoneNumber());
+                        Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                            primaryStage.setScene(scene);
+                        });
+                        detailBox.getChildren().addAll(detailLabel,backButton);
+                        primaryStage.setScene(detailScene);
+                    });
+
+                    layout.getChildren().add(requestBox);
                 }
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
-    }
-
-    private void declineRequest() {
-        String command;
-        String regex;
-        Matcher matcher;
-        Request request;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "decline (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String id = matcher.group(1);
-                request = Request.getRequestById(id);
-                if (request != null) {
-                    request.declineRequest();
-                    System.out.println("Request declined");
-                } else {
-                    System.out.println("invalid id");
-                }
-            } else if (command.equals("help")){
-                System.out.println("decline [requestId]" + "\n"
-                        + "help" + "\n"
-                        + "back");
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
-
-    private void acceptRequest() {
-        String command;
-        String regex;
-        Matcher matcher;
-        Request request;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "accept (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String id = matcher.group(1);
-                request = Request.getRequestById(id);
-                if (request != null) {
-                    request.acceptRequest();
-                    System.out.println("Request accepted");
-                } else {
-                    System.out.println("invalid id");
-                }
-            } else if (command.equals("help")){
-                System.out.println("accept [requestId]" + "\n"
-                        + "help" + "\n"
-                        + "back");
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
-
-    private void showRequestDetails() {
-        String command;
-        String regex;
-        Matcher matcher;
-        Request request;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "details (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String id = matcher.group(1);
-                request = Request.getRequestById(id);
-                if (request != null) {
-                    System.out.println("Request: " + request.getDetails() + "  From: " + request.getAccount().getUsername() + "  request ID: "
-                            + request.getRequestId());
-                } else {
-                    System.out.println("invalid id");
-                }
-            } else if (command.equals("help")){
-                System.out.println("details [requestId]" + "\n"
-                        + "help" + "\n"
-                        + "back");
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
+    } //done
 
     private Menu getManageCategory() {
         return new Menu("Manage Category",this) {
@@ -690,12 +589,16 @@ public class UserManager extends Menu {
                         e.printStackTrace();
                     }
                 });
+                for (Button button : buttons) {
+                    layout.getChildren().add(button);
+                }
+                layout.getChildren().addAll(addButton,backButton);
 
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
         };
-    }
+    } //done
 
     @Override
     public void start(Stage primaryStage) throws Exception {
