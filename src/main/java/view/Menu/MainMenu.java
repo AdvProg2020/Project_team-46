@@ -42,6 +42,38 @@ public class MainMenu extends Menu{
         Button userButton = new Button("User Menu");
         Button exit = new Button("Exit");
 
+        loginButton.setOnAction(event -> {
+            try {
+                submenus.get(4).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        productButton.setOnAction(event -> {
+            try {
+                submenus.get(2).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        userButton.setOnAction(event -> {
+            try {
+                submenus.get(1).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        offButton.setOnAction(event -> {
+            try {
+                submenus.get(3).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         exit.setOnAction(event -> primaryStage.close());
 
         layout1.getChildren().addAll(loginButton,productButton);
