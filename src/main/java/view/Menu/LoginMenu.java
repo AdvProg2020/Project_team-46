@@ -1,5 +1,7 @@
 package view.Menu;
 
+import javafx.stage.Stage;
+
 import java.util.regex.Matcher;
 
 public class LoginMenu extends Menu {
@@ -129,5 +131,10 @@ public class LoginMenu extends Menu {
         } else {
             System.out.println("You're already logged out");
         }
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }
