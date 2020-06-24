@@ -1,5 +1,6 @@
 package view.Menu;
 
+import javafx.stage.Stage;
 import model.Comment;
 
 import java.util.HashMap;
@@ -76,6 +77,11 @@ public class GoodMenu extends Menu {
     private Menu getDigest() {
         return new Menu("digest Menu",this) {
             @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
+            @Override
             public void show() {
                 System.out.println("Digest Menu:");
                 System.out.println("1.add to cart/select seller [seller username]\n" +
@@ -103,6 +109,11 @@ public class GoodMenu extends Menu {
     private Menu getAttributes() {
         return new Menu("attributes menu",this) {
             @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
+            @Override
             public void show() {
                 System.out.println("Attributes Menu:");
                 System.out.println("1.back");
@@ -123,6 +134,11 @@ public class GoodMenu extends Menu {
 
     private Menu getCompareProducts() {
         return new Menu("Compare Menu:",this) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 System.out.println("Compare Menu");
@@ -150,6 +166,11 @@ public class GoodMenu extends Menu {
 
     private Menu getComments() {
         return new Menu("Comments",this) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 System.out.println("Comments Menu:");
@@ -186,5 +207,10 @@ public class GoodMenu extends Menu {
 
     public void setGoodId(String goodId) {
         this.goodId = goodId;
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }

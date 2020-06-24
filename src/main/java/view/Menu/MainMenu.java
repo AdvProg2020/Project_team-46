@@ -1,5 +1,6 @@
 package view.Menu;
 
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -19,6 +20,11 @@ public class MainMenu extends Menu{
         this.setSubmenus(submenus);
     }
 
+    public void launchApp(String[] args) {
+        Application.launch(args);
+    }
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Layout
@@ -27,7 +33,7 @@ public class MainMenu extends Menu{
         VBox layout2 = new VBox(20);
         HBox layout3 = new HBox(20);
         mainLayout.getChildren().addAll(layout1,layout2,layout3);
-        Scene scene = new Scene(mainLayout,200,200);
+        Scene scene = new Scene(mainLayout,250,200);
 
         //Buttons
         Button loginButton = new Button("Login Menu");
@@ -35,6 +41,8 @@ public class MainMenu extends Menu{
         Button offButton = new Button("Off Menu");
         Button userButton = new Button("User Menu");
         Button exit = new Button("Exit");
+
+        exit.setOnAction(event -> primaryStage.close());
 
         layout1.getChildren().addAll(loginButton,productButton);
         layout2.getChildren().addAll(userButton,offButton);

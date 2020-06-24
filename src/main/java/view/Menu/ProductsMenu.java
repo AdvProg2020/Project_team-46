@@ -1,5 +1,6 @@
 package view.Menu;
 
+import javafx.stage.Stage;
 import model.Product;
 
 import java.util.ArrayList;
@@ -76,6 +77,11 @@ public class ProductsMenu extends Menu{
 
     private Menu getViewCategories() {
         return new Menu("view categories",this) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 System.out.println("view categories Menu:");
@@ -173,6 +179,11 @@ public class ProductsMenu extends Menu{
     private Menu getFiltering() {
         return new Menu("filtering Menu",this) {
             @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
+            @Override
             public void show() {
                 System.out.println("Filtering Menu:");
                 System.out.println("1.show available filters/\n" +
@@ -206,6 +217,11 @@ public class ProductsMenu extends Menu{
     private Menu getSorting() {
         return new Menu("Sorting Menu",this) {
             @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
+            @Override
             public void show() {
                 System.out.println("Sorting Menu:");
                 System.out.println("1.show available sorting/sort[an available sort]/current sort/disable sort\n" +
@@ -234,6 +250,11 @@ public class ProductsMenu extends Menu{
 
     private Menu getShowProducts() {
         return new Menu("show product",this) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+
+            }
+
             @Override
             public void show() {
                 List<Product> filtered = new ArrayList<>(listToSort);
@@ -268,4 +289,8 @@ public class ProductsMenu extends Menu{
         };
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+    }
 }

@@ -1,6 +1,7 @@
 package view.Menu;
 
 import controller.*;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 
@@ -41,4 +42,8 @@ public class OffMenu extends Menu {
         }
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+    }
 }
