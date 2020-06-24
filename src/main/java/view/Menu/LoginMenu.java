@@ -1,5 +1,9 @@
 package view.Menu;
 
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.regex.Matcher;
@@ -135,6 +139,44 @@ public class LoginMenu extends Menu {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        VBox layout = new VBox(20); VBox registerBox = new VBox(20); VBox loginBox = new VBox(20);
+        Scene scene = new Scene(layout,200,200);
+        Scene registerScene = new Scene(registerBox,200,200);
+        Scene loginScene = new Scene(loginBox,200,200);
 
+
+
+        Button registerButton = new Button("Register"); registerButton.setOnAction(event -> {
+            registerBox.getChildren().clear();
+            HBox nameBox = new HBox(20); TextField nameField = new TextField();
+            nameBox.getChildren().addAll(new Label("Enter Username: "),nameField);
+            HBox roleBox = new HBox(20);
+            CheckBox sellerCheck = new CheckBox("Seller"); CheckBox buyerCheck = new CheckBox("Buyer");
+            CheckBox managerCheck = new CheckBox("Manager"); roleBox.getChildren().addAll(new Label("Enter Role: ")
+            ,buyerCheck,sellerCheck,managerCheck);
+            HBox passBox = new HBox(20); PasswordField passwordField = new PasswordField();
+            passBox.getChildren().addAll(new Label("Enter password: "),passwordField);
+        });
+        Button loginButton = new Button("Login"); loginButton.setOnAction(event -> {
+
+        });
+        Button logoutButton = new Button("Logout"); logoutButton.setOnAction(event -> {
+
+        });
+        Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+
+        });
+/*
+        HBox nameBox = new HBox(20);
+        TextField nameField = new TextField(); nameBox.getChildren().addAll(new Label("Enter Username: "),nameField);
+        HBox passBox = new HBox(20);
+        PasswordField passwordField = new PasswordField(); passBox.getChildren().addAll(new Label("Enter Password: "),passwordField);
+
+ */
+
+
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
