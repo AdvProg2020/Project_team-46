@@ -32,7 +32,7 @@ public class MainMenu extends Menu{
         VBox layout1 = new VBox(20);
         VBox layout2 = new VBox(20);
         HBox layout3 = new HBox(20);
-        mainLayout.getChildren().addAll(layout1,layout2,layout3);
+        mainLayout.getChildren().addAll(layout1,layout2, layout3);
         Scene scene = new Scene(mainLayout,250,200);
 
         //Buttons
