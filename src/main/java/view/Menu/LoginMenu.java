@@ -13,42 +13,6 @@ public class LoginMenu extends Menu {
         super("LoginMenu", parentMenu);
     }
 
-    @Override
-    public void show() {
-        System.out.println("1. Register(create account [Role] [Username]) \n" +
-                "2. Log in (login [Username])\n" +
-                "3. Log out \n" +
-                "4. Back");
-    }
-
-    @Override
-    public void execute() {
-        switch (scanner.nextLine()) {
-            case "1":
-                //register();
-                parentMenu.show();
-                parentMenu.execute();
-                break;
-            case "2":
-                logIn();
-                parentMenu.show();
-                parentMenu.execute();
-                break;
-            case "3":
-                logOut();
-                mainMenu.show();
-                mainMenu.execute();
-                break;
-            case "4":
-                parentMenu.show();
-                parentMenu.execute();
-                break;
-            default:
-                System.out.println("Enter a validate number");
-                this.execute();
-        }
-    }
-
     public void register(String password, String name, String last, String email, String address, String phone,
                          String balance, String company, String username, String role, Label error) {
 
@@ -65,51 +29,41 @@ public class LoginMenu extends Menu {
             controller.setPhoneNumber(phone);
             controller.setBalance(Long.parseLong(balance));
             controller.setCompanyName(company);
-
-        }
-    }
-
-    public void logIn() {
-        String username;
-        String password;
-        String command;
-        String regex;
-        Matcher matcher;
-        while (true) {
-            command = scanner.nextLine();
-            if (command.matches(regex = "login (.+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                if (controller.getAccountByUsername(matcher.group(1)) == null) {
-                    System.out.println("User not found");
-                } else {
-                    username = matcher.group(1);
-                    System.out.println("Enter password:");
-                    password = scanner.nextLine();
-                    if (controller.logIn(username, password)) {
-                        System.out.println("Successfully logged in");
-                        break;
-                    } else {
-                        System.out.println("Password is wrong");
-                    }
-                }
-            } else if (command.equals("help")) {
-                System.out.println("login [username] \n" +
-                        "help \n" +
-                        "back");
-            } else if (command.equals("back")) {
-                break;
-            } else {
-                System.out.println("invalid command");
+            try {
+                this.parentMenu.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-
     }
 
-    public void logOut() {
-        if (controller.logOut()) {
-            System.out.println("Successfully logged out");
+    public void logIn(String username, String password, Label errorLabel) {
+        if (controller.getAccountByUsername(username) == null) {
+            errorLabel.setText("User not found");
         } else {
-            System.out.println("You're already logged out");
+            if (controller.logIn(username, password)) {
+                errorLabel.setText("Successfully logged in");
+                try {
+                    this.parentMenu.start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                errorLabel.setText("Password is wrong");
+            }
+        }
+    }
+
+    public void logOut(Label label) {
+        if (controller.logOut()) {
+            label.setText("Successfully logged out");
+            try {
+                mainMenu.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            label.setText("You're already logged out");
         }
     }
 
@@ -120,7 +74,7 @@ public class LoginMenu extends Menu {
         Scene registerScene = new Scene(registerBox,200,200);
         Scene loginScene = new Scene(loginBox,200,200);
 
-
+        Label situationLabel= new Label();
 
         Button registerButton = new Button("Register"); registerButton.setOnAction(event -> {
             registerBox.getChildren().clear();
@@ -164,40 +118,50 @@ public class LoginMenu extends Menu {
                     if (managerCheck.isSelected()) register(passwordField.getText(),firstNameField.getText(),lastField.getText()
                             ,emailField.getText(),addressField.getText(),phoneField.getText(),"0",
                             null,nameField.getText(),"manager",errorLabel);
-
                 }
             });
             Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                primaryStage.setScene(scene);
+            });
+
+            registerBox.getChildren().addAll(nameBox,roleBox,passBox,firstNameBox,lastBox,emailBox,addressBox,phoneBox
+                    ,balanceBox,companyBox,confirmButton,errorLabel,backButton);
+            primaryStage.setScene(registerScene);
+        });
+        Button loginButton = new Button("Login"); loginButton.setOnAction(event -> {
+            loginBox.getChildren().clear();
+            HBox nameBox = new HBox(20); TextField nameField = new TextField();
+            nameBox.getChildren().addAll(new Label("Enter Username: "),nameField);
+            HBox passBox = new HBox(20); PasswordField passwordField = new PasswordField();
+            passBox.getChildren().addAll(new Label("Enter Password: "),passwordField);
+            Label errorLabel = new Label();
+            Button confirmButton = new Button("Login"); confirmButton.setOnAction(event1 -> {
+                logIn(nameField.getText(),passwordField.getText(),errorLabel);
                 try {
                     this.parentMenu.start(primaryStage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
+            Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                primaryStage.setScene(scene);
+            });
 
-            registerBox.getChildren().addAll(nameBox,roleBox,passBox,firstNameBox,lastBox,emailBox,addressBox,phoneBox
-                    ,balanceBox,companyBox,confirmButton,errorLabel,backButton);
-            primaryStage.setScene(registerScene);
-            primaryStage.show();
-        });
-        Button loginButton = new Button("Login"); loginButton.setOnAction(event -> {
-
+            loginBox.getChildren().addAll(nameBox,passBox,confirmButton,errorLabel,backButton);
+            primaryStage.setScene(loginScene);
         });
         Button logoutButton = new Button("Logout"); logoutButton.setOnAction(event -> {
-
+            logOut(situationLabel);
         });
         Button backButton = new Button("Back"); backButton.setOnAction(event -> {
-
+            try {
+                this.parentMenu.start(primaryStage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
-/*
-        HBox nameBox = new HBox(20);
-        TextField nameField = new TextField(); nameBox.getChildren().addAll(new Label("Enter Username: "),nameField);
-        HBox passBox = new HBox(20);
-        PasswordField passwordField = new PasswordField(); passBox.getChildren().addAll(new Label("Enter Password: "),passwordField);
 
- */
-
-
+        layout.getChildren().addAll(registerButton,loginButton,logoutButton,situationLabel,backButton);
 
         primaryStage.setScene(scene);
         primaryStage.show();
