@@ -20,6 +20,10 @@ public class BuyingLog extends Log {
         this.paidAmount = paidAmount;
     }
 
+    public Map<Product, Account> getSellerPerProduct() {
+        return sellerPerProduct;
+    }
+
     @Override
     public String toString() {
         return "BuyingLog{" +
