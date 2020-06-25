@@ -1,8 +1,18 @@
 package view.Menu;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.Node;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Comment;
-
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -211,6 +221,24 @@ public class GoodMenu extends Menu {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        VBox layout = new VBox(20);
+        Scene scene = new Scene(layout, 300, 150);
+        HBox layout1 = new HBox(20);
+        TextField productId = new TextField();
+        Button backButton = new Button("Back");
+        layout1.getChildren().addAll(new Label("Enter id of the product:"), productId);
+        HBox layout2 = new HBox(20);
+        layout2.getChildren().addAll(backButton);
+        layout.getChildren().addAll(layout1, layout2);
+        backButton.setOnAction(event -> {
+            try {
+                this.parentMenu.start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
-}
+    }

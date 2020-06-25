@@ -58,6 +58,7 @@ public class OffMenu extends Menu {
         Scene scene = new Scene(mainLayout,200,200);
         Button goodButton = new Button("Good Menu");
         Button loginButton = new Button("Login Menu");
+        Button back = new Button("Back");
         mainLayout.getChildren().addAll(goodButton, loginButton);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -72,6 +73,14 @@ public class OffMenu extends Menu {
         goodButton.setOnAction(event -> {
             try {
                 submenus.get(1).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        back.setOnAction(event -> {
+            try {
+                this.parentMenu.start(new Stage());
                 primaryStage.close();
             } catch (Exception e) {
                 e.printStackTrace();
