@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Account;
+import model.BuyingLog;
 import model.Discount;
 import model.Product;
 
@@ -308,18 +309,38 @@ public class UserBuyer extends Menu{
         return new Menu("view orders",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-                VBox layout = new VBox(20);
-                Scene scene = new Scene(layout,200,200);
-                Label orderLabel = new Label(controller.viewOrders().toString());
-                Button backButton = new Button("Back");
-                backButton.setOnAction(event -> {
+                VBox layout = new VBox(20); VBox detailBox = new VBox(20);
+                Scene scene = new Scene(layout,200,200); Scene detailScene = new Scene(detailBox,200,200);
+                for (BuyingLog order : controller.viewOrders()) {
+                    HBox orderBox = new HBox(20);
+                    Label orderLabel = new Label("Customer name: " + order.getCostumerName()
+                            + "\nLog Id: " + order.getLogId() + "\nLog date: " + order.getDate());
+                    Label productLabel = new Label();
+                    for (Product product : order.getSellerPerProduct().keySet()) {
+                        productLabel.setText(productLabel.getText() + "\nProduct name: " + product.getName() + "Product seller: " +
+                                order.getSellerPerProduct().get(product));
+                    }
+                    Button detailButton = new Button("Details"); detailButton.setOnAction(event -> {
+                        detailBox.getChildren().clear();
+                        Label detailLabel = new Label("Customer name: " + order.getCostumerName() +
+                                "\nLog Id: " + order.getLogId() + "\nLog date: " + order.getDate() +
+                                "\nPaid amount: " + order.getPaidAmount() + "\nDelivery Status: " + order.getDeliveryStatus());
+                        Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                            primaryStage.setScene(scene);
+                        });
+                        detailBox.getChildren().addAll(detailLabel,backButton);
+                        primaryStage.setScene(detailScene);
+                    });
+                    orderBox.getChildren().addAll(orderLabel,detailButton); layout.getChildren().addAll(orderBox);
+                }
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
                     try {
                         this.parentMenu.start(primaryStage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
-                layout.getChildren().addAll(orderLabel,backButton);
+                layout.getChildren().addAll(backButton);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
