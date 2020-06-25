@@ -71,7 +71,7 @@ public class LoginMenu extends Menu {
     public void start(Stage primaryStage) throws Exception {
         VBox layout = new VBox(20); VBox registerBox = new VBox(20); VBox loginBox = new VBox(20);
         Scene scene = new Scene(layout,200,200);
-        Scene registerScene = new Scene(registerBox,400,510);
+        Scene registerScene = new Scene(registerBox,400,540);
         Scene loginScene = new Scene(loginBox,200,200);
 
         Label situationLabel= new Label();

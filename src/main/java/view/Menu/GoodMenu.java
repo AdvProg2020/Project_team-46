@@ -221,15 +221,19 @@ public class GoodMenu extends Menu {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        VBox layout = new VBox(20);
-        Scene scene = new Scene(layout, 300, 150);
+        VBox entranceLayout = new VBox(20);
+        VBox mainLayout = new VBox(20);
+        Scene mainScene = new Scene(mainLayout, 300, 100);
+        Scene entranceScene = new Scene(entranceLayout, 300, 150);
         HBox layout1 = new HBox(20);
         TextField productId = new TextField();
         Button backButton = new Button("Back");
+        Button confirm = new Button("Confirm");
         layout1.getChildren().addAll(new Label("Enter id of the product:"), productId);
         HBox layout2 = new HBox(20);
-        layout2.getChildren().addAll(backButton);
-        layout.getChildren().addAll(layout1, layout2);
+        Label errorLabel = new Label();
+        layout2.getChildren().addAll(backButton, confirm);
+        entranceLayout.getChildren().addAll(layout1, layout2);
         backButton.setOnAction(event -> {
             try {
                 this.parentMenu.start(new Stage());
@@ -238,7 +242,61 @@ public class GoodMenu extends Menu {
                 e.printStackTrace();
             }
         });
-        primaryStage.setScene(scene);
+        confirm.setOnAction(event -> {
+            Button LoginMenu = new Button("Login Menu");
+            LoginMenu.setOnAction(event1 -> {
+                try {
+                    submenus.get(1).start(new Stage());
+                    primaryStage.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            Button digest = new Button("Digest");
+            digest.setOnAction(event1 -> {
+                try {
+                    submenus.get(2).start(new Stage());
+                    primaryStage.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            Button attribute = new Button("Attributes");
+            attribute.setOnAction(event1 -> {
+                try {
+                    submenus.get(3).start(new Stage());
+                    primaryStage.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
+            Button compare = new Button("Compare Products");
+            compare.setOnAction(event1 -> {
+                try {
+                    submenus.get(4).start(new Stage());
+                    primaryStage.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            Button comment = new Button("Comments");
+            comment.setOnAction(event1 -> {
+                try {
+                    submenus.get(5).start(new Stage());
+                    primaryStage.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            HBox hBox1 = new HBox(20);
+            HBox hBox2 = new HBox(20);
+            hBox1.getChildren().addAll(LoginMenu, digest, attribute);
+            hBox2.getChildren().addAll(compare, comment, backButton);
+            mainLayout.getChildren().addAll(hBox1, hBox2);
+            primaryStage.setScene(mainScene);
+        });
+        primaryStage.setScene(entranceScene);
         primaryStage.show();
     }
     }
