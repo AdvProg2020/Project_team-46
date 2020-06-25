@@ -59,8 +59,11 @@ public class UserMenu extends Menu {
                     break;
             }
         }
-        nextMenu.show();
-        nextMenu.execute();
+        try {
+            nextMenu.start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
