@@ -25,7 +25,7 @@ public class LoginMenu extends Menu {
     public void execute() {
         switch (scanner.nextLine()) {
             case "1":
-                register();
+                //register();
                 parentMenu.show();
                 parentMenu.execute();
                 break;
@@ -49,47 +49,23 @@ public class LoginMenu extends Menu {
         }
     }
 
-    public void register() {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (true) {
-            command = scanner.nextLine();
-            if (command.matches(regex = "create account (customer|seller|manager) (.+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                if (controller.getAccountByUsername(matcher.group(2)) != null) {
-                    System.out.println("User is already taken");
-                } else {
-                    controller.createAccount(matcher.group(2), matcher.group(1));
-                    System.out.println("Enter password:");
-                    controller.setPassword(scanner.nextLine());
-                    System.out.println("Enter your name:");
-                    controller.setName(scanner.nextLine());
-                    System.out.println("Enter your last name:");
-                    controller.setLastName(scanner.nextLine());
-                    System.out.println("Enter your email:");
-                    controller.setEmail(scanner.nextLine());
-                    System.out.println("Enter your address:");
-                    controller.setAddress(scanner.nextLine());
-                    System.out.println("Enter your phone number:");
-                    controller.setPhoneNumber(scanner.nextLine());
-                    System.out.println("Enter your balance:");
-                    controller.setBalance(Long.parseLong(scanner.nextLine()));
-                    if (matcher.group(1).equals("seller")) {
-                        System.out.println("Enter your company's name:");
-                        controller.setCompanyName(scanner.nextLine());
-                    }
-                    break;
-                }
-            } else if (command.equals("help")) {
-                System.out.println("create account [type] [username] \n" +
-                        "help \n" +
-                        "back");
-            } else if (command.equals("back")) {
-                break;
-            } else {
-                System.out.println("invalid command");
-            }
+    public void register(String password, String name, String last, String email, String address, String phone,
+                         String balance, String company, String username, String role, Label error) {
+
+        if (controller.getAccountByUsername(username) != null) {
+            error.setText("User is already taken");
+        }
+        else {
+            controller.createAccount(username, role);
+            controller.setPassword(password);
+            controller.setName(name);
+            controller.setLastName(last);
+            controller.setEmail(email);
+            controller.setAddress(address);
+            controller.setPhoneNumber(phone);
+            controller.setBalance(Long.parseLong(balance));
+            controller.setCompanyName(company);
+
         }
     }
 
@@ -151,11 +127,58 @@ public class LoginMenu extends Menu {
             HBox nameBox = new HBox(20); TextField nameField = new TextField();
             nameBox.getChildren().addAll(new Label("Enter Username: "),nameField);
             HBox roleBox = new HBox(20);
-            CheckBox sellerCheck = new CheckBox("Seller"); CheckBox buyerCheck = new CheckBox("Buyer");
-            CheckBox managerCheck = new CheckBox("Manager"); roleBox.getChildren().addAll(new Label("Enter Role: ")
-            ,buyerCheck,sellerCheck,managerCheck);
+            RadioButton sellerCheck = new RadioButton("Seller"); RadioButton buyerCheck = new RadioButton("Buyer");
+            RadioButton managerCheck = new RadioButton("Manager");ToggleGroup checkGroup = new ToggleGroup();
+            buyerCheck.setToggleGroup(checkGroup); sellerCheck.setToggleGroup(checkGroup);managerCheck.setToggleGroup(checkGroup);
+            roleBox.getChildren().addAll(new Label("Enter Role: "),buyerCheck,sellerCheck,managerCheck);
             HBox passBox = new HBox(20); PasswordField passwordField = new PasswordField();
             passBox.getChildren().addAll(new Label("Enter password: "),passwordField);
+            HBox firstNameBox = new HBox(20); TextField firstNameField = new TextField();
+            firstNameBox.getChildren().addAll(new Label("Enter your name: "),firstNameBox);
+            HBox lastBox = new HBox(20); TextField lastField = new TextField();
+            lastBox.getChildren().addAll(new Label("Enter your last name: "),lastField);
+            HBox emailBox = new HBox(20); TextField emailField = new TextField();
+            emailBox.getChildren().addAll(new Label("Enter your email"),emailField);
+            HBox addressBox = new HBox(20); TextField addressField = new TextField();
+            addressBox.getChildren().addAll(new Label("Enter your address: "),addressField);
+            HBox phoneBox = new HBox(20); TextField phoneField = new TextField();
+            phoneBox.getChildren().addAll(new Label("Enter your phone number: "),phoneField);
+            HBox balanceBox = new HBox(20); TextField balanceField = new TextField();
+            balanceBox.getChildren().addAll(new Label("Enter your balance: (for seller and buyer)"),balanceField);
+            HBox companyBox = new HBox(20); TextField companyField = new TextField();
+            companyBox.getChildren().addAll(new Label("Enter your Company: (for sellers)"),companyField);
+            Label errorLabel = new Label();
+            Button confirmButton = new Button("Confirm"); confirmButton.setOnAction(event1 -> {
+                if (nameField.getText().isEmpty() || passwordField.getText().isEmpty() || firstNameField.getText().isEmpty() ||
+                lastField.getText().isEmpty() || emailField.getText().isEmpty() || (!sellerCheck.isSelected() &&
+                        !buyerCheck.isSelected() && !managerCheck.isSelected())) {
+                    errorLabel.setText("some required fields did not filled");
+                }
+                else {
+                    if (buyerCheck.isSelected()) register(passwordField.getText(),firstNameField.getText(),lastField.getText()
+                            ,emailField.getText(),addressField.getText(),phoneField.getText(),balanceField.getText(),
+                            null,nameField.getText(),"customer",errorLabel);
+                    if (sellerCheck.isSelected()) register(passwordField.getText(),firstNameField.getText(),lastField.getText()
+                            ,emailField.getText(),addressField.getText(),phoneField.getText(),balanceField.getText(),
+                            companyField.getText(),nameField.getText(),"seller",errorLabel);
+                    if (managerCheck.isSelected()) register(passwordField.getText(),firstNameField.getText(),lastField.getText()
+                            ,emailField.getText(),addressField.getText(),phoneField.getText(),"0",
+                            null,nameField.getText(),"manager",errorLabel);
+
+                }
+            });
+            Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                try {
+                    this.parentMenu.start(primaryStage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            registerBox.getChildren().addAll(nameBox,roleBox,passBox,firstNameBox,lastBox,emailBox,addressBox,phoneBox
+                    ,balanceBox,companyBox,confirmButton,errorLabel,backButton);
+            primaryStage.setScene(registerScene);
+            primaryStage.show();
         });
         Button loginButton = new Button("Login"); loginButton.setOnAction(event -> {
 
