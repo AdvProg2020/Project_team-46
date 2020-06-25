@@ -1,8 +1,18 @@
 package view.Menu;
 
 import controller.*;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public class OffMenu extends Menu {
@@ -44,6 +54,28 @@ public class OffMenu extends Menu {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        HBox mainLayout = new HBox(20);
+        Scene scene = new Scene(mainLayout,200,200);
+        Button goodButton = new Button("Good Menu");
+        Button loginButton = new Button("Login Menu");
+        mainLayout.getChildren().addAll(goodButton, loginButton);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        loginButton.setOnAction(event -> {
+            try {
+                submenus.get(2).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        goodButton.setOnAction(event -> {
+            try {
+                submenus.get(1).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

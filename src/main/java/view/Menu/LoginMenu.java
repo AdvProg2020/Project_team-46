@@ -71,7 +71,7 @@ public class LoginMenu extends Menu {
     public void start(Stage primaryStage) throws Exception {
         VBox layout = new VBox(20); VBox registerBox = new VBox(20); VBox loginBox = new VBox(20);
         Scene scene = new Scene(layout,200,200);
-        Scene registerScene = new Scene(registerBox,300,500);
+        Scene registerScene = new Scene(registerBox,400,510);
         Scene loginScene = new Scene(loginBox,200,200);
 
         Label situationLabel= new Label();
@@ -118,6 +118,7 @@ public class LoginMenu extends Menu {
                     if (managerCheck.isSelected()) register(passwordField.getText(),firstNameField.getText(),lastField.getText()
                             ,emailField.getText(),addressField.getText(),phoneField.getText(),"0",
                             null,nameField.getText(),"manager",errorLabel);
+                    primaryStage.close();
                 }
             });
             Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
