@@ -88,7 +88,7 @@ public class LoginMenu extends Menu {
             HBox passBox = new HBox(20); PasswordField passwordField = new PasswordField();
             passBox.getChildren().addAll(new Label("Enter password: "),passwordField);
             HBox firstNameBox = new HBox(20); TextField firstNameField = new TextField();
-            firstNameBox.getChildren().addAll(new Label("Enter your name: "),firstNameBox);
+            firstNameBox.getChildren().addAll(new Label("Enter your name: "),firstNameField);
             HBox lastBox = new HBox(20); TextField lastField = new TextField();
             lastBox.getChildren().addAll(new Label("Enter your last name: "),lastField);
             HBox emailBox = new HBox(20); TextField emailField = new TextField();
