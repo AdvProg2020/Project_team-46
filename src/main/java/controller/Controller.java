@@ -643,9 +643,6 @@ public class Controller {
             System.out.println("invalid command");
     }
 
-    public void selectSeller(String userName) {
-
-    } //needs to complete
 
     public void setCurrentAccount(Account currentAccount) {
         this.currentAccount = currentAccount;

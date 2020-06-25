@@ -13,6 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Comment;
+import model.Product;
+
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -74,11 +76,6 @@ public class GoodMenu extends Menu {
                 controller.addToCart(goodId);
                 System.out.println("product added to cart");
             }
-            else if (command.matches(regex = "select seller (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.selectSeller(field);
-            }
             else
                 System.out.println("invalid command");
         }
@@ -88,13 +85,34 @@ public class GoodMenu extends Menu {
         return new Menu("digest Menu",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout, 200, 200);
+                Label label = new Label();
+                HBox layout1 = new HBox(20);
+                Button add = new Button("Add to Cart");
+                Button back = new Button("Back");
+                add.setOnAction(event -> {
+                    controller.digest(goodId);
+                    label.setText("product added to cart");
+                });
+                back.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                        primaryStage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout1.getChildren().addAll(add, back);
+                layout.getChildren().addAll(layout1, label);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
             public void show() {
                 System.out.println("Digest Menu:");
-                System.out.println("1.add to cart/select seller [seller username]\n" +
+                System.out.println("1.add to cart" +
                         "2.back");
                 System.out.println(controller.digest(goodId));
             }
@@ -233,7 +251,7 @@ public class GoodMenu extends Menu {
         HBox layout2 = new HBox(20);
         Label errorLabel = new Label();
         layout2.getChildren().addAll(backButton, confirm);
-        entranceLayout.getChildren().addAll(layout1, layout2);
+        entranceLayout.getChildren().addAll(layout1, layout2, errorLabel);
         backButton.setOnAction(event -> {
             try {
                 this.parentMenu.start(new Stage());
@@ -294,7 +312,12 @@ public class GoodMenu extends Menu {
             hBox1.getChildren().addAll(LoginMenu, digest, attribute);
             hBox2.getChildren().addAll(compare, comment, backButton);
             mainLayout.getChildren().addAll(hBox1, hBox2);
-            primaryStage.setScene(mainScene);
+            if (controller.getProductById(productId.toString()) == null) {
+                errorLabel.setText("ID is not valid");
+            } else {
+                goodId = productId.toString();
+                primaryStage.setScene(mainScene);
+            }
         });
         primaryStage.setScene(entranceScene);
         primaryStage.show();
