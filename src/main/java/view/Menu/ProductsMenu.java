@@ -1,9 +1,7 @@
 package view.Menu;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -196,6 +194,104 @@ public class ProductsMenu extends Menu{
         }
     }
 
+    private Menu getSorting() {
+        return new Menu("Sorting Menu",this) {
+            @Override
+            public void start(Stage primaryStage) throws Exception {
+                VBox mainLayout = new VBox(20);
+                VBox sortLayout = new VBox(20);
+                Scene scene = new Scene(mainLayout, 200, 200);
+                Scene scene1 = new Scene(sortLayout, 2000, 200);
+                Label sortMethod = new Label();
+                Button backButton = new Button("Back");
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                        primaryStage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Button sort = new Button("Sort");
+                sort.setOnAction(event -> {
+                    Label label = new Label("Enter a sorting method: ");
+                    HBox layout1 = new HBox(20);
+                    RadioButton dateCheck = new RadioButton("By Date"); RadioButton scoreCheck = new RadioButton("By Score");
+                    RadioButton viewCheck = new RadioButton("By View");
+                    ToggleGroup checkGroup = new ToggleGroup();
+                    dateCheck.setToggleGroup(checkGroup); scoreCheck.setToggleGroup(checkGroup);viewCheck.setToggleGroup(checkGroup);
+                    layout1.getChildren().addAll(dateCheck, scoreCheck, viewCheck);
+                    Button back = new Button("Back");
+                    back.setOnAction(event1 -> {
+                        try {
+                            primaryStage.setScene(scene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    Label message = new Label();
+                    Button confirm = new Button("Confirm");
+                    confirm.setOnAction(event1 -> {
+                        String field = "";
+                        if (dateCheck.isSelected()) {
+                            field = "Date";
+                            message.setText("Done!");
+                            sortMethod.setText("Current sorting method is by date");
+                        } else if (scoreCheck.isSelected()) {
+                            field = "score";
+                            message.setText("Done!");
+                            sortMethod.setText("Current sorting method is by score");
+                        } else if (viewCheck.isSelected()) {
+                            field = "views";
+                            message.setText("Done!");
+                            sortMethod.setText("Current sorting method is by views");
+                        }
+                        listToSort = controller.sort(field);
+                    });
+                    HBox layout2 = new HBox(20);
+                    layout2.getChildren().addAll(confirm, back);
+                    sortLayout.getChildren().addAll(label, layout1, layout2, message);
+                });
+                Button disableSort = new Button("Disable Sort");
+                disableSort.setOnAction(event -> {
+                    listToSort = controller.disableSort();
+                    sortMethod.setText("No sorting method is selected!");
+                });
+                HBox layout1 = new HBox(20);
+                layout1.getChildren().addAll(sort, backButton);
+                mainLayout.getChildren().addAll(sortMethod, layout1);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+
+            @Override
+            public void show() {
+                System.out.println("Sorting Menu:");
+                System.out.println("1.show available sorting/sort[an available sort]/current sort/disable sort\n" +
+                        "2.back");
+            }
+
+            @Override
+            public void execute() {
+                switch (scanner.nextLine()) {
+                    case "1":
+                        manageSorting();
+                        this.show();
+                        this.execute();
+                        break;
+                    case "2":
+                        this.parentMenu.show();
+                        this.parentMenu.execute();
+                        break;
+                    default:
+                        System.out.println("Enter a  validate number");
+                        this.execute();
+                }
+            }
+        };
+    }
+
+
     private Menu getFiltering() {
         return new Menu("filtering Menu",this) {
             @Override
@@ -349,39 +445,6 @@ public class ProductsMenu extends Menu{
         };
     }
 
-    private Menu getSorting() {
-        return new Menu("Sorting Menu",this) {
-            @Override
-            public void start(Stage primaryStage) throws Exception {
-
-            }
-
-            @Override
-            public void show() {
-                System.out.println("Sorting Menu:");
-                System.out.println("1.show available sorting/sort[an available sort]/current sort/disable sort\n" +
-                        "2.back");
-            }
-
-            @Override
-            public void execute() {
-                switch (scanner.nextLine()) {
-                    case "1":
-                        manageSorting();
-                        this.show();
-                        this.execute();
-                        break;
-                    case "2":
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                    default:
-                        System.out.println("Enter a  validate number");
-                        this.execute();
-                }
-            }
-        };
-    }
 
     private Menu getShowProducts() {
         return new Menu("show product",this) {
