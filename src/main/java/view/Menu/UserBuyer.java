@@ -11,8 +11,7 @@ import model.Discount;
 import model.Product;
 
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.regex.Matcher;
+
 
 public class UserBuyer extends Menu{
 
@@ -90,74 +89,6 @@ public class UserBuyer extends Menu{
 
 
     }
-
-    private Menu manageCart(Menu parentMenu) {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches("show products")) {
-                for (Product product : controller.viewCart().keySet()) {
-                    System.out.println(product.getName() +"   "+ product.getProductId() +"   "+
-                            controller.viewCart().get(product));
-                }
-            }
-            else if (command.matches(regex = "view (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field1 = matcher.group(1);
-                GoodMenu goodMenu = new GoodMenu(parentMenu,null);
-                goodMenu.setGoodId(field1);
-                goodMenu.show();
-                goodMenu.execute();
-            }
-            else if (command.matches(regex = "increase (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.increaseProduct(field);
-            }
-            else if (command.matches(regex = "decrease (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.decreaseProduct(field);
-            }
-            else if (command.matches("show total price")) {
-                System.out.println(controller.showTotalPrice());
-            }
-            else if (command.matches("purchase")) {
-                return new Menu("purchase Menu",parentMenu) {
-                    @Override
-                    public void start(Stage primaryStage) throws Exception {
-
-                    }
-
-                    @Override
-                    public void show() {
-                        System.out.println("Purchase Menu:");
-                        System.out.println("1.Next(receiving info)\n" +
-                                "2.back");
-                    }
-
-                    @Override
-                    public void execute() {
-                        switch (Integer.parseInt(scanner.nextLine())) {
-                            case 1:
-                                Menu menu = receiveInfo(this);
-                                menu.show();
-                                menu.execute();
-                                this.show();
-                                this.execute();
-                                break;
-                            case 2:
-                                this.parentMenu.show();
-                                this.parentMenu.execute();
-                                break;
-                        }
-                    }
-                };
-            }
-        }
-        return null;
-    } //needs to complete
 
     private Menu receiveInfo(Menu parentMenu) {
         return new Menu("Receive Info Menu",parentMenu) {
@@ -560,33 +491,26 @@ public class UserBuyer extends Menu{
                 }
                 Label priceLabel = new Label("Total price: " + controller.showTotalPrice());
                 Button purchaseButton = new Button("Purchase"); purchaseButton.setOnAction(event -> {
-
+                    try {
+                        receiveInfo(this).start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
 
+                layout.getChildren().addAll(priceLabel,purchaseButton,backButton);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
-
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        Menu menu = manageCart(this);
-                        if (menu != null) {
-                            Objects.requireNonNull(menu).show();
-                            Objects.requireNonNull(menu).execute();
-                        }
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                }
-            }
         };
-    } //needs to complete
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
