@@ -154,18 +154,22 @@ public class UserSeller extends Menu{
                 VBox layout = new VBox(20);
                 Scene scene = new Scene(layout,200,200);
 
-                for (String off : controller.viewSellersOff()) {
-                    HBox offBox = new HBox(20);
-                    Label infoLabel = new Label(off);
-                    Button editButton = new Button("Edit"); editButton.setOnAction(event -> {
+                for (Sale sale : controller.getCurrentAccount().getOffList()) {
+                    HBox saleBox = new HBox(20);
+                    Label infoLabel = new Label("Off Id: " + sale.getOffId() + "\nDiscount Percentage: "
+                            + sale.getDiscountPercentage() + "\nOff Status: " + sale.getSaleStatus());
+
+                    Button viewButton = new Button("View");viewButton.setOnAction(event -> {
 
                     });
-                    Button viewButton = new Button("View"); viewButton.setOnAction(event -> {
+                    Button editButton = new Button("Edit");editButton.setOnAction(event -> {
 
                     });
+
 
                 }
-                
+
+
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }

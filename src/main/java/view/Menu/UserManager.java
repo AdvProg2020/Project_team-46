@@ -129,45 +129,6 @@ public class UserManager extends Menu {
         }
     }
 
-    private void manageUsers() {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "view (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                System.out.println(controller.viewUsers(field));
-            }
-            else if (command.matches(regex = "delete user (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.deleteUser(field);
-            }
-            else if (command.equalsIgnoreCase("create manager profile")) {
-                System.out.println("Enter manager username :");
-                String userName = scanner.nextLine();
-                Role manager = Role.MANAGER;
-                Account account = controller.createManager(userName,manager);
-                System.out.println("Enter manager name :");
-                account.setName(scanner.nextLine());
-                System.out.println("Enter manager last name :");
-                account.setLastName(scanner.nextLine());
-                System.out.println("Enter manager password :");
-                account.setPassword(scanner.nextLine());
-                System.out.println("Enter manager address :");
-                account.setAddress(scanner.nextLine());
-                System.out.println("Enter manager Email :");
-                account.setEmail(scanner.nextLine());
-                System.out.println("Enter manager phone number :");
-                account.setPhoneNumber(scanner.nextLine());
-                controller.addUserManager(account);
-            }
-            else
-                System.out.println("invalid command");
-        }
-    }
-
     private void viewDiscountCodes() {
         String command;
         String regex;
