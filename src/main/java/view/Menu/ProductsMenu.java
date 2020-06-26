@@ -387,7 +387,40 @@ public class ProductsMenu extends Menu{
         return new Menu("show product",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-
+                List<Product> filtered = new ArrayList<>(listToSort);
+                for (Product product : listToSort) {
+                    if (controller.hasNameFilter) {
+                        if (!(product.getName().contains(controller.filteredName))) {
+                            filtered.remove(product);
+                        }
+                    }
+                    if (controller.hasCategoryFilter) {
+                        if (!(product.getCategory().getName().equals(controller.filteredCategory))) {
+                            filtered.remove(product);
+                        }
+                    }
+                }
+                Label label = new Label();
+                StringBuilder stringBuilder = new StringBuilder();
+                for (Product product : filtered) {
+                    stringBuilder.append(product.getName()).append("    ").append(product.getProductId()).append("    ")
+                            .append(product.getCategory().getName()).append("    ").append(product.getNumberOfViews())
+                            .append("    ").append(product.getDateModified()).append("\n");
+                }
+                label.setText(stringBuilder.toString());
+                Button back = new Button("Back");
+                back.setOnAction(event1 -> {
+                    try {
+                        parentMenu.start(new Stage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                VBox layout = new VBox(20);
+                layout.getChildren().addAll(label, back);
+                Scene scene = new Scene(layout, 200, 200);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
