@@ -151,7 +151,23 @@ public class UserSeller extends Menu{
         return new Menu("view offs", this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
+                for (String off : controller.viewSellersOff()) {
+                    HBox offBox = new HBox(20);
+                    Label infoLabel = new Label(off);
+                    Button editButton = new Button("Edit"); editButton.setOnAction(event -> {
+
+                    });
+                    Button viewButton = new Button("View"); viewButton.setOnAction(event -> {
+
+                    });
+
+                }
+                
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
@@ -442,7 +458,13 @@ public class UserSeller extends Menu{
         return new Menu("remove product", this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
+
+
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override

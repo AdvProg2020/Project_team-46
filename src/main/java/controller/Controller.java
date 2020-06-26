@@ -320,11 +320,10 @@ public class Controller {
     public ArrayList<String> viewSellersOff() {
         ArrayList<String> offs = new ArrayList<>();
         for (Sale sale : currentAccount.getOffList()) {
-            System.out.println("offId: " + sale.getOffId());
             for (Product product : sale.getProducts()) {
                 double number = product.getValue() - (sale.getDiscountPercentage() / 100.0)*product.getValue();
-                String output = product.getName()+ "   " + "   " + product.getProductId() + "   " +
-                        product.getValue() + "   " + number;
+                String output = "product name: " + product.getName()+ "\nproduct Id: " + product.getProductId()
+                        + "\nprice: " + product.getValue() + "\nsale price: " + number + "\noffId: " + sale.getOffId();
                 offs.add(output);
             }
         }
