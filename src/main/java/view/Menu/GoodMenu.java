@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.Node;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -138,7 +139,26 @@ public class GoodMenu extends Menu {
         return new Menu("attributes menu",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-
+                VBox layout = new VBox(20);
+                Label label = new Label();
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String attribute : controller.attributes(goodId)) {
+                    stringBuilder.append(attribute + "\n");
+                }
+                label.setText(stringBuilder.toString());
+                Button back = new Button("Back");
+                back.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                        primaryStage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().addAll(label, back);
+                Scene scene = new Scene(layout, 200, 200);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
@@ -241,8 +261,6 @@ public class GoodMenu extends Menu {
     public void start(Stage primaryStage) throws Exception {
         VBox entranceLayout = new VBox(20);
         VBox mainLayout = new VBox(20);
-        Scene mainScene = new Scene(mainLayout, 300, 100);
-        Scene entranceScene = new Scene(entranceLayout, 300, 150);
         HBox layout1 = new HBox(20);
         TextField productId = new TextField();
         Button backButton = new Button("Back");
@@ -250,7 +268,9 @@ public class GoodMenu extends Menu {
         layout1.getChildren().addAll(new Label("Enter id of the product:"), productId);
         HBox layout2 = new HBox(20);
         Label errorLabel = new Label();
-        layout2.getChildren().addAll(backButton, confirm);
+        Scene mainScene = new Scene(mainLayout, 300, 100);
+        Scene entranceScene = new Scene(entranceLayout, 300, 150);
+        layout2.getChildren().addAll(confirm, backButton);
         entranceLayout.getChildren().addAll(layout1, layout2, errorLabel);
         backButton.setOnAction(event -> {
             try {
@@ -307,10 +327,19 @@ public class GoodMenu extends Menu {
                     e.printStackTrace();
                 }
             });
+            Button back = new Button("Back");
+            back.setOnAction(event1 -> {
+                try {
+                    this.parentMenu.start(new Stage());
+                    primaryStage.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
             HBox hBox1 = new HBox(20);
             HBox hBox2 = new HBox(20);
             hBox1.getChildren().addAll(LoginMenu, digest, attribute);
-            hBox2.getChildren().addAll(compare, comment, backButton);
+            hBox2.getChildren().addAll(compare, comment, back);
             mainLayout.getChildren().addAll(hBox1, hBox2);
             if (controller.getProductById(productId.toString()) == null) {
                 errorLabel.setText("ID is not valid");
