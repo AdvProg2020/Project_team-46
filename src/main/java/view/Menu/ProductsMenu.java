@@ -3,6 +3,7 @@ package view.Menu;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -199,7 +200,123 @@ public class ProductsMenu extends Menu{
         return new Menu("filtering Menu",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox mainLayout = new VBox(20);
+                VBox filter1Layout = new VBox(20);
+                VBox filter2Layout = new VBox(20);
+                VBox currentFilters = new VBox(20);
+                VBox disableFilter = new VBox(20);
+                Scene mainScene = new Scene(mainLayout, 200, 200);
+                Scene scene1 = new Scene(filter1Layout, 200, 200);
+                Scene scene2 = new Scene(currentFilters, 200, 200);
+                Scene scene3 = new Scene(disableFilter, 200, 200);
+                Scene scene4 = new Scene(filter2Layout, 200, 200);
+                Button filterByCategory = new Button("Filter by Category");
+                filterByCategory.setOnAction(event -> {
+                    HBox layout1 = new HBox(20);
+                    HBox layout2 = new HBox(20);
+                    Button back = new Button("Back");
+                    TextField category = new TextField();
+                    Label message = new Label();
+                    back.setOnAction(event1 -> {
+                        try {
+                            primaryStage.setScene(mainScene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    Button confirm = new Button("Confirm");
+                    confirm.setOnAction(event1 -> {
+                        message.setText(controller.filter("by category", category.toString()));
+                    });
+                    layout1.getChildren().addAll(new Label("Enter a Category: "), category);
+                    layout2.getChildren().addAll(confirm, back);
+                    filter1Layout.getChildren().addAll(layout1, layout2, message);
+                    primaryStage.setScene(scene1);
 
+                });
+                Button filterByName = new Button("Filter by Name");
+                filterByName.setOnAction(event -> {
+                    HBox layout1 = new HBox(20);
+                    HBox layout2 = new HBox(20);
+                    Button back = new Button("Back");
+                    TextField category = new TextField();
+                    Label message = new Label();
+                    back.setOnAction(event1 -> {
+                        try {
+                            primaryStage.setScene(mainScene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    Button confirm = new Button("Confirm");
+                    confirm.setOnAction(event1 -> {
+                        message.setText(controller.filter("by name", category.toString()));
+                    });
+                    layout1.getChildren().addAll(new Label("Enter a name: "), category);
+                    layout2.getChildren().addAll(confirm, back);
+                    filter2Layout.getChildren().addAll(layout1, layout2, message);
+                    primaryStage.setScene(scene4);
+                });
+                Button currentFilter = new Button("Current Filters");
+                currentFilter.setOnAction(event -> {
+                    Label label = new Label();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    Button back = new Button("Back");
+                    back.setOnAction(event1 -> {
+                        try {
+                            primaryStage.setScene(mainScene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    stringBuilder.append("Current Filters: \n");
+                    if (controller.hasCategoryFilter) {
+                        stringBuilder.append("by category: ").append(controller.filteredCategory);
+                    }
+                    if (controller.hasNameFilter) {
+                        stringBuilder.append("by name: ").append(controller.filteredName);
+                    }
+                    else
+                        stringBuilder.append("No filter yet");
+                    label.setText(stringBuilder.toString());
+                    currentFilters.getChildren().addAll(label);
+                    primaryStage.setScene(scene2);
+                });
+                Button disableButton = new Button("Disable Filter");
+                disableButton.setOnAction(event -> {
+                    HBox layout1 = new HBox(20);
+                    HBox layout2 = new HBox(20);
+                    Button back = new Button("Back");
+                    Label message = new Label();
+                    back.setOnAction(event1 -> {
+                        try {
+                            primaryStage.setScene(mainScene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    Button ByName = new Button("By Name");
+                    ByName.setOnAction(event1 -> {
+                        controller.disableFilter("name");
+                        message.setText("Successful");
+                    });
+                    Button ByCategory = new Button("By Category");
+                    ByCategory.setOnAction(event1 -> {
+                        controller.disableFilter("category");
+                        message.setText("Successful");
+                    });
+                    layout1.getChildren().addAll(ByCategory, ByName);
+                    layout2.getChildren().addAll(back);
+                    disableFilter.getChildren().addAll(layout1, layout2, message);
+                    primaryStage.setScene(scene3);
+                });
+                HBox layout1 = new HBox(20);
+                HBox layout2 = new HBox(20);
+                layout1.getChildren().addAll(filterByCategory, filterByName);
+                layout2.getChildren().addAll(currentFilter, disableButton);
+                mainLayout.getChildren().addAll(layout1, layout2);
+                primaryStage.setScene(mainScene);
+                primaryStage.show();
             }
 
             @Override
@@ -210,7 +327,6 @@ public class ProductsMenu extends Menu{
                         "current filters/\n" +
                         "disable filter[a selected filter]\n" +
                         "2.back");
-
             }
 
             @Override

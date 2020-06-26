@@ -544,19 +544,20 @@ public class Controller {
         product.setScores(score1);
     }
 
-    public void filter(String filter,String detail) {
+    public String filter(String filter,String detail) {
         if (filter.equals("by category")) {
             if (getCategoryByName(detail) != null) {
                 hasCategoryFilter = true;
                 filteredCategory = detail;
             }
             else
-                System.out.println("category is invalid");
+                return "category is invalid";
         }
         else if (filter.equals("by name")) {
             hasNameFilter = true;
             filteredName = detail;
         }
+        return "Successful";
     }
 
     public void disableFilter(String filter) {
