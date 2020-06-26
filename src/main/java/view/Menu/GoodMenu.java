@@ -208,12 +208,7 @@ public class GoodMenu extends Menu {
                 confirm.setOnAction(event -> {
                     Button back = new Button("Back");
                     back.setOnAction(event1 -> {
-                        try {
-                            this.parentMenu.start(new Stage());
-                            primaryStage.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        primaryStage.setScene(entranceScene);
                     });
                     if (controller.getProductById(productId.toString()) == null)  {
                         errorLabel.setText("ID is not valid");
@@ -261,7 +256,53 @@ public class GoodMenu extends Menu {
         return new Menu("Comments",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-
+                VBox mainLayout = new VBox(20);
+                VBox commentLayout = new VBox(20);
+                HBox layout1 = new HBox(20);
+                Scene mainScene = new Scene(mainLayout, 200, 200);
+                Scene commentScene = new Scene(commentLayout, 200 , 200);
+                StringBuilder stringBuilder = new StringBuilder();
+                Label errorLabel = new Label();
+                Button back = new Button("Back");
+                back.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                        primaryStage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Button addComment = new Button("Add Comment");
+                addComment.setOnAction(event -> {
+                    if (controller.getCurrentAccount() == null) {
+                        errorLabel.setText("You must first register or log in!");
+                    } else {
+                        HBox titleBox = new HBox(20); TextField title = new TextField();
+                        titleBox.getChildren().addAll(new Label("Enter a title: "), title);
+                        HBox commentBox = new HBox(20); TextField comment = new TextField();
+                        commentBox.getChildren().addAll(new Label("Enter your comment: "), comment);
+                        Label confirmLabel = new Label();
+                        Button confirm = new Button("Confirm");
+                        confirm.setOnAction(event1 -> {
+                            controller.addComment(title.toString(), comment.toString(), goodId);
+                            confirmLabel.setText("Comment added");
+                        });
+                        Button backButton = new Button("Back");
+                        backButton.setOnAction(event1 -> {
+                            primaryStage.setScene(mainScene);
+                        });
+                        commentLayout.getChildren().addAll(titleBox, commentBox, confirm, back, confirmLabel);
+                        primaryStage.setScene(commentScene);
+                    }
+                });
+                Label label = new Label();
+                for (Comment comment : controller.comments(goodId)) {
+                    stringBuilder.append(comment.getUser().getUsername()).append(":\n").append(comment.getTitle()).append("\n").append(comment.getBody());
+                }
+                label.setText(stringBuilder.toString());
+                mainLayout.getChildren().addAll(label, addComment, back, errorLabel);
+                primaryStage.setScene(mainScene);
+                primaryStage.show();
             }
 
             @Override
@@ -374,12 +415,7 @@ public class GoodMenu extends Menu {
             });
             Button back = new Button("Back");
             back.setOnAction(event1 -> {
-                try {
-                    this.parentMenu.start(new Stage());
-                    primaryStage.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                primaryStage.setScene(entranceScene);
             });
             HBox hBox1 = new HBox(20);
             HBox hBox2 = new HBox(20);
