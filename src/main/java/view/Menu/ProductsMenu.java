@@ -2,6 +2,7 @@ package view.Menu;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -83,7 +84,21 @@ public class ProductsMenu extends Menu{
         return new Menu("view categories",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-
+                VBox layout = new VBox(20);
+                Button back = new Button("Back");
+                back.setOnAction(event -> {
+                    try {
+                        parentMenu.start(new Stage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Label label = new Label();
+                label.setText(controller.getCategories().toString());
+                layout.getChildren().addAll(label, back);
+                Scene scene = new Scene(layout, 200, 200);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
