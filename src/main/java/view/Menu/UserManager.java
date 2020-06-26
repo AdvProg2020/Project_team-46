@@ -147,21 +147,6 @@ public class UserManager extends Menu {
         }
     }
 
-    private void manageProducts() {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "remove (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.removeProduct(field);
-            }
-            else
-                System.out.println("invalid command");
-        }
-    }
-
     private void viewDiscountCodes() {
         String command;
         String regex;
@@ -417,37 +402,33 @@ public class UserManager extends Menu {
         return new Menu("manage products",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
-            }
-
-            @Override
-            public void show() {
-                System.out.println(controller.getProducts());
-                System.out.println(
-                        "1. remove [product id]" + "\n"
-                                + "2. back");
-            }
-
-
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        manageProducts();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                    default:
-                        System.out.println("Enter a validate number");
-                        this.execute();
+                for (Product product : controller.getProducts()) {
+                    HBox productBox = new HBox(20);
+                    Label infoLabel = new Label("Product Id: " + product.getProductId() + "\nCategory: " + product.getCategory()
+                            +"\nName: "+ product.getName() + "\nseller username: " + product.getSeller().getUsername());
+                    Button removeButton = new Button("Remove"); removeButton.setOnAction(event -> {
+                        controller.removeProduct(product.getProductId());
+                    });
+                    productBox.getChildren().addAll(infoLabel,removeButton);
+                    layout.getChildren().add(productBox);
                 }
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                layout.getChildren().add(backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
-    } //to do
+    } //done
 
     private Menu getCreateDiscountCode() {
         return new Menu("create discount code",this) {
@@ -511,7 +492,30 @@ public class UserManager extends Menu {
         return new Menu("View Discount Code",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20); VBox editLayout = new VBox(20);
+                Scene scene = new Scene(layout,200,200); Scene editScene = new Scene(editLayout,200,200);
 
+
+                for (Discount discount : controller.getDiscountList()) {
+                    HBox discountBox = new HBox(20);
+                    Label infoLabel = new Label("Discount Code: " + discount.getCode() + "\nDiscount Percentage: "
+                            + discount.getDiscountPercentage() + "\nMaximum Discount: " + discount.getMaximumDiscount());
+                    Button detailButton = new Button("Details"); detailButton.setOnAction(event -> {
+
+                    });
+                    Button editButton = new Button("Edit"); editButton.setOnAction(event -> {
+                        editLayout.getChildren().clear();
+
+                    });
+                    Button removeButton = new Button("Remove"); removeButton.setOnAction(event -> {
+
+                    });
+                    discountBox.getChildren().addAll(infoLabel,detailButton,editButton,removeButton);
+                    layout.getChildren().add(discountBox);
+                }
+
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
