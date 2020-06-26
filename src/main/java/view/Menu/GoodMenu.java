@@ -143,7 +143,7 @@ public class GoodMenu extends Menu {
                 Label label = new Label();
                 StringBuilder stringBuilder = new StringBuilder();
                 for (String attribute : controller.attributes(goodId)) {
-                    stringBuilder.append(attribute + "\n");
+                    stringBuilder.append(attribute).append("\n");
                 }
                 label.setText(stringBuilder.toString());
                 Button back = new Button("Back");
@@ -184,7 +184,52 @@ public class GoodMenu extends Menu {
         return new Menu("Compare Menu:",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-
+                VBox entranceLayout = new VBox(20);
+                VBox mainLayout = new VBox(20);
+                HBox layout1 = new HBox(20);
+                TextField productId = new TextField();
+                Button backButton = new Button("Back");
+                Button confirm = new Button("Confirm");
+                layout1.getChildren().addAll(new Label("Enter id of another product:"), productId);
+                HBox layout2 = new HBox(20);
+                Label errorLabel = new Label();
+                Scene mainScene = new Scene(mainLayout, 300, 100);
+                Scene entranceScene = new Scene(entranceLayout, 300, 150);
+                layout2.getChildren().addAll(confirm, backButton);
+                entranceLayout.getChildren().addAll(layout1, layout2, errorLabel);
+                backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                        primaryStage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                confirm.setOnAction(event -> {
+                    Button back = new Button("Back");
+                    back.setOnAction(event1 -> {
+                        try {
+                            this.parentMenu.start(new Stage());
+                            primaryStage.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    if (controller.getProductById(productId.toString()) == null)  {
+                        errorLabel.setText("ID is not valid");
+                    } else {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        Label label = new Label();
+                        for (String s : controller.compare(goodId, productId.toString())) {
+                            stringBuilder.append(s).append("\n");
+                        }
+                        label.setText(stringBuilder.toString());
+                        mainLayout.getChildren().addAll(label, back);
+                        primaryStage.setScene(mainScene);
+                    }
+                });
+                primaryStage.setScene(entranceScene);
+                primaryStage.setScene(mainScene);
             }
 
             @Override
