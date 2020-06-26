@@ -1,5 +1,9 @@
 package view.Menu;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Product;
 
@@ -291,6 +295,81 @@ public class ProductsMenu extends Menu{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        VBox mainLayout = new VBox(20);
+        HBox layout1 = new HBox(20);
+        HBox layout2 = new HBox(20);
+        HBox layout3 =  new HBox(20);
+        HBox layout4 = new HBox(20);
+        Button button = new Button("Good Menu");
+        button.setOnAction(event -> {
+            try {
+                submenus.get(1).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button button1 = new Button("Login Menu");
+        button1.setOnAction(event -> {
+            try {
+                submenus.get(2).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button button2 = new Button("View Categories");
+        button2.setOnAction(event -> {
+            try {
+                submenus.get(3).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button button3 = new Button("Filtering");
+        button3.setOnAction(event -> {
+            try {
+                submenus.get(4).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button button4 = new Button("Sorting");
+        button4.setOnAction(event -> {
+            try {
+                submenus.get(5).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button button5 = new Button("Show Products");
+        button5.setOnAction(event -> {
+            try {
+                submenus.get(6).start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        Button button6 = new Button("Back");
+        button6.setOnAction(event -> {
+            try {
+                parentMenu.start(new Stage());
+                primaryStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        layout1.getChildren().addAll(button, button1);
+        layout2.getChildren().addAll(button2, button3);
+        layout3.getChildren().addAll(button4, button5);
+        layout4.getChildren().addAll(button6);
+        mainLayout.getChildren().addAll(layout1, layout2, layout3, layout4);
+        Scene scene = new Scene(mainLayout, 200, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
