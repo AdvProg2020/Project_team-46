@@ -54,12 +54,16 @@ public class OffMenu extends Menu {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        VBox vBox = new VBox(20);
         HBox mainLayout = new HBox(20);
-        Scene scene = new Scene(mainLayout,200,200);
+        Scene scene = new Scene(vBox,200,200);
         Button goodButton = new Button("Good Menu");
         Button loginButton = new Button("Login Menu");
+        HBox layout = new HBox(20);
         Button back = new Button("Back");
+        layout.getChildren().addAll(back);
         mainLayout.getChildren().addAll(goodButton, loginButton);
+        vBox.getChildren().addAll(mainLayout, layout);
         primaryStage.setScene(scene);
         primaryStage.show();
         loginButton.setOnAction(event -> {
