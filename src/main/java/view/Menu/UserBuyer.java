@@ -1,10 +1,7 @@
 package view.Menu;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,8 +11,7 @@ import model.Discount;
 import model.Product;
 
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.regex.Matcher;
+
 
 public class UserBuyer extends Menu{
 
@@ -93,93 +89,6 @@ public class UserBuyer extends Menu{
 
 
     }
-
-    private void manageOrders() {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches(regex = "show order (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                System.out.println(controller.showOrder(field));
-            }
-            else if (command.matches(regex = "rate (\\S+) (\\d)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field1 = matcher.group(1);
-                String field2 = matcher.group(2);
-                controller.rateProduct(field1,Integer.parseInt(field2));
-            }
-        }
-    }
-
-    private Menu manageCart(Menu parentMenu) {
-        String command;
-        String regex;
-        Matcher matcher;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.matches("show products")) {
-                for (Product product : controller.viewCart().keySet()) {
-                    System.out.println(product.getName() +"   "+ product.getProductId() +"   "+
-                            controller.viewCart().get(product));
-                }
-            }
-            else if (command.matches(regex = "view (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field1 = matcher.group(1);
-                GoodMenu goodMenu = new GoodMenu(parentMenu,null);
-                goodMenu.setGoodId(field1);
-                goodMenu.show();
-                goodMenu.execute();
-            }
-            else if (command.matches(regex = "increase (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.increaseProduct(field);
-            }
-            else if (command.matches(regex = "decrease (\\S+)")) {
-                (matcher = getMatcher(regex, command)).find();
-                String field = matcher.group(1);
-                controller.decreaseProduct(field);
-            }
-            else if (command.matches("show total price")) {
-                System.out.println(controller.showTotalPrice());
-            }
-            else if (command.matches("purchase")) {
-                return new Menu("purchase Menu",parentMenu) {
-                    @Override
-                    public void start(Stage primaryStage) throws Exception {
-
-                    }
-
-                    @Override
-                    public void show() {
-                        System.out.println("Purchase Menu:");
-                        System.out.println("1.Next(receiving info)\n" +
-                                "2.back");
-                    }
-
-                    @Override
-                    public void execute() {
-                        switch (Integer.parseInt(scanner.nextLine())) {
-                            case 1:
-                                Menu menu = receiveInfo(this);
-                                menu.show();
-                                menu.execute();
-                                this.show();
-                                this.execute();
-                                break;
-                            case 2:
-                                this.parentMenu.show();
-                                this.parentMenu.execute();
-                                break;
-                        }
-                    }
-                };
-            }
-        }
-        return null;
-    } //needs to complete
 
     private Menu receiveInfo(Menu parentMenu) {
         return new Menu("Receive Info Menu",parentMenu) {
@@ -309,8 +218,9 @@ public class UserBuyer extends Menu{
         return new Menu("view orders",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-                VBox layout = new VBox(20); VBox detailBox = new VBox(20);
-                Scene scene = new Scene(layout,200,200); Scene detailScene = new Scene(detailBox,200,200);
+                VBox layout = new VBox(20); VBox detailBox = new VBox(20);VBox rateBox = new VBox(20);
+                Scene rateScene = new Scene(rateBox,200,200);Scene scene = new Scene(layout,200,200);
+                Scene detailScene = new Scene(detailBox,200,200);
                 for (BuyingLog order : controller.viewOrders()) {
                     HBox orderBox = new HBox(20);
                     Label orderLabel = new Label("Customer name: " + order.getCostumerName()
@@ -331,8 +241,44 @@ public class UserBuyer extends Menu{
                         detailBox.getChildren().addAll(detailLabel,backButton);
                         primaryStage.setScene(detailScene);
                     });
-                    orderBox.getChildren().addAll(orderLabel,detailButton); layout.getChildren().addAll(orderBox);
+                    orderBox.getChildren().addAll(orderLabel,productLabel,detailButton); layout.getChildren().addAll(orderBox);
                 }
+                Button rateButton = new Button("Rate"); rateButton.setOnAction(event -> {
+                    rateBox.getChildren().clear();
+                    for (BuyingLog order : controller.viewOrders()) {
+                        for (Product product : order.getSellerPerProduct().keySet()) {
+                            HBox productBox = new HBox(20);
+                            Label infoLabel = new Label("product name: " + product.getName() + "\nprice: "
+                                    + product.getValue() + "\nproduct category: " + product.getCategory() +
+                                    "\naverage score: " + product.getAverageScore());
+                            RadioButton one = new RadioButton("1");RadioButton two = new RadioButton("2");
+                            RadioButton three = new RadioButton("3");RadioButton four = new RadioButton("4");
+                            RadioButton five = new RadioButton("5");ToggleGroup toggleGroup = new ToggleGroup();
+                            one.setToggleGroup(toggleGroup);two.setToggleGroup(toggleGroup);
+                            three.setToggleGroup(toggleGroup);four.setToggleGroup(toggleGroup);five.setToggleGroup(toggleGroup);
+                            Button confirmButton = new Button("Confirm"); confirmButton.setOnAction(event1 -> {
+                                if (one.isSelected()) {
+                                    controller.rateProduct(product.getProductId(),1);
+                                }
+                                if (two.isSelected()) {
+                                    controller.rateProduct(product.getProductId(),2);
+                                }
+                                if (three.isSelected()) {
+                                    controller.rateProduct(product.getProductId(),3);
+                                }
+                                if (four.isSelected()) {
+                                    controller.rateProduct(product.getProductId(),4);
+                                }
+                                if (five.isSelected()) {
+                                    controller.rateProduct(product.getProductId(),5);
+                                }
+                            });
+                            productBox.getChildren().addAll(infoLabel,one,two,three,four,five,confirmButton);
+                            rateBox.getChildren().add(productBox);
+                            primaryStage.setScene(rateScene);
+                        }
+                    }
+                });
                 Button backButton = new Button("Back"); backButton.setOnAction(event -> {
                     try {
                         this.parentMenu.start(primaryStage);
@@ -340,34 +286,12 @@ public class UserBuyer extends Menu{
                         e.printStackTrace();
                     }
                 });
-                layout.getChildren().addAll(backButton);
+                layout.getChildren().addAll(rateButton,backButton);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
-
-            @Override
-            public void show() {
-                System.out.println("View Orders Menu:");
-                System.out.println("1.show order [orderId]/rate [productId] [1-5]");
-                System.out.println();
-            }
-
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        manageOrders();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                }
-            }
         };
-    } //needs to complete
+    }
 
     private Menu getViewPersonalInfo() {
         return new Menu("view personal info",this) {
@@ -539,37 +463,54 @@ public class UserBuyer extends Menu{
 
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
-            }
-
-            @Override
-            public void show() {
-                System.out.println("View Cart:");
-                System.out.println("1.show products/view [productId]/increase [productId]/decrease [productId]" +
-                        "show price/purchase\n" +
-                        "2.back");
-            }
-
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        Menu menu = manageCart(this);
-                        if (menu != null) {
-                            Objects.requireNonNull(menu).show();
-                            Objects.requireNonNull(menu).execute();
+                for (Product product : controller.viewCart().keySet()) {
+                    HBox productBox = new HBox(20);
+                    Label infoLabel = new Label("Product Name: " + product.getName() + "\nProduct Id: " +
+                            product.getProductId() + "\nProduct Value: " + product.getValue() + "\nProduct Category: " +
+                            product.getCategory() + "\nproduct number: " + controller.viewCart().get(product));
+                    Button increaseButton = new Button("Increase"); increaseButton.setOnAction(event -> {
+                        controller.increaseProduct(product.getProductId());
+                    });
+                    Button decreaseButton = new Button("Decrease"); decreaseButton.setOnAction(event -> {
+                        controller.decreaseProduct(product.getProductId());
+                    });
+                    Button detailsButton = new Button("Details"); detailsButton.setOnAction(event -> {
+                        GoodMenu goodMenu = new GoodMenu(parentMenu,null);
+                        goodMenu.setGoodId(product.getProductId());
+                        try {
+                            goodMenu.start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
+                    });
+                    productBox.getChildren().addAll(infoLabel,increaseButton,decreaseButton,detailsButton);
+                    layout.getChildren().add(productBox);
                 }
+                Label priceLabel = new Label("Total price: " + controller.showTotalPrice());
+                Button purchaseButton = new Button("Purchase"); purchaseButton.setOnAction(event -> {
+                    try {
+                        receiveInfo(this).start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                layout.getChildren().addAll(priceLabel,purchaseButton,backButton);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         };
-    } //needs to complete
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
