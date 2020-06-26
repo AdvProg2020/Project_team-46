@@ -367,7 +367,32 @@ public class UserManager extends Menu {
         return new Menu("manage users",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
+                VBox layout = new VBox(20);
+                Scene scene = new Scene(layout,200,200);
 
+                for (Account account : controller.getAccounts()) {
+                    HBox accountBox = new HBox(20);
+                    Label infoLabel = new Label("username: " + account.getUsername() + "\nname: " + account.getName()
+                            + "\nrole: " + account.getRole());
+                    Button viewButton = new Button("View"); viewButton.setOnAction(event -> {
+
+                    });
+                    Button deleteButton = new Button("Delete"); deleteButton.setOnAction(event -> {
+
+                    });
+                    accountBox.getChildren().addAll(infoLabel,viewButton,deleteButton);
+                    layout.getChildren().add(accountBox);
+                }
+                Button managerButton = new Button("Create new manager"); managerButton.setOnAction(event -> {
+
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+
+                });
+                layout.getChildren().addAll(managerButton,backButton);
+
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
 
             @Override
