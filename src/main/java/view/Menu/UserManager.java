@@ -1,10 +1,7 @@
 package view.Menu;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -106,6 +103,30 @@ public class UserManager extends Menu {
         }
 
 
+    }
+
+    public void register(String password, String name, String last, String email, String address, String phone,
+                         String balance, String company, String username, String role, Label error) {
+
+        if (controller.getAccountByUsername(username) != null) {
+            error.setText("User is already taken");
+        }
+        else {
+            controller.createAccount(username, role);
+            controller.setPassword(password);
+            controller.setName(name);
+            controller.setLastName(last);
+            controller.setEmail(email);
+            controller.setAddress(address);
+            controller.setPhoneNumber(phone);
+            controller.setBalance(Long.parseLong(balance));
+            controller.setCompanyName(company);
+            try {
+                this.parentMenu.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void manageUsers() {
@@ -367,61 +388,82 @@ public class UserManager extends Menu {
         return new Menu("manage users",this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-                VBox layout = new VBox(20);
-                Scene scene = new Scene(layout,200,200);
+                VBox layout = new VBox(20);Scene scene = new Scene(layout,200,200);
+                VBox viewBox = new VBox(20);Scene viewScene = new Scene(viewBox,200,200);
+                VBox managerBox = new VBox(20);Scene managerScene = new Scene(managerBox,200,200);
 
                 for (Account account : controller.getAccounts()) {
                     HBox accountBox = new HBox(20);
                     Label infoLabel = new Label("username: " + account.getUsername() + "\nname: " + account.getName()
                             + "\nrole: " + account.getRole());
                     Button viewButton = new Button("View"); viewButton.setOnAction(event -> {
-
+                        viewBox.getChildren().clear();
+                        Label detailLabel = new Label("username: " + account.getUsername() + "\nname: " + account.getName()
+                                + "\nrole: " + account.getRole() + "\nlast name: " + account.getLastName() +
+                                "\nphone number: " + account.getPhoneNumber() + "\nemail: " + account.getEmail());
+                        Button back1Button = new Button("Back"); back1Button.setOnAction(event1 -> {
+                            primaryStage.setScene(scene);
+                        });
+                        viewBox.getChildren().addAll(detailLabel,back1Button);
+                        primaryStage.setScene(viewScene);
                     });
                     Button deleteButton = new Button("Delete"); deleteButton.setOnAction(event -> {
-
+                        controller.deleteUser(account.getUsername());
                     });
                     accountBox.getChildren().addAll(infoLabel,viewButton,deleteButton);
                     layout.getChildren().add(accountBox);
                 }
                 Button managerButton = new Button("Create new manager"); managerButton.setOnAction(event -> {
+                    managerBox.getChildren().clear();
+                    HBox nameBox = new HBox(20); TextField nameField = new TextField();
+                    nameBox.getChildren().addAll(new Label("Enter Username: "),nameField);
+                    HBox passBox = new HBox(20); PasswordField passwordField = new PasswordField();
+                    passBox.getChildren().addAll(new Label("Enter password: "),passwordField);
+                    HBox firstNameBox = new HBox(20); TextField firstNameField = new TextField();
+                    firstNameBox.getChildren().addAll(new Label("Enter your name: "),firstNameField);
+                    HBox lastBox = new HBox(20); TextField lastField = new TextField();
+                    lastBox.getChildren().addAll(new Label("Enter your last name: "),lastField);
+                    HBox emailBox = new HBox(20); TextField emailField = new TextField();
+                    emailBox.getChildren().addAll(new Label("Enter your email"),emailField);
+                    HBox addressBox = new HBox(20); TextField addressField = new TextField();
+                    addressBox.getChildren().addAll(new Label("Enter your address: "),addressField);
+                    HBox phoneBox = new HBox(20); TextField phoneField = new TextField();
+                    phoneBox.getChildren().addAll(new Label("Enter your phone number: "),phoneField);
+                    Label errorLabel = new Label();
+                    Button confirmButton = new Button("Confirm"); confirmButton.setOnAction(event1 -> {
+                        if (nameField.getText().isEmpty() || passwordField.getText().isEmpty() || firstNameField.getText().isEmpty() ||
+                                lastField.getText().isEmpty() || emailField.getText().isEmpty()) {
+                            errorLabel.setText("some required fields did not filled");
+                        }
+                        else {
+                            register(passwordField.getText(),firstNameField.getText(),lastField.getText()
+                                    ,emailField.getText(),addressField.getText(),phoneField.getText(),"0",
+                                    null,nameField.getText(),"manager",errorLabel);
+                            primaryStage.close();
+                        }
+                    });
+                    Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                        primaryStage.setScene(scene);
+                    });
 
+                    managerBox.getChildren().addAll(nameBox,passBox,firstNameBox,lastBox,emailBox,addressBox,phoneBox
+                            ,confirmButton,errorLabel,backButton);
+                    primaryStage.setScene(managerScene);
                 });
                 Button backButton = new Button("Back"); backButton.setOnAction(event -> {
-
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
                 layout.getChildren().addAll(managerButton,backButton);
 
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
-
-            @Override
-            public void show() {
-                System.out.println(controller.getAccounts());
-                System.out.println(
-                        "1. view [username]/delete user [username]/create manager profile" + "\n"
-                        + "2. back");
-            }
-
-            @Override
-            public void execute() {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        manageUsers();
-                        this.show();
-                        this.execute();
-                        break;
-                    case 2:
-                        this.parentMenu.show();
-                        this.parentMenu.execute();
-                        break;
-                    default:
-                        System.out.println("Enter a validate number");
-                        this.execute();
-                }
-            }
         };
-    } //to do
+    } //done
 
     private Menu getManageProducts() {
         return new Menu("manage products",this) {
