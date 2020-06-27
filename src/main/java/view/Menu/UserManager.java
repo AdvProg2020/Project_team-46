@@ -522,25 +522,41 @@ public class UserManager extends Menu {
             public void start(Stage primaryStage) throws Exception {
                 VBox layout = new VBox(20); VBox editLayout = new VBox(20);
                 Scene scene = new Scene(layout,200,200); Scene editScene = new Scene(editLayout,200,200);
-
+                VBox detailBox = new VBox(20); Scene detailScene = new Scene(detailBox,200,200);
 
                 for (Discount discount : controller.getDiscountList()) {
                     HBox discountBox = new HBox(20);
                     Label infoLabel = new Label("Discount Code: " + discount.getCode() + "\nDiscount Percentage: "
                             + discount.getDiscountPercentage() + "\nMaximum Discount: " + discount.getMaximumDiscount());
                     Button detailButton = new Button("Details"); detailButton.setOnAction(event -> {
-
+                        detailBox.getChildren().clear();
+                        Label detailLabel = new Label("Discount Code: " + discount.getCode() + "\nDiscount Percentage: "
+                                + discount.getDiscountPercentage() + "\nMaximum Discount: " + discount.getMaximumDiscount()
+                                + "\nStarting Date: " + discount.getStartingDate() + "\nEnding Date: " + discount.getEndingDate());
+                        Button backButton = new Button("Back"); backButton.setOnAction(event1 -> {
+                            primaryStage.setScene(scene);
+                        });
+                        detailBox.getChildren().addAll(infoLabel,backButton);
+                        primaryStage.setScene(detailScene);
                     });
                     Button editButton = new Button("Edit"); editButton.setOnAction(event -> {
                         editLayout.getChildren().clear();
 
                     });
                     Button removeButton = new Button("Remove"); removeButton.setOnAction(event -> {
-
+                        controller.removeDiscountCode(discount);
                     });
                     discountBox.getChildren().addAll(infoLabel,detailButton,editButton,removeButton);
                     layout.getChildren().add(discountBox);
                 }
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout.getChildren().add(backButton);
 
                 primaryStage.setScene(scene);
                 primaryStage.show();
