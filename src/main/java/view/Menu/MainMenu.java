@@ -1,10 +1,11 @@
 package view.Menu;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -28,7 +29,9 @@ public class MainMenu extends Menu{
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Layout
-        HBox mainLayout = new HBox(20);
+        BackgroundFill backgroundFill = new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(backgroundFill);
+        HBox mainLayout = new HBox(20); mainLayout.setBackground(background);
         VBox layout1 = new VBox(20);
         VBox layout2 = new VBox(20);
         HBox layout3 = new HBox(20);
@@ -36,11 +39,11 @@ public class MainMenu extends Menu{
         Scene scene = new Scene(mainLayout,250,200);
 
         //Buttons
-        Button loginButton = new Button("Login Menu");
-        Button productButton = new Button("Product Menu");
-        Button offButton = new Button("Off Menu");
-        Button userButton = new Button("User Menu");
-        Button exit = new Button("Exit");
+        Button loginButton = new Button("Login Menu"); loginButton.setStyle("-fx-font-family: Tahoma;-fx-font-weight: bold");
+        Button productButton = new Button("Product Menu"); productButton.setStyle("-fx-font-family: Tahoma;-fx-font-weight: bold");
+        Button offButton = new Button("Off Menu"); offButton.setStyle("-fx-font-family: Tahoma;-fx-font-weight: bold");
+        Button userButton = new Button("User Menu"); userButton.setStyle("-fx-font-family: Tahoma;-fx-font-weight: bold");
+        Button exit = new Button("Exit"); exit.setStyle("-fx-font-family: Tahoma;-fx-font-weight: bold");
 
         loginButton.setOnAction(event -> {
             try {
