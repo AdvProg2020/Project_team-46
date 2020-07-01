@@ -624,6 +624,7 @@ public class UserManager extends Menu {
                         detailBox.getChildren().addAll(detailLabel,backButton);
                         primaryStage.setScene(detailScene);
                     });
+                    requestBox.getChildren().addAll(infoLabel,acceptButton,declineButton,detailButton);
 
                     layout.getChildren().add(requestBox);
                 }
@@ -634,6 +635,7 @@ public class UserManager extends Menu {
                         e.printStackTrace();
                     }
                 });
+                layout.getChildren().add(backButton);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
