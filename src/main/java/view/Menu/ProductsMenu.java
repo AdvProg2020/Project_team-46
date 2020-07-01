@@ -322,7 +322,7 @@ public class ProductsMenu extends Menu{
                     });
                     Button confirm = new Button("Confirm");
                     confirm.setOnAction(event1 -> {
-                        message.setText(controller.filter("by category", category.toString()));
+                        message.setText(controller.filter("by category", category.getText()));
                     });
                     layout1.getChildren().addAll(new Label("Enter a Category: "), category);
                     layout2.getChildren().addAll(confirm, back);
@@ -346,7 +346,7 @@ public class ProductsMenu extends Menu{
                     });
                     Button confirm = new Button("Confirm");
                     confirm.setOnAction(event1 -> {
-                        message.setText(controller.filter("by name", category.toString()));
+                        message.setText(controller.filter("by name", category.getText()));
                     });
                     layout1.getChildren().addAll(new Label("Enter a name: "), category);
                     layout2.getChildren().addAll(confirm, back);

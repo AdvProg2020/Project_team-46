@@ -210,12 +210,12 @@ public class GoodMenu extends Menu {
                     back.setOnAction(event1 -> {
                         primaryStage.setScene(entranceScene);
                     });
-                    if (controller.getProductById(productId.toString()) == null)  {
+                    if (controller.getProductById(productId.getText()) == null)  {
                         errorLabel.setText("ID is not valid");
                     } else {
                         StringBuilder stringBuilder = new StringBuilder();
                         Label label = new Label();
-                        for (String s : controller.compare(goodId, productId.toString())) {
+                        for (String s : controller.compare(goodId, productId.getText())) {
                             stringBuilder.append(s).append("\n");
                         }
                         label.setText(stringBuilder.toString());
@@ -284,7 +284,7 @@ public class GoodMenu extends Menu {
                         Label confirmLabel = new Label();
                         Button confirm = new Button("Confirm");
                         confirm.setOnAction(event1 -> {
-                            controller.addComment(title.toString(), comment.toString(), goodId);
+                            controller.addComment(title.getText(), comment.getText(), goodId);
                             confirmLabel.setText("Comment added");
                         });
                         Button backButton = new Button("Back");
