@@ -422,10 +422,10 @@ public class GoodMenu extends Menu {
             hBox1.getChildren().addAll(LoginMenu, digest, attribute);
             hBox2.getChildren().addAll(compare, comment, back);
             mainLayout.getChildren().addAll(hBox1, hBox2);
-            if (controller.getProductById(productId.toString()) == null) {
+            if (controller.getAvailableProductById(productId.getText()) == null) {
                 errorLabel.setText("ID is not valid");
             } else {
-                goodId = productId.toString();
+                goodId = productId.getText();
                 primaryStage.setScene(mainScene);
             }
         });

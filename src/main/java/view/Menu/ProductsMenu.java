@@ -467,7 +467,7 @@ public class ProductsMenu extends Menu{
                 StringBuilder stringBuilder = new StringBuilder();
                 for (Product product : filtered) {
                     stringBuilder.append(product.getName()).append("    ").append(product.getProductId()).append("    ")
-                            .append(product.getCategory().getName()).append("    ").append(product.getNumberOfViews())
+                            .append("    ").append(product.getNumberOfViews())
                             .append("    ").append(product.getDateModified()).append("\n");
                 }
                 label.setText(stringBuilder.toString());
