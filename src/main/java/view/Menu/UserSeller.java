@@ -432,6 +432,7 @@ public class UserSeller extends Menu{
                 backButton.setOnAction(event -> {
                     try {
                         this.parentMenu.start(primaryStage);
+                        primaryStage.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -464,9 +465,32 @@ public class UserSeller extends Menu{
             public void start(Stage primaryStage) throws Exception {
                 VBox layout = new VBox(20);
                 Scene scene = new Scene(layout,200,200);
-
-
-
+                HBox layout1 = new HBox(20);
+                Label message = new Label();
+                Label label = new Label("Enter id of the product: ");
+                TextField textField = new TextField();
+                layout1.getChildren().addAll(label, textField);
+                Button back = new Button("Back");
+                back.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                        primaryStage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                Button confirm = new Button("Confirm");
+                confirm.setOnAction(event -> {
+                    if (controller.getProductById(textField.getText()) == null) {
+                        message.setText("ID is not valid");
+                    } else {
+                        controller.removeProduct(textField.getText());
+                        message.setText("Done!");
+                    }
+                });
+                HBox layout2 = new HBox(20);
+                layout2.getChildren().addAll(confirm, back);
+                layout.getChildren().addAll(layout1, layout2, message);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
