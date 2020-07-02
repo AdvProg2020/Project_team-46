@@ -578,14 +578,155 @@ public class UserSeller extends Menu{
         return new Menu("manage products", this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-                VBox layout = new VBox(20);
-                Scene scene = new Scene(layout,200,200);
+                VBox mainLayout = new VBox(20);
+                VBox mainLayout1 = new VBox(20);
+                VBox mainLayout2 = new VBox(20);
+                VBox mainLayout3 = new VBox(20);
+                Scene mainScene = new Scene(mainLayout,200,200);
+                Scene scene1 = new Scene(mainLayout1, 200, 200);
+                Scene scene2 = new Scene(mainLayout2, 200, 200);
+                Scene scene3 = new Scene(mainLayout3, 200, 200);
                 Label productsLabel = new Label();
                 for (Product product : controller.getAvailableProducts()) {
                     productsLabel.setText(productsLabel.getText() + "\n" + product.getName() + " " + product.getProductId());
                 }
-
-                primaryStage.setScene(scene);
+                HBox layout1 = new HBox(20);
+                HBox layout2 = new HBox(20);
+                Button viewProduct = new Button("View Product");
+                Button viewBuyers = new Button("View Buyers");
+                Button editProduct = new Button("Edit Product");
+                Button back = new Button("Back");
+                back.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(new Stage());
+                        primaryStage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                layout1.getChildren().addAll(viewProduct, viewBuyers);
+                layout2.getChildren().addAll(editProduct, back);
+                mainLayout.getChildren().addAll(productsLabel, layout1, layout2);
+                viewProduct.setOnAction(event -> {
+                    HBox subLayout1 = new HBox(20);
+                    Label message = new Label();
+                    Label label = new Label("Enter id of the product: ");
+                    TextField textField = new TextField();
+                    subLayout1.getChildren().addAll(label, textField);
+                    Button backButton = new Button("Back");
+                    backButton.setOnAction(event1 -> {
+                        try {
+                            primaryStage.setScene(mainScene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    Button confirm = new Button("Confirm");
+                    confirm.setOnAction(event1 -> {
+                        if (controller.getProductById(textField.getText()) == null) {
+                            message.setText("ID is not valid");
+                        } else {
+                            message.setText(controller.viewProduct(textField.getText()));
+                        }
+                    });
+                    HBox subLayout2 = new HBox(20);
+                    subLayout2.getChildren().addAll(confirm, backButton);
+                    mainLayout1.getChildren().addAll(subLayout1, subLayout2, message);
+                    primaryStage.setScene(scene1);
+                });
+                viewBuyers.setOnAction(event -> {
+                    HBox subLayout1 = new HBox(20);
+                    Label message = new Label();
+                    Label label = new Label("Enter id of the product: ");
+                    TextField textField = new TextField();
+                    subLayout1.getChildren().addAll(label, textField);
+                    Button backButton = new Button("Back");
+                    backButton.setOnAction(event1 -> {
+                        try {
+                            primaryStage.setScene(mainScene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    Button confirm = new Button("Confirm");
+                    confirm.setOnAction(event1 -> {
+                        if (controller.getProductById(textField.getText()) == null) {
+                            message.setText("ID is not valid");
+                        } else {
+                            message.setText(controller.viewBuyers(textField.getText()).toString());
+                        }
+                    });
+                    HBox subLayout2 = new HBox(20);
+                    subLayout2.getChildren().addAll(confirm, backButton);
+                    mainLayout2.getChildren().addAll(subLayout1, subLayout2, message);
+                    primaryStage.setScene(scene2);
+                });
+                editProduct.setOnAction(event -> {
+                    HBox idBox = new HBox(20, new Label("Enter id of the product:"));
+                    TextField idField  = new TextField(); idBox.getChildren().add(idBox);
+                    HBox nameBox = new HBox(20,new Label("Enter name of product"));
+                    TextField nameField = new TextField(); nameBox.getChildren().add(nameField);
+                    HBox companyBox = new HBox(20,new Label("Enter brand or company of product"));
+                    TextField companyField = new TextField(); companyBox.getChildren().add(companyField);
+                    HBox priceBox = new HBox(20,new Label("Enter price of the product"));
+                    TextField priceField = new TextField(); priceBox.getChildren().add(priceField);
+                    HBox amountBox = new HBox(20,new Label("Enter amount or number of the product"));
+                    TextField amountField = new TextField(); amountBox.getChildren().add(amountField);
+                    HBox descripBox = new HBox(20,new Label("Enter description of product"));
+                    TextField descripField = new TextField(); descripBox.getChildren().add(descripField);
+                    CheckBox available = new CheckBox("Is the product available?");
+                    HBox categoryBox = new HBox(20,new Label("Enter the category of the product"));
+                    TextField categoryField = new TextField(); categoryBox.getChildren().add(categoryField);
+                    HBox buttonBox = new HBox(20);
+                    Button backButton = new Button("Back");
+                    Button confirm = new Button("confirm");
+                    Label message = new Label();
+                    buttonBox.getChildren().addAll(backButton, confirm);
+                    backButton.setOnAction(event1 -> {
+                        try {
+                            primaryStage.setScene(mainScene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    confirm.setOnAction(event1 -> {
+                        Product product = controller.getAvailableProductById(idField.getText());
+                        if (product == null) {
+                            message.setText("id not valid!");
+                        } else {
+                            if (!categoryField.getText().isEmpty()) {
+                                product.setCategory(controller.getCategoryByName(categoryField.getText()));
+                                message.setText("Done!");
+                            }
+                            if (!nameField.getText().isEmpty()) {
+                                product.setName(nameField.getText());
+                                message.setText("Done!");
+                            }
+                            if (!priceField.getText().isEmpty()) {
+                                product.setValue(Long.parseLong(priceField.getText()));
+                                message.setText("Done!");
+                            }
+                            if (!companyField.getText().isEmpty()) {
+                                product.setBrandOrCompany(companyField.getText());
+                                message.setText("Done!");
+                            }
+                            if (!descripField.getText().isEmpty()) {
+                                product.setDescription(descripField.getText());
+                                message.setText("Done!");
+                            }
+                            if (!amountField.getText().isEmpty()) {
+                                product.setAmount(Integer.parseInt(amountField.getText()));
+                                message.setText("Done!");
+                            }
+                            if (available.isSelected()) {
+                                product.setAvailable(true);
+                                message.setText("Done");
+                            }
+                        }
+                    });
+                    mainLayout3.getChildren().addAll(idBox, nameBox, companyBox, priceBox, amountBox, descripBox, available, categoryBox, buttonBox, message);
+                });
+                primaryStage.setScene(mainScene);
                 primaryStage.show();
             }
 
