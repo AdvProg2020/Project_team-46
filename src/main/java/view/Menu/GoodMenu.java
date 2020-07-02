@@ -93,7 +93,7 @@ public class GoodMenu extends Menu {
                 Button add = new Button("Add to Cart");
                 Button back = new Button("Back");
                 add.setOnAction(event -> {
-                    controller.digest(goodId);
+                    controller.addToCart(goodId);
                     label.setText("product added to cart");
                 });
                 back.setOnAction(event -> {
@@ -224,7 +224,7 @@ public class GoodMenu extends Menu {
                     }
                 });
                 primaryStage.setScene(entranceScene);
-                primaryStage.setScene(mainScene);
+                //primaryStage.setScene(mainScene);
             }
 
             @Override

@@ -151,110 +151,95 @@ public class UserSeller extends Menu{
         return new Menu("view offs", this) {
             @Override
             public void start(Stage primaryStage) throws Exception {
-                VBox layout = new VBox(20);
-                Scene scene = new Scene(layout,200,200);
+                VBox layout = new VBox(20);Scene scene = new Scene(layout,200,200);
+                HBox idBox = new HBox(20); TextField idField = new TextField();Label infoLabel = new Label();
+                VBox addLayout = new VBox(20); Scene addScene = new Scene(addLayout,500,500);
+
+                HBox proIdBox = new HBox(20); TextField idProField = new TextField();
+                proIdBox.getChildren().addAll(new Label("Enter product Id: "),idProField);
+                HBox startDateBox = new HBox(20); TextField startDateField = new TextField();
+                startDateBox.getChildren().addAll(new Label("Enter starting Date: "),startDateField);
+                HBox endDateBox = new HBox(20); TextField endDateField = new TextField();
+                endDateBox.getChildren().addAll(new Label("Enter ending Date: "),endDateField);
+                HBox percentBox = new HBox(20); TextField percentField = new TextField();
+                percentBox.getChildren().addAll(new Label("Enter percentage: "),percentField);
+                Label errorAdd = new Label();
+                Button createButton = new Button("Create"); createButton.setOnAction(event -> {
+                    addOff(idField.getText(),startDateField.getText(),endDateField.getText(),percentField.getText(),errorAdd);
+                });
+                Button backButtonNew = new Button("Back"); backButtonNew.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                addLayout.getChildren().addAll(proIdBox,startDateBox,endDateBox,percentBox,createButton,errorAdd,backButtonNew);
 
                 for (Sale sale : controller.getCurrentAccount().getOffList()) {
-                    HBox saleBox = new HBox(20);
-                    Label infoLabel = new Label("Off Id: " + sale.getOffId() + "\nDiscount Percentage: "
-                            + sale.getDiscountPercentage() + "\nOff Status: " + sale.getSaleStatus());
-
-                    Button viewButton = new Button("View");viewButton.setOnAction(event -> {
-
-                    });
-                    Button editButton = new Button("Edit");editButton.setOnAction(event -> {
-
-                    });
-
-
+                    infoLabel.setText(infoLabel.getText() + "\n" + sale.getOffId() + "      " + sale.getDiscountPercentage() +
+                            "       " + sale.getStartingDate() + "        " + sale.getEndingdate());
                 }
 
+                idBox.getChildren().addAll(new Label("Enter product id: "),idField);
+                Button editButton = new Button("Edit"); editButton.setOnAction(event -> {
 
+                });
+                Button addButton = new Button("Add"); addButton.setOnAction(event -> {
+                    primaryStage.setScene(addScene);
+                });
+                Button backButton = new Button("Back"); backButton.setOnAction(event -> {
+                    try {
+                        this.parentMenu.start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                layout.getChildren().addAll(infoLabel,idBox,editButton,addButton,backButton);
                 primaryStage.setScene(scene);
                 primaryStage.show();
-            }
-
-            @Override
-            public void show() {
-                for (String off : controller.viewSellersOff()) {
-                    System.out.println(off);
-                }
-                System.out.println("1. view off\n" +
-                        "2. edit off\n" +
-                        "3. add off\n" +
-                        "4. back");
-            }
-
-            @Override
-            public void execute() {
-                switch (scanner.nextLine()) {
-                    case "1":
-                        viewOff();
-                        this.show();
-                        this.execute();
-                        break;
-                    case  "2":
-                        editOff();
-                        this.show();
-                        this.execute();
-                        break;
-                    case "3":
-                        addOff();
-                        this.show();
-                        this.execute();
-                        break;
-                    case "4":
-                        parentMenu.show();
-                        parentMenu.execute();
-                }
             }
         };
     } //graphic is needed for products
 
-    private void addOff() {
-        String command;
+    private void addOff(String id,String start,String end,String percent,Label errorLabel) {
         String regex;
         Matcher matcher;
         ArrayList<Product> products = new ArrayList<>();
         Date startingDate;
         Date endingDate;
         int discountPercentage;
-        System.out.println("Enter products id's you want to add then enter finish");
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("finish")) {
-            if (controller.getProductById(command) == null) {
-                System.out.println("invalid id");
+        if (controller.getProductById(id) == null) {
+            errorLabel.setText("invalid id");
+        } else {
+            if (controller.getProductById(id).isInSale()) {
+                errorLabel.setText("Product is already in a sale");
             } else {
-                if (controller.getProductById(command).isInSale()) {
-                    System.out.println("Product is already in a sale");
-                } else {
-                    controller.putProductInSale(command);
-                    products.add(controller.getProductById(command));
-                }
+                controller.putProductInSale(id);
+                products.add(controller.getProductById(id));
             }
         }
-        System.out.println("Enter a starting date in format YYYY-MM-DD:");
-        while (!(command = scanner.nextLine()).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
-            System.out.println("invalid format");
+        while (!(start).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
+            errorLabel.setText("invalid format");
         }
-        (matcher = getMatcher(regex, command)).find();
+        (matcher = getMatcher(regex, start)).find();
         startingDate = new Date(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
-        System.out.println("Enter an ending date in format YYYY-MM-DD:");
-        while (!(command = scanner.nextLine()).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
-            System.out.println("invalid format");
+        while (!(end).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
+            errorLabel.setText("invalid format");
         }
-        (matcher = getMatcher(regex, command)).find();
+        (matcher = getMatcher(regex, end)).find();
         endingDate = new Date(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
-        System.out.println("Enter discount percentage:");
         discountPercentage = Integer.parseInt(scanner.nextLine());
         while (discountPercentage <= 0 || discountPercentage >= 100) {
-            System.out.println("Enter a valid number between 0 and 100!");
-            discountPercentage = Integer.parseInt(scanner.nextLine());
+            errorLabel.setText("Enter a valid number between 0 and 100!");
+            discountPercentage = Integer.parseInt(percent);
         }
         String[] inputs = new String[1];
         inputs[0] = generateId();
         controller.createOff(inputs[0], products, startingDate, endingDate, discountPercentage);
         new SellerRequest(controller. getCurrentAccount(), generateId(), inputs, "add sale");
-        System.out.println("Sale created");
+        errorLabel.setText("Sale created");
     }
 
     private void viewOff() {

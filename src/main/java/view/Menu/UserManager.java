@@ -308,7 +308,8 @@ public class UserManager extends Menu {
                             e.printStackTrace();
                         }
                     }
-                });backButton.setOnAction(event -> {
+                });
+                backButton.setOnAction(event -> {
                     try {
                         this.parentMenu.start(primaryStage);
                     } catch (Exception e) {
@@ -338,7 +339,7 @@ public class UserManager extends Menu {
                     }
                 });
 
-                layout.getChildren().addAll(info,editButton,backButton);
+                layout.getChildren().addAll(info,editButton,backButton2);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
