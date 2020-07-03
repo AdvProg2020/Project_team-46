@@ -300,6 +300,7 @@ public class Controller {
     }
 
     public void addProduct(String productId) {
+        System.out.println(productId);
         getProductById(productId).setProductStatus(ProductStatus.CONFIRMED);
         availableProducts.add(getProductById(productId));
     }

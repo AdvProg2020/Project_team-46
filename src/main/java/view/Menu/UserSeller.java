@@ -220,18 +220,18 @@ public class UserSeller extends Menu{
                 products.add(controller.getProductById(id));
             }
         }
-        while (!(start).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
+        if (!(start).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
             errorLabel.setText("invalid format");
         }
         (matcher = getMatcher(regex, start)).find();
         startingDate = new Date(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
-        while (!(end).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
+        if (!(end).matches(regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)")) {
             errorLabel.setText("invalid format");
         }
         (matcher = getMatcher(regex, end)).find();
         endingDate = new Date(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
-        discountPercentage = Integer.parseInt(scanner.nextLine());
-        while (discountPercentage <= 0 || discountPercentage >= 100) {
+        discountPercentage = Integer.parseInt(percent);
+        if (discountPercentage <= 0 || discountPercentage >= 100) {
             errorLabel.setText("Enter a valid number between 0 and 100!");
             discountPercentage = Integer.parseInt(percent);
         }

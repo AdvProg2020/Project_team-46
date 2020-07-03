@@ -56,7 +56,7 @@ public class SellerRequest extends Request {
                 controller.editDiscountPercentageOfSale(Integer.parseInt(inputs[0]), inputs[1]);
                 break;
             case "add sale":
-                controller.addProduct(inputs[0]);
+                controller.addOff(inputs[0]);
         }
         requests.remove(this);
 

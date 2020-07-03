@@ -225,6 +225,7 @@ public class GoodMenu extends Menu {
                 });
                 primaryStage.setScene(entranceScene);
                 //primaryStage.setScene(mainScene);
+                primaryStage.show();
             }
 
             @Override
