@@ -1,5 +1,7 @@
 package network;
 
+import model.Account;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -26,21 +28,44 @@ public class Server {
                 e.printStackTrace();
             }
         }
+
+        public Account handleRegister(String input) {
+            return null;
+        }
     }
 
     public static class ClientHandler extends Thread {
-        private InputStream inputStream;
-        private OutputStream outputStream;
+        private Socket clientSocket;
+        private DataOutputStream dataOutputStream;
+        private DataInputStream dataInputStream;
         private ServerHelp serverHelp;
+        private Account account;
 
-        public ClientHandler(InputStream inputStream, OutputStream outputStream, ServerHelp serverHelp) {
-            this.inputStream = inputStream;
-            this.outputStream = outputStream;
+        public ClientHandler(Socket clientSocket, DataOutputStream dataOutputStream, DataInputStream dataInputStream,
+                             ServerHelp serverHelp) {
+            this.clientSocket = clientSocket;
+            this.dataOutputStream = dataOutputStream;
+            this.dataInputStream = dataInputStream;
             this.serverHelp = serverHelp;
         }
 
         private void handleClient() {
+            String inputString;
+            while (true) {
+                try {
+                    inputString = dataInputStream.readUTF();
+                    System.out.println("Client " + " sent " + inputString);
+                    if (inputString.startsWith("Register")) {
+                        account = serverHelp.handleRegister(inputString);
+                    } //else if ()
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+            }
         }
+
     }
+
+
 }
